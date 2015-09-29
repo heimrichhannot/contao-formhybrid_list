@@ -28,7 +28,7 @@ class ListFilterForm extends \HeimrichHannot\FormHybrid\Form
 
 		parent::__construct($objModule);
 	}
-	
+
 	protected function onSubmitCallback(\DataContainer $dc) {
 		$this->submission = $dc;
 
@@ -43,14 +43,15 @@ class ListFilterForm extends \HeimrichHannot\FormHybrid\Form
 			}
 		}
 	}
-	
+
 	protected function compile() {}
-	
+
 	protected function generateSubmitField()
 	{
 		$this->arrFields[FORMHYBRID_LIST_NAME_FILTER] = $this->generateField(FORMHYBRID_LIST_NAME_FILTER, array(
 			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list']['filter']
+			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list']['filter'],
+			'eval' => array('class' => 'filter')
 		));
 	}
 }

@@ -6,7 +6,7 @@
 	<?php if ($this->addDetailsCol): ?>
 		<td class="actions">
 			<?php if ($this->addDetailsCol && $this->detailsUrl): ?>
-				<a class="edit fa fa-edit" href="<?php echo $this->detailsUrl; ?>" title="<?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>"></a>
+				<a class="details" href="<?php echo $this->detailsUrl; ?>">Details</a>
 			<?php endif; ?>
 		</td>
 	<?php endif; ?>

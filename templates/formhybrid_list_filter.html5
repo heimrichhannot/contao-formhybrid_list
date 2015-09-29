@@ -15,7 +15,7 @@
 					<input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $this->maxFileSize; ?>">
 				<?php endif; ?>
 			<?php endif; ?>
-			<input type="hidden" name="<?php echo FORMHYBRID_NAME_SKIP_VALIDATION; ?>">
+			<input type="hidden" name="<?php echo FORMHYBRID_NAME_SKIP_VALIDATION; ?>" value="1">
 			<?php echo $this->hidden; ?>
 			<?php foreach($this->fields as $name => $objField): ?>
 				<?php echo $objField->parse(); ?>
