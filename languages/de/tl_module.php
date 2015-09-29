@@ -1,31 +1,34 @@
-<?php 
+<?php
+
 
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_module']['formHybridDataContainer'] = array('DataContainer', 'Wählen Sie hier den gewünschten DataContainer aus.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridPalette'] = array('Palette', 'Wählen Sie hier die gewünschte Palette aus.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridEditable'] = array('Felder', 'Wählen Sie hier die gewünschten Felder aus.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridEditableSkip'] = array('Zu überspringende Felder', 'Wählen Sie hier die Felder aus, die vom Modell nicht zur Filterung genutzt werden sollen (abhängig von der Programmlogik).');
-$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultValues'] = array('Standardwerte hinzufügen', 'Wählen Sie diese Option, um Standardwerte für das Modul hinzuzufügen.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultValues'] = array('Standardwerte', 'Definieren Sie hier Standardwerte für das Modul.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultValues']['field'] = array('Feld', 'Wählen Sie hier das gewünschte Feld aus. ACHTUNG: Bitte wählen Sie nur Felder aus, die sich auch tatsächlich im Formular befinden.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultValues']['value'] = array('Wert', 'Geben Sie hier den gewünschten Standardwert ein. Arrays bitte serialisiert eingeben.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubPalettes'] = array('Subpaletten', 'Wählen Sie hier die gewünschten Subpaletten aus.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubPalettes']['subpalette'] = array('Subpalette', 'Wählen Sie hier die gewünschten Subpaletten aus.');
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubPalettes']['fields'] = array('Felder', 'Wählen Sie hier die gewünschten Felder aus.');
+$GLOBALS['TL_LANG']['tl_module']['hideFilter']							= array('Filter verstecken', 'Klicken Sie hier, um den Filter zu verstecken.');
+$GLOBALS['TL_LANG']['tl_module']['showItemCount']						= array('Ergebnisanzahl anzeigen', 'Klicken Sie hier, um die Anzahl der gefundenen Objekte anzuzeigen.');
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']						= array('Initiale Sortierung', 'Wählen Sie hier eine initiale Sortierung aus.');
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']['asc']				= ' (aufsteigend)';
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']['desc']				= ' (absteigend)';
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']['random']			= 'Zufällige Reihenfolge';
+$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues']	= array('Initiale Filter hinzufügen', 'Wählen Sie diese Option, um initiale Filter für das Modul hinzuzufügen.');
+$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues']		= array(' ', 'Definieren Sie hier initiale Filter für das Modul.');
+$GLOBALS['TL_LANG']['tl_module']['formHybridFilterTemplate']			= array('Filterformular-Template', 'Hier können Sie das Formular-Template überschreiben.');
+$GLOBALS['TL_LANG']['tl_module']['itemTemplate']						= array('Instanz-Template', 'Wählen Sie hier das Template aus, mit dem die einzelnen Instanzen gerendert werden sollen.');
+$GLOBALS['TL_LANG']['tl_module']['addCustomFilterFields']				= array('Alternative Felder zur Filterung verwenden', 'Wählen Sie diese Option, wenn die Filterfelder von den zuvor definierten Feldern abweichen.');
+$GLOBALS['TL_LANG']['tl_module']['customFilterFields']					= array('Alternative Felder zur Filterung', 'Wählen Sie hier Ihre alternativen Filterfelder.');
+$GLOBALS['TL_LANG']['tl_module']['setPageTitle']						= array('Instanzfeld als Seitentitel setzen', 'Wählen Sie diese Option, wenn nach dem Anlegen einer Instanz ein Feld als Seitentitel gesetzt werden soll (bspw. der Titel).');
+$GLOBALS['TL_LANG']['tl_module']['pageTitleField']						= array('Seitentitelfeld', 'Wählen Sie das Feld aus, dass dem Seitentitel zugewiesen werden soll.');
+$GLOBALS['TL_LANG']['tl_module']['additionalSql']						= array('Zusätzliches SQL', 'Geben Sie hier SQL ein, welches nach dem SELECT-Statement eingefügt wird (bspw. INNER JOIN tl_tag ON tl_calendar_events.id = tl_tag.tid).');
+$GLOBALS['TL_LANG']['tl_module']['hideUnpublishedItems']				= array('Unveröffentlichte Instanzen verstecken', 'Wählen Sie diese Option, um unveröffentlichte Instanzen zu verstecken.');
+$GLOBALS['TL_LANG']['tl_module']['publishedField']						= array('Veröffentlicht-Feld', 'Wählen Sie hier das Feld aus, in dem der Öffentlichkeitszustand gespeichert ist (z. B. published).');
+$GLOBALS['TL_LANG']['tl_module']['invertPublishedField']				= array('Veröffentlicht-Feld negieren', 'Wählen Sie diese Option, wenn ein "true" im Veröffentlicht-Feld einem nichtöffentlichen Zustand entspricht.');
+$GLOBALS['TL_LANG']['tl_module']['emptyText']							= array('Meldung bei leerer Ergebnismenge', 'Geben Sie hier die Meldung ein, die erscheinen soll, wenn keine Ergebnisse gefunden wurden (mit ##<Feldname>## können Filtereingaben eingefügt werden).');
+$GLOBALS['TL_LANG']['tl_module']['addDetailsCol']						= array('Details-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Anzeigen von Details hinzuzufügen.');
+$GLOBALS['TL_LANG']['tl_module']['jumpToDetails']						= array('Weiterleitungsseite (Details)', 'Wählen Sie hier die Seite aus, zu der weitergeleitet wird, wenn es eine Detailseite gibt.');
 
-$GLOBALS['TL_LANG']['tl_module']['formHybridSuccessMessage'][0] = 'Erfolgsmeldung überschreiben';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSuccessMessage'][1] = 'Geben Sie hier eine alternative Erfolgsmeldung an.';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSendSubmissionViaEmail'][0] = 'Per E-Mail versenden';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSendSubmissionViaEmail'][1] = 'Die Formulardaten an eine E-Mail-Adresse versenden.';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailRecipient'][0] = 'Empfänger-Adresse';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailRecipient'][1] = 'Mehrere E-Mail-Adressen können mit Komma getrennt werden.';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailSubject'][0] = 'Betreff';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailSubject'][1] = 'Bitte geben Sie die Betreffzeile ein.';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailText'][0] = 'Text der E-Mail';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailText'][1] = 'Bitte geben Sie hier den Text der E-Mail ein. Neben den allgemeinen Insert-Tags werden Tags der Form form::FORMULARFELDNAME unterstützt.';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailTemplate'][0] = 'E-Mail-Template';
-$GLOBALS['TL_LANG']['tl_module']['formHybridSubmissionMailTemplate'][1] = 'Hier können Sie das E-Mail-Template überschreiben.';
-$GLOBALS['TL_LANG']['tl_module']['formHybridTemplate'][0] = 'Formular-Template';
-$GLOBALS['TL_LANG']['tl_module']['formHybridTemplate'][1] = 'Hier können Sie das Formular-Template überschreiben.';
+
+// events
+$GLOBALS['TL_LANG']['tl_module']['filterArchives']						= array('Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.');
+
+// members
+$GLOBALS['TL_LANG']['tl_module']['filterGroups']						= array('Mitgliedergruppen', 'Wählen Sie hier die Mitgliedergruppen aus, deren Mitglieder in der Liste sichtbar sein sollen.');

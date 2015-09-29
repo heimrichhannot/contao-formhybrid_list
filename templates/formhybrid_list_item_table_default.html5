@@ -1,0 +1,13 @@
+<tr class="<?= $this->class; ?>">
+	<?php foreach ($this->fields as $strName => $varValue): ?>
+		<?php if ($strName == 'id') continue; ?>
+		<td class="<?php echo $strName; ?>"><?php echo $varValue; ?></td>
+	<?php endforeach; ?>
+	<?php if ($this->addDetailsCol): ?>
+		<td class="actions">
+			<?php if ($this->addDetailsCol && $this->detailsUrl): ?>
+				<a class="edit fa fa-edit" href="<?php echo $this->detailsUrl; ?>" title="<?php echo $GLOBALS['TL_LANG']['frontendedit']['editTitle']; ?>"></a>
+			<?php endif; ?>
+		</td>
+	<?php endif; ?>
+</tr>

@@ -1,0 +1,12 @@
+.formhybrid-list .actions {
+	white-space: nowrap;
+	text-align: right;
+}
+
+.formhybrid-list .actions a {
+	margin-left: 5px;
+}
+
+.formhybrid-filter-list .mandatory {
+	display: none;
+}

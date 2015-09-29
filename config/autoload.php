@@ -5,9 +5,7 @@
  *
  * Copyright (c) 2005-2015 Leo Feyer
  *
- * @package Formhybrid
- * @link    https://contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license LGPL-3.0+
  */
 
 
@@ -25,18 +23,16 @@ ClassLoader::addNamespaces(array
  */
 ClassLoader::addClasses(array
 (
-	// Drivers
-	'HeimrichHannot\FormHybrid\DC_Hybrid'                => 'system/modules/formhybrid/drivers/DC_Hybrid.php',
-
-	// Elements
-	'HeimrichHannot\FormHybrid\ContentFormHybridStop'    => 'system/modules/formhybrid/elements/ContentFormHybridStop.php',
-	'HeimrichHannot\FormHybrid\ContentFormHybridElement' => 'system/modules/formhybrid/elements/ContentFormHybridElement.php',
-	'HeimrichHannot\FormHybrid\ContentFormHybridStart'   => 'system/modules/formhybrid/elements/ContentFormHybridStart.php',
+	// Modules
+	'HeimrichHannot\FormHybridList\ModuleMemberList'           => 'system/modules/formhybrid_list/modules/ModuleMemberList.php',
+	'HeimrichHannot\FormHybridList\ModuleList'                 => 'system/modules/formhybrid_list/modules/ModuleList.php',
 
 	// Classes
-	'HeimrichHannot\FormHybrid\Submission'               => 'system/modules/formhybrid/classes/Submission.php',
-	'HeimrichHannot\FormHybrid\Form'                     => 'system/modules/formhybrid/classes/Form.php',
-	'HeimrichHannot\FormHybrid\FrontendWidget'           => 'system/modules/formhybrid/classes/FrontendWidget.php',
+	'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
+
+	// Models
+	'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',
+	'HeimrichHannot\FormHybridList\FormHybridListQueryBuilder' => 'system/modules/formhybrid_list/models/FormHybridListQueryBuilder.php',
 ));
 
 
@@ -45,9 +41,9 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'formhybrid_default'      => 'system/modules/formhybrid/templates/form',
-	'formhybridStart_default' => 'system/modules/formhybrid/templates/form',
-	'formhybridStop_default'  => 'system/modules/formhybrid/templates/form',
-	'ce_formhybrid_start'     => 'system/modules/formhybrid/templates/elements',
-	'ce_formhybrid_stop'      => 'system/modules/formhybrid/templates/elements',
+	'mod_formhybrid_list_table'              => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_item_table_default' => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_item_default'       => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_filter'                 => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_list'                    => 'system/modules/formhybrid_list/templates',
 ));

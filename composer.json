@@ -1,9 +1,9 @@
 {
-    "name": "heimrichhannot/contao-formhybrid",
-    "description":"A form helper module for contao. Makes form creation for module developer a bit easier and reusable.",
-    "keywords":["contao", "form", "module", "developer"],
+    "name": "heimrichhannot/contao-formhybrid_list",
+    "description":"A generic list module using formhybrid for filtering.",
+    "keywords":["contao", "list", "form", "module", "developer"],
     "type": "contao-module",
-    "homepage":"https://github.com/heimrichhannot/contao-formhybrid",
+    "homepage":"https://github.com/heimrichhannot/contao-formhybrid_list",
     "license":"LGPL-3.0+",
     "authors":[
         {
@@ -14,10 +14,11 @@
         }
     ],
     "support":{
-        "issues":"https://github.com/heimrichhannot/contao-formhybrid/issues"
+        "issues":"https://github.com/heimrichhannot/contao-formhybrid_list/issues"
     },
     "require": {
-        "contao/core": ">=3.2,<4-dev"
+        "contao/core": ">=3.2,<4-dev",
+        "heimrichhannot/contao-formhybrid": ">=2.0.24"
     },
     "autoload": {
         "classmap": [""]
@@ -25,7 +26,7 @@
     "extra": {
         "contao": {
             "sources": {
-                "": "system/modules/formhybrid"
+                "": "system/modules/formhybrid_list"
             }
         }
     }

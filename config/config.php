@@ -1,31 +1,34 @@
-<?php 
-
-define('FORMHYBRID_METHOD_GET', 'GET');
-define('FORMHYBRID_METHOD_POST', 'POST');
-define('FORMHYBRID_NAME_SUBMIT', 'submit');
-define('FORMHYBRID_MESSAGE_SUCCESS', 'FORMHYBRID_SUCCESS');
-define('FORMHYBRID_MESSAGE_ERROR', 'FORMHYBRID_ERROR');
-define('FORMHYBRID_NAME_SKIP_VALIDATION', 'skipvalidation');
+<?php
+/**
+ * Contao Open Source CMS
+ *
+ * Copyright (c) 2015 Heimrich & Hannot GmbH
+ *
+ * @package formhybrid_list
+ * @author  Dennis Patzer <d.patzer@heimrich-hannot.de>
+ * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
+ */
 
 /**
- * Content elements
+ * Constants
  */
-$GLOBALS['TL_CTE']['formhybrid'] = array(
-	'formhybridStart'   => 'HeimrichHannot\FormHybrid\ContentFormHybridStart',
-	'formhybridElement' => 'HeimrichHannot\FormHybrid\ContentFormHybridElement',
-	'formhybridStop'    => 'HeimrichHannot\FormHybrid\ContentFormHybridStop',
-);
+define('FORMHYBRID_LIST_NAME_FILTER', 'filter');
+
+// module names
+define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
+define('MODULE_FORMHYBRID_MEMBER_LIST', 'formhybrid_list_member');
 
 /**
- * Indent elements
+ * Frontend modules
  */
-$GLOBALS['TL_WRAPPERS']['start'][] = 'formhybridStart';
-$GLOBALS['TL_WRAPPERS']['stop'][]  = 'formhybridStop';
+$GLOBALS['FE_MOD']['miscellaneous'][MODULE_FORMHYBRID_LIST] = 'HeimrichHannot\FormHybridList\ModuleList';
+$GLOBALS['FE_MOD']['miscellaneous'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
 
 /**
- * Javascript
+ * Assets
  */
-if(TL_MODE == 'FE')
+if (TL_MODE == 'FE')
 {
-	$GLOBALS['TL_JAVASCRIPT']['jquery.formhybrid'] = 'system/modules/formhybrid/assets/js/jquery.formhybrid.js|static';
+	// css
+	$GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css';
 }

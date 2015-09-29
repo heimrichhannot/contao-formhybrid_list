@@ -1,0 +1,8 @@
+<div class="<?= $this->class; ?> block">
+	<?php foreach ($this->fields as $strName => $varValue): ?>
+		<?php if ($strName == 'id') continue; ?>
+		<div class="<?php echo $strName; ?>">
+			<?= $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$strName][0] ?: $strName; ?>: <?= $varValue; ?>
+		</div>
+	<?php endforeach; ?>
+</div>
