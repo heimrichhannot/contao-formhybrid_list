@@ -1,0 +1,32 @@
+{
+    "name": "heimrichhannot/contao-formhybrid",
+    "description":"A form helper module for contao. Makes form creation for module developer a bit easier and reusable.",
+    "keywords":["contao", "form", "module", "developer"],
+    "type": "contao-module",
+    "homepage":"https://github.com/heimrichhannot/contao-formhybrid",
+    "license":"LGPL-3.0+",
+    "authors":[
+        {
+            "name":"Heimrich & Hannot",
+            "email":"digitales@heimrich-hannot.de",
+            "homepage":"http://www.heimrich-hannot.de",
+            "role":"Developer"
+        }
+    ],
+    "support":{
+        "issues":"https://github.com/heimrichhannot/contao-formhybrid/issues"
+    },
+    "require": {
+        "contao/core": ">=3.2,<4-dev"
+    },
+    "autoload": {
+        "classmap": [""]
+    },
+    "extra": {
+        "contao": {
+            "sources": {
+                "": "system/modules/formhybrid"
+            }
+        }
+    }
+}

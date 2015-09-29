@@ -1,0 +1,15 @@
+        <div class="formbody">
+            <?php if ($this->method == FORMHYBRID_METHOD_POST): ?>
+                <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+                <?php if ($this->maxFileSize): ?>
+                    <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $this->maxFileSize; ?>">
+                <?php endif; ?>
+            <?php endif; ?>
+            <?php echo $this->hidden; ?>
+            <?php foreach($this->fields as $name => $objField): ?>
+                <?php echo $objField->parse(); ?>
+            <?php endforeach; ?>
+        </div>
+    </form>
+</div>
