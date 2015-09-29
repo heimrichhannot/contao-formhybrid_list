@@ -50,7 +50,8 @@ class ListFilterForm extends \HeimrichHannot\FormHybrid\Form
 	{
 		$this->arrFields[FORMHYBRID_LIST_NAME_FILTER] = $this->generateField(FORMHYBRID_LIST_NAME_FILTER, array(
 			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list']['filter']
+			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list']['filter'],
+			'eval' => array('class' => 'filter')
 		));
 	}
 }
