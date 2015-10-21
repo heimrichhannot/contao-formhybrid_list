@@ -5,7 +5,9 @@
  *
  * Copyright (c) 2005-2015 Leo Feyer
  *
- * @license LGPL-3.0+
+ * @package Formhybrid_list
+ * @link    https://contao.org
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
 
 
@@ -41,9 +43,9 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'mod_formhybrid_list_table'              => 'system/modules/formhybrid_list/templates',
-	'formhybrid_list_item_table_default' => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_list_table'          => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_item_default'       => 'system/modules/formhybrid_list/templates',
-	'formhybrid_list_filter'                 => 'system/modules/formhybrid_list/templates',
-	'mod_formhybrid_list'                    => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_filter'             => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_item_table_default' => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_list'                => 'system/modules/formhybrid_list/templates',
 ));

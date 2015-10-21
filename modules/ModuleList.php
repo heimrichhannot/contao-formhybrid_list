@@ -77,9 +77,14 @@ class ModuleList extends \Module
 		}
 
 		if (!$this->hideFilter && $objFilterForm->isSubmitted() && !$objFilterForm->doNotSubmit())
-			list($objItems, $this->Template->count) = $this->getItems($objFilterForm->getSubmission());
+		{
+			// submission ain't formatted
+			list($objItems, $this->Template->count) = $this->getItems($objFilterForm->getSubmission(false));
+		}
 		else
+		{
 			list($objItems, $this->Template->count) = $this->getItems();
+		}
 
 		// Add the items
 		if ($objItems !== null)
@@ -126,6 +131,7 @@ class ModuleList extends \Module
 			$this->objItems = FormHybridListModel::findAll($this->arrOptions);
 
 		// TODO: write a count method that works with GROUP BY
+		$intTotal = 0;
 		if ($this->objItems !== null)
 			$intTotal = $this->objItems->count();
 
@@ -185,19 +191,13 @@ class ModuleList extends \Module
 					$arrItem['fields'][$strName] = $varValue;
 				}
 
-				// details url
-				global $objPage;
-
-				if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
-				{
-					$arrItem['detailsUrl'] = $this->generateFrontendUrl($objPageJumpTo->row()) . '?id=' . $this->objItems->id;
-				}
-
 				if ($this->publishedField)
 				{
 					$arrItem['isPublished'] = ($this->invertPublishedField ?
 						!$this->objItems->{$this->publishedField} : $this->objItems->{$this->publishedField});
 				}
+
+				$this->addColumns($this->objItems, $arrItem);
 
 				$this->arrItems[] = $arrItem;
 			}
@@ -209,6 +209,17 @@ class ModuleList extends \Module
 		}
 
 		return array($this->arrItems, $intTotal);
+	}
+
+	public function addColumns($objItem, &$arrItem)
+	{
+		// details url
+		global $objPage;
+
+		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
+		{
+			$arrItem['detailsUrl'] = $this->generateFrontendUrl($objPageJumpTo->row()) . '?id=' . $objItem->id;
+		}
 	}
 
 	protected function parseItems($arrItems)
@@ -225,7 +236,7 @@ class ModuleList extends \Module
 
 		foreach ($arrItems as $arrItem)
 		{
-			$arrResult[] = $this->parseItem($arrItem, 'item' . ((++$count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2) == 0) ? ' odd' : ' even'), $count);
+			$arrResult[] = $this->parseItem($arrItem, 'item' . '_' . ++$count . (($count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2) == 0) ? ' odd' : ' even'), $count);
 		}
 
 		return $arrResult;

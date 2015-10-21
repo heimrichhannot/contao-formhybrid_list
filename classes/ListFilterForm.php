@@ -11,7 +11,9 @@
 
 namespace HeimrichHannot\FormHybridList;
 
-class ListFilterForm extends \HeimrichHannot\FormHybrid\Form
+use HeimrichHannot\FormHybrid\Form;
+
+class ListFilterForm extends Form
 {
 	protected $isFilterForm = true;
 

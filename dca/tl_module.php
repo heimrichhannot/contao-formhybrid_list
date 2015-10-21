@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridSubPalettes,hideFilter,itemSorting,addCustomFilterFields,hideUnpublishedItems,filterArchives,formHybridAddDefaultValues,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,formHybridSubPalettes,hideFilter,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -14,12 +14,8 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives
  * Subpalettes
  */
 $arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
-$arrDca['palettes']['__selector__'][]                = 'setPageTitle';
-$arrDca['palettes']['__selector__'][]                = 'hideUnpublishedItems';
 $arrDca['palettes']['__selector__'][]                = 'addDetailsCol';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
-$arrDca['subpalettes']['setPageTitle'] = 'pageTitleField';
-$arrDca['subpalettes']['hideUnpublishedItems'] = 'publishedField,invertPublishedField';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 
 /**
@@ -74,7 +70,7 @@ $arrDca['fields']['showItemCount'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['showItemCount'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50'),
+	'eval'                    => array('tl_class' => 'w50 clr'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -114,14 +110,6 @@ $arrDca['fields']['filterGroups']    = array
 	'sql'                     => "blob NULL"
 );
 
-$arrDca['fields']['setPageTitle'] = array(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['setPageTitle'],
-	'exclude'                 => true,
-	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
-	'sql'                     => "char(1) NOT NULL default ''"
-);
-
 $arrDca['fields']['pageTitleField'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['pageTitleField'],
@@ -145,7 +133,7 @@ $arrDca['fields']['hideUnpublishedItems'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['hideUnpublishedItems'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'eval'                    => array('tl_class' => 'w50'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -155,7 +143,7 @@ $arrDca['fields']['publishedField'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options_callback'        => array('tl_module_formhybrid_list', 'getBooleanFields'),
-	'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true),
+	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true),
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 

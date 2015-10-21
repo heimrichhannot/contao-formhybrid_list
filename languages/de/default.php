@@ -1,6 +1,7 @@
 <?php
 
 $GLOBALS['TL_LANG']['formhybrid_list']['filter'][0] = 'Filtern';
+$GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle'] = 'Details';
 
 /**
  * Messages

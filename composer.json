@@ -18,7 +18,8 @@
     },
     "require": {
         "contao/core": ">=3.2,<4-dev",
-        "heimrichhannot/contao-formhybrid": ">=2.0.24"
+        "heimrichhannot/contao-formhybrid": ">=2.0.33",
+        "heimrichhannot/contao-haste_plus": ">=1.0.9"
     },
     "autoload": {
         "classmap": [""]

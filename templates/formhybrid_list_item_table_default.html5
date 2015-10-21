@@ -6,7 +6,9 @@
 	<?php if ($this->addDetailsCol): ?>
 		<td class="actions">
 			<?php if ($this->addDetailsCol && $this->detailsUrl): ?>
-				<a class="details" href="<?php echo $this->detailsUrl; ?>">Details</a>
+				<a class="details" href="<?php echo $this->detailsUrl; ?>">
+					<?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
+				</a>
 			<?php endif; ?>
 		</td>
 	<?php endif; ?>
