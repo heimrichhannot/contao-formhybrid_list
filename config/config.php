@@ -22,7 +22,7 @@ define('MODULE_FORMHYBRID_MEMBER_LIST', 'formhybrid_list_member');
  * Frontend modules
  */
 $GLOBALS['FE_MOD']['miscellaneous'][MODULE_FORMHYBRID_LIST] = 'HeimrichHannot\FormHybridList\ModuleList';
-$GLOBALS['FE_MOD']['miscellaneous'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
+$GLOBALS['FE_MOD']['user'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
 
 /**
  * Assets
