@@ -58,6 +58,7 @@ class ModuleList extends \Module
 		$this->addDefaultValues = $this->formHybridAddDefaultValues;
 		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
 		$this->Template->currentSorting = $this->getCurrentSorting();
+		$this->addColumns();
 
 		// set initial filters
 		$this->initInitialFilters();
@@ -197,7 +198,7 @@ class ModuleList extends \Module
 						!$this->objItems->{$this->publishedField} : $this->objItems->{$this->publishedField});
 				}
 
-				$this->addColumns($this->objItems, $arrItem);
+				$this->addItemColumns($this->objItems, $arrItem);
 
 				$this->arrItems[] = $arrItem;
 			}
@@ -211,14 +212,19 @@ class ModuleList extends \Module
 		return array($this->arrItems, $intTotal);
 	}
 
-	public function addColumns($objItem, &$arrItem)
+	public function addColumns() {}
+
+	public function addItemColumns($objItem, &$arrItem)
 	{
 		// details url
 		global $objPage;
 
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
 		{
-			$arrItem['detailsUrl'] = $this->generateFrontendUrl($objPageJumpTo->row()) . '?id=' . $objItem->id;
+			$arrItem['detailsUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
+				'act' => FRONTENDEDIT_ACT_SHOW,
+				'id'  => $objItem->id
+			));
 		}
 	}
 
