@@ -50,9 +50,9 @@ class ListFilterForm extends Form
 
 	protected function generateSubmitField()
 	{
-		$this->arrFields[FORMHYBRID_LIST_NAME_FILTER] = $this->generateField(FORMHYBRID_LIST_NAME_FILTER, array(
+		$this->arrFields[FORMHYBRID_LIST_BUTTON_FILTER] = $this->generateField(FORMHYBRID_LIST_BUTTON_FILTER, array(
 			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list']['filter'],
+			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_FILTER],
 			'eval' => array('class' => 'filter')
 		));
 	}

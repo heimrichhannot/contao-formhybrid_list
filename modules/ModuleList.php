@@ -174,29 +174,7 @@ class ModuleList extends \Module
 		{
 			while ($this->objItems->next())
 			{
-				$arrItem = array();
-
-				// always add id
-				$arrItem['fields']['id'] = $this->objItems->id;
-
-				foreach ($this->arrEditable as $strName)
-				{
-					$varValue = $this->objItems->{$strName};
-					// Convert timestamps
-					if ($varValue != '' && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim'))
-					{
-						$objDate = new \Date($varValue);
-						$varValue = $objDate->{$this->dca['fields'][$strName]['eval']['rgxp']};
-					}
-
-					$arrItem['fields'][$strName] = $varValue;
-				}
-
-				if ($this->publishedField)
-				{
-					$arrItem['isPublished'] = ($this->invertPublishedField ?
-						!$this->objItems->{$this->publishedField} : $this->objItems->{$this->publishedField});
-				}
+				$arrItem = $this->generateFields($this->objItems);
 
 				$this->addItemColumns($this->objItems, $arrItem);
 
@@ -226,6 +204,41 @@ class ModuleList extends \Module
 				'id'  => $objItem->id
 			));
 		}
+	}
+
+	protected function generateFields($objItem)
+	{
+		$arrItem = array();
+
+		// always add id
+		$arrItem['fields']['id'] = $objItem->id;
+
+		foreach ($this->arrEditable as $strName)
+		{
+			$varValue = $objItem->{$strName};
+			// Convert timestamps
+			if ($varValue != '' && ($this->dca['fields'][$strName]['eval']['rgxp'] == 'date' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'time' || $this->dca['fields'][$strName]['eval']['rgxp'] == 'datim'))
+			{
+				$objDate = new \Date($varValue);
+				$varValue = $objDate->{$this->dca['fields'][$strName]['eval']['rgxp']};
+			}
+
+			$arrItem['fields'][$strName] = $varValue;
+		}
+
+		// add raw values
+		foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'] as $strField => $arrData)
+		{
+			$arrItem['raw'][$strField] = $objItem->{$strName};
+		}
+
+		if ($this->publishedField)
+		{
+			$arrItem['isPublished'] = ($this->invertPublishedField ?
+				!$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
+		}
+
+		return $arrItem;
 	}
 
 	protected function parseItems($arrItems)

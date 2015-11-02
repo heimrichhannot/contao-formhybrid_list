@@ -12,7 +12,7 @@
 /**
  * Constants
  */
-define('FORMHYBRID_LIST_NAME_FILTER', 'filter');
+define('FORMHYBRID_LIST_BUTTON_FILTER', 'filter');
 
 // module names
 define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
