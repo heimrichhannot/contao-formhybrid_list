@@ -199,10 +199,13 @@ class ModuleList extends \Module
 
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
 		{
-			$arrItem['detailsUrl'] = Environment::addParametersToUri(Environment::getUrl(), array(
-				'act' => FRONTENDEDIT_ACT_SHOW,
-				'id'  => $objItem->id
-			));
+			$arrItem['detailsUrl'] = Environment::addParametersToUri(
+				\Controller::generateFrontendUrl($objPageJumpTo->row()),
+				array(
+					'act' => FRONTENDEDIT_ACT_SHOW,
+					'id'  => $objItem->id
+				)
+			);
 		}
 	}
 
@@ -267,6 +270,7 @@ class ModuleList extends \Module
 
 		$objTemplate->setData($arrItem);
 		$objTemplate->class = $strClass;
+		$objTemplate->count = $intCount;
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
 		$objTemplate->addDetailsCol = $this->addDetailsCol;
 
