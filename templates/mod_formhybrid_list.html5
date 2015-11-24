@@ -4,7 +4,7 @@
 	<?php endif; ?>
 
 	<?php echo $this->filterForm; ?>
-	<div class="items block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
+	<div class="block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
 		<?php if ($this->showItemCount): ?>
 			<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
 		<?php endif; ?>
