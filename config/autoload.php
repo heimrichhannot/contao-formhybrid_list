@@ -27,7 +27,9 @@ ClassLoader::addClasses(array
 (
 	// Modules
 	'HeimrichHannot\FormHybridList\ModuleMemberList'           => 'system/modules/formhybrid_list/modules/ModuleMemberList.php',
+	'HeimrichHannot\FormHybridList\ModuleNews'                 => 'system/modules/formhybrid_list/modules/ModuleNews.php',
 	'HeimrichHannot\FormHybridList\ModuleList'                 => 'system/modules/formhybrid_list/modules/ModuleList.php',
+	'HeimrichHannot\FormHybridList\ModuleNewsList'             => 'system/modules/formhybrid_list/modules/ModuleNewsList.php',
 
 	// Classes
 	'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',

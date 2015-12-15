@@ -307,6 +307,13 @@ class ModuleList extends \Module
 		return $value;
 	}
 
+	public static function flattenArray(array $array)
+	{
+		$return = array();
+		array_walk_recursive($array, function($a) use (&$return) { $return[] = $a; });
+		return $return;
+	}
+
 	protected function parseItems($arrItems)
 	{
 		$limit = count($arrItems);
@@ -339,6 +346,8 @@ class ModuleList extends \Module
 		$objTemplate->module = $this;
 		$objTemplate->imgSize = deserialize($this->imgSize, true);
 
+		$this->runBeforeTemplateParsing($objTemplate, $arrItem);
+
 		// HOOK: add custom logic
 		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
 		{
@@ -351,6 +360,8 @@ class ModuleList extends \Module
 
 		return $objTemplate->parse();
 	}
+
+	protected function runBeforeTemplateParsing($objTemplate, $arrItem) {}
 
 	protected function initInitialFilters()
 	{
@@ -527,7 +538,7 @@ class ModuleList extends \Module
 	protected function splitResults($offset, $intTotal, $limit)
 	{
 		$total = $intTotal - $offset;
-	
+
 		// Split the results
 		if ($this->perPage > 0 && (!isset($limit) || $this->numberOfItems > $this->perPage))
 		{
@@ -536,38 +547,38 @@ class ModuleList extends \Module
 			{
 				$total = min($limit, $total);
 			}
-	
+
 			// Get the current page
 			$id = 'page_s' . $this->id;
 			$page = \Input::get($id) ?: 1;
-	
+
 			// Do not index or cache the page if the page number is outside the range
 			if ($page < 1 || $page > max(ceil($total/$this->perPage), 1))
 			{
 				global $objPage;
 				$objPage->noSearch = 1;
 				$objPage->cache = 0;
-	
+
 				// Send a 404 header
 				header('HTTP/1.1 404 Not Found');
 				return;
 			}
-	
+
 			// Set limit and offset
 			$limit = $this->perPage;
 			$offset += (max($page, 1) - 1) * $this->perPage;
-	
+
 			// Overall limit
 			if ($offset + $limit > $total)
 			{
 				$limit = $total - $offset;
 			}
-	
+
 			// Add the pagination menu
 			$objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
 			$this->Template->pagination = $objPagination->generate("\n  ");
 		}
-	
+
 		return array($offset, $limit);
 	}
 

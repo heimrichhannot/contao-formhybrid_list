@@ -10,6 +10,9 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
 
+// news
+$arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
+
 /**
  * Subpalettes
  */
