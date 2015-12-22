@@ -160,7 +160,7 @@ class ModuleList extends \Module
 		$arrCurrentSorting = $this->getCurrentSorting();
 
 		$this->arrOptions['order']  = ($arrCurrentSorting['order'] === 'random') ? 'RAND()' :
-			($this->formHybridDataContainer . '.' . $arrCurrentSorting['order'] . ' ' . strtoupper($arrCurrentSorting['sort']));
+				($this->formHybridDataContainer . '.' . $arrCurrentSorting['order'] . ' ' . strtoupper($arrCurrentSorting['sort']));
 
 		// Get the items
 		if (count($this->arrColumns) > 0)
@@ -202,11 +202,11 @@ class ModuleList extends \Module
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
 		{
 			$arrItem['detailsUrl'] = Environment::addParametersToUri(
-				\Controller::generateFrontendUrl($objPageJumpTo->row()),
-				array(
-					'act' => FRONTENDEDIT_ACT_SHOW,
-					'id'  => $objItem->id
-				)
+					\Controller::generateFrontendUrl($objPageJumpTo->row()),
+					array(
+							'act' => FRONTENDEDIT_ACT_SHOW,
+							'id'  => $objItem->id
+					)
 			);
 		}
 	}
@@ -220,7 +220,7 @@ class ModuleList extends \Module
 
 		foreach ($this->arrEditable as $strName)
 		{
-			$arrItem['fields'][$strName] = htmlentities(static::getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName]));
+			$arrItem['fields'][$strName] = htmlentities(static::getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName]), ENT_COMPAT, 'UTF-8');
 
 			if (isset($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strName]['eval']['allowedTags']))
 			{
@@ -244,7 +244,7 @@ class ModuleList extends \Module
 		if ($this->publishedField)
 		{
 			$arrItem['isPublished'] = ($this->invertPublishedField ?
-				!$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
+					!$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
 		}
 
 		return $arrItem;
@@ -416,7 +416,7 @@ class ModuleList extends \Module
 
 			// special handling for tags
 			if (in_array('tags', \ModuleLoader::getActive()) &&
-				$GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'] == 'tag')
+					$GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'] == 'tag')
 			{
 				$arrTags = explode(',', $varValue);
 				$strColumn = '';
@@ -483,8 +483,8 @@ class ModuleList extends \Module
 		if (\Input::get('order') && \Input::get('sort'))
 		{
 			$arrCurrentSorting = array(
-				'order' => \Input::get('order'),
-				'sort' => \Input::get('sort')
+					'order' => \Input::get('order'),
+					'sort' => \Input::get('sort')
 			);
 		}
 		// initial
@@ -492,20 +492,20 @@ class ModuleList extends \Module
 		{
 			if ($this->itemSorting == 'random')
 				$arrCurrentSorting = array(
-					'order' => 'random'
+						'order' => 'random'
 				);
 			else
 				$arrCurrentSorting = array(
-					'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
-					'sort' => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc')
+						'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
+						'sort' => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc')
 				);
 		}
 		// default -> the first editable field
 		else
 		{
 			$arrCurrentSorting = array(
-				'order' => $this->arrEditable[0],
-				'sort' => 'asc'
+					'order' => $this->arrEditable[0],
+					'sort' => 'asc'
 			);
 		}
 
@@ -522,22 +522,22 @@ class ModuleList extends \Module
 			$isCurrentOrderField = ($strName == $arrCurrentSorting['order']);
 
 			$arrField = array(
-				'field' => $strName
+					'field' => $strName
 			);
 
 			if ($isCurrentOrderField)
 			{
 				$arrField['class'] = ($arrCurrentSorting['sort'] == 'asc' ? 'asc' : 'desc');
 				$arrField['link'] = Environment::addParametersToUri(Environment::getUrl(), array(
-					'order' => $strName,
-					'sort' => ($arrCurrentSorting['sort'] == 'asc' ? 'desc' : 'asc')
+						'order' => $strName,
+						'sort' => ($arrCurrentSorting['sort'] == 'asc' ? 'desc' : 'asc')
 				));
 			}
 			else
 			{
 				$arrField['link'] = Environment::addParametersToUri(Environment::getUrl(), array(
-					'order' => $strName,
-					'sort' => 'asc'
+						'order' => $strName,
+						'sort' => 'asc'
 				));
 			}
 
