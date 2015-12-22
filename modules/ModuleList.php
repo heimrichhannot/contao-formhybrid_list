@@ -220,8 +220,19 @@ class ModuleList extends \Module
 
 		foreach ($this->arrEditable as $strName)
 		{
-			$arrItem['fields'][$strName] = static::getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName]);
-			$arrItem['fields'][$strName] = FormHelper::xssClean($arrItem['fields'][$strName]);
+			$arrItem['fields'][$strName] = htmlentities(static::getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName]));
+
+			if (isset($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strName]['eval']['allowedTags']))
+			{
+				foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strName]['eval']['allowedTags'] as $strTag)
+				{
+					$arrItem['fields'][$strName] = str_replace(
+							array('&lt;' . $strTag . '&gt;', '&lt;/' . $strTag . '&gt;'),
+							array('<' . $strTag . '>', '</' . $strTag . '>'),
+							$arrItem['fields'][$strName]
+					);
+				}
+			}
 		}
 
 		// add raw values
@@ -584,3 +595,4 @@ class ModuleList extends \Module
 	}
 
 }
+
