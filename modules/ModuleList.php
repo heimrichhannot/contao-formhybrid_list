@@ -204,8 +204,9 @@ class ModuleList extends \Module
 			$arrItem['detailsUrl'] = Environment::addParametersToUri(
 					\Controller::generateFrontendUrl($objPageJumpTo->row()),
 					array(
-							'act' => FRONTENDEDIT_ACT_SHOW,
-							'id'  => $objItem->id
+						'act' => FRONTENDEDIT_ACT_SHOW,
+						'id'  => $objItem->id,
+						'token' => \RequestToken::get()
 					)
 			);
 		}
