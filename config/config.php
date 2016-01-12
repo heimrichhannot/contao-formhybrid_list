@@ -32,5 +32,5 @@ $GLOBALS['FE_MOD']['news'][MODULE_FORMHYBRID_NEWS_LIST] = 'HeimrichHannot\FormHy
 if (TL_MODE == 'FE')
 {
 	// css
-	$GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css|static';
+	$GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css' . (version_compare(VERSION, '3.5', '>=') ? '|static' : '');
 }
