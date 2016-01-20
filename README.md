@@ -1,6 +1,7 @@
 # Formhybrid List
 
 A generic list module able to display all kinds of contao entities containing filtering, pagination, ...
+If additional functionality is needed, one only has to inherit from ModuleList and create a new module like ModuleMyEntityList.
 
 ## Features
 
