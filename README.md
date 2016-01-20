@@ -38,6 +38,6 @@ itemTemplate | The template each item is rendered with
 
 ### Hooks
 
-Name | Parameter | Description
+Name | Arguments | Description
 ---- | --------- | -----------
 parseItems | $objTemplate, $arrItem, $objModule | Triggered just before FrontendTemplate::parse() is called
