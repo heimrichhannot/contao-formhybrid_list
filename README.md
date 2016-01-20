@@ -5,7 +5,7 @@ If additional functionality is needed, one only has to inherit from ModuleList a
 
 ## Features
 
-### Module
+### Modules
 
 Name | Description
 ---- | -----------
