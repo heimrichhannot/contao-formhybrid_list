@@ -438,6 +438,13 @@ class ModuleList extends \Module
 			{
 				if (trim($varValue))
 				{
+					// remove existing values in order to keep the order
+					if (isset($this->arrColumns[$strField]))
+						unset($this->arrColumns[$strField]);
+
+					if (isset($this->arrValues[$strField]))
+						unset($this->arrValues[$strField]);
+
 					switch ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'])
 					{
 						case 'tag':
