@@ -9,11 +9,12 @@ class FormHybridListQueryBuilder
 	public static function find(array $arrOptions)
 	{
 		$objBase = new \DcaExtractor($arrOptions['table']);
+		$strAdditionalSelectSql = $arrOptions['additionalSelectSql'] ? ', ' . $arrOptions['additionalSelectSql']: '';
 		$strAdditionalSql = $arrOptions['additionalSql'] ? ' ' . $arrOptions['additionalSql']: '';
 
 		if (!$objBase->hasRelations())
 		{
-			$strQuery = "SELECT * FROM " . $arrOptions['table'] . $strAdditionalSql;
+			$strQuery = "SELECT *" . $strAdditionalSelectSql . " FROM " . $arrOptions['table'] . $strAdditionalSql;
 		}
 		else
 		{
@@ -42,7 +43,7 @@ class FormHybridListQueryBuilder
 			}
 
 			// Generate the query
-			$strQuery = "SELECT " . implode(', ', $arrFields) . " FROM " . $arrOptions['table'] . $strAdditionalSql . implode("", $arrJoins);
+			$strQuery = "SELECT " . implode(', ', $arrFields) . $strAdditionalSelectSql . " FROM " . $arrOptions['table'] . $strAdditionalSql . implode("", $arrJoins);
 		}
 
 		// Where condition
@@ -62,6 +63,8 @@ class FormHybridListQueryBuilder
 		{
 			$strQuery .= " HAVING " . $arrOptions['having'];
 		}
+
+		$arrOptions['order'] = 'lastnameMerged ASC';
 
 		// Order by
 		if ($arrOptions['order'] !== null)

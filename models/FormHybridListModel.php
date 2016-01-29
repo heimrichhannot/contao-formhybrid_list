@@ -6,6 +6,7 @@ abstract class FormHybridListModel extends \Model
 {
 	protected static $strTable;
 	protected static $strAdditionalSql;
+	protected static $strAdditionalSelectSql;
 	protected static $strAdditionalGroupBy;
 
 	public static function findBy($strColumn, $varValue, array $arrOptions=array())
@@ -48,6 +49,7 @@ abstract class FormHybridListModel extends \Model
 		}
 
 		$arrOptions['table'] = static::$strTable;
+		$arrOptions['additionalSelectSql'] = static::$strAdditionalSelectSql;
 		$arrOptions['additionalSql'] = static::$strAdditionalSql;
 		if ($arrOptions['additionalSql'])
 			$arrOptions['group'] = static::$strAdditionalGroupBy;
@@ -155,6 +157,16 @@ abstract class FormHybridListModel extends \Model
 	public static function removeAdditionalGroupBy()
 	{
 		static::$strAdditionalGroupBy = '';
+	}
+
+	public static function setAdditionalSelectSql($strAdditionalSelectSql)
+	{
+		static::$strAdditionalSelectSql = html_entity_decode($strAdditionalSelectSql);
+	}
+
+	public static function removeAdditionalSelectSql()
+	{
+		static::$strAdditionalSelectSql = '';
 	}
 
 }

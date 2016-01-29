@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_module']['addCustomFilterFields']				= array('Alternativ
 $GLOBALS['TL_LANG']['tl_module']['customFilterFields']					= array('Alternative Felder zur Filterung', 'Wählen Sie hier Ihre alternativen Filterfelder.');
 $GLOBALS['TL_LANG']['tl_module']['setPageTitle']						= array('Instanzfeld als Seitentitel setzen', 'Wählen Sie diese Option, wenn nach dem Anlegen einer Instanz ein Feld als Seitentitel gesetzt werden soll (bspw. der Titel).');
 $GLOBALS['TL_LANG']['tl_module']['pageTitleField']						= array('Seitentitelfeld', 'Wählen Sie das Feld aus, dass dem Seitentitel zugewiesen werden soll.');
+$GLOBALS['TL_LANG']['tl_module']['additionalSelectSql']					= array('Zusätzliches SELECT-SQL', 'Geben Sie hier SQL ein, welches vor dem FROM-Statement eingefügt wird (bspw. , IF(field1 = \'\', field2, field1) as somename).');
 $GLOBALS['TL_LANG']['tl_module']['additionalSql']						= array('Zusätzliches SQL', 'Geben Sie hier SQL ein, welches nach dem SELECT-Statement eingefügt wird (bspw. INNER JOIN tl_tag ON tl_calendar_events.id = tl_tag.tid).');
 $GLOBALS['TL_LANG']['tl_module']['hideUnpublishedItems']				= array('Unveröffentlichte Instanzen verstecken', 'Wählen Sie diese Option, um unveröffentlichte Instanzen zu verstecken.');
 $GLOBALS['TL_LANG']['tl_module']['publishedField']						= array('Veröffentlicht-Feld', 'Wählen Sie hier das Feld aus, in dem der Öffentlichkeitszustand gespeichert ist (z. B. published).');

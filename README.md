@@ -29,7 +29,8 @@ customFilterFields | The custom filter fields
 filterArchives | The archives in which an item must be in order to be displayed (pid)
 filterGroups | The groups in which a member must be in order to be displayed (groups)
 pageTitleField | Specifies the page's title field
-additionalSql | Here additional sql added to the SELECT query can be specified
+additionalSelectSql | Here additional sql added before the FROM part ofthe SQL query can be specified
+additionalSql | Here additional sql added after the FROM part ofthe SQL query can be specified
 hideUnpublishedItems | Determines whether unpublished items should be hidden
 publishedField | Determines the field responsible for the publish state
 invertPublishedField | Determines whether publishedField should be taken into account inverted
