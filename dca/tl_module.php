@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,formHybridAddDefaultValues,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,formHybridAddDefaultValues,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -26,6 +26,8 @@ $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
  */
 // adjust labels for suiting a list module
 $arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'adjustPalettesForLists');
+$arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'initSortingMode');
+
 $arrDca['fields']['formHybridDataContainer']['load_callback']['setDefaultDataContainer'] =
 	array('tl_module_formhybrid_list', 'setDefaultDataContainer');
 
@@ -51,6 +53,16 @@ $arrDca['fields']['jumpToDetails'] = array
 	'relation'                => array('type'=>'hasOne', 'load'=>'eager')
 );
 
+$arrDca['fields']['sortingMode'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['sortingMode'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options'                 => array(OPTION_FORMHYBRID_SORTINGMODE_FIELD, OPTION_FORMHYBRID_SORTINGMODE_TEXT),
+	'eval'                    => array('tl_class'=>'w50', 'submitOnChange' => true),
+	'sql'                     => "varchar(16) NOT NULL default 'field'"
+);
+
 $arrDca['fields']['itemSorting'] = array
 (
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['itemSorting'],
@@ -58,7 +70,7 @@ $arrDca['fields']['itemSorting'] = array
 	'inputType'               => 'select',
 	'options_callback'        => array('tl_module_formhybrid_list', 'getSortingOptions'),
 	'eval'                    => array('tl_class'=>'w50', 'includeBlankOption' => true, 'chosen' => true),
-	'sql'                     => "varchar(16) NOT NULL default ''"
+	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
 $arrDca['fields']['hideFilter'] = array(
@@ -218,6 +230,23 @@ class tl_module_formhybrid_list {
 					$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
 					$arrDca['fields']['formHybridDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
 					$arrDca['fields']['formHybridTemplate']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridFilterTemplate'];
+					break;
+			}
+		}
+	}
+
+	public static function initSortingMode(\DataContainer $objDc)
+	{
+		\Controller::loadDataContainer('tl_module');
+		\System::loadLanguageFile('tl_module');
+
+		if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
+		{
+			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
+
+			switch ($objModule->sortingMode) {
+				case OPTION_FORMHYBRID_SORTINGMODE_TEXT:
+					$arrDca['fields']['itemSorting']['inputType'] = 'text';
 					break;
 			}
 		}

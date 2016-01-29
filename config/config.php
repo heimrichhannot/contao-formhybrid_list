@@ -18,6 +18,8 @@ define('FORMHYBRID_LIST_BUTTON_FILTER', 'filter');
 define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
 define('MODULE_FORMHYBRID_MEMBER_LIST', 'formhybrid_list_member');
 define('MODULE_FORMHYBRID_NEWS_LIST', 'formhybrid_list_news');
+define('OPTION_FORMHYBRID_SORTINGMODE_FIELD', 'field');
+define('OPTION_FORMHYBRID_SORTINGMODE_TEXT', 'text');
 
 /**
  * Frontend modules

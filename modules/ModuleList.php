@@ -161,7 +161,8 @@ class ModuleList extends \Module
 		$arrCurrentSorting = $this->getCurrentSorting();
 
 		$this->arrOptions['order']  = ($arrCurrentSorting['order'] === 'random') ? 'RAND()' :
-				($this->formHybridDataContainer . '.' . $arrCurrentSorting['order'] . ' ' . strtoupper($arrCurrentSorting['sort']));
+				(($this->sortingMode == OPTION_FORMHYBRID_SORTINGMODE_TEXT ? '' : $this->formHybridDataContainer . '.') .
+						$arrCurrentSorting['order'] . ' ' . strtoupper($arrCurrentSorting['sort']));
 
 		// Get the items
 		if (count($this->arrColumns) > 0)
@@ -492,20 +493,22 @@ class ModuleList extends \Module
 		{
 			if ($this->itemSorting == 'random')
 				$arrCurrentSorting = array(
-						'order' => 'random'
+					'order' => 'random'
 				);
 			else
+			{
 				$arrCurrentSorting = array(
-						'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
-						'sort' => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc')
+					'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
+					'sort' => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc')
 				);
+			}
 		}
 		// default -> the first editable field
 		else
 		{
 			$arrCurrentSorting = array(
-					'order' => $this->arrEditable[0],
-					'sort' => 'asc'
+				'order' => $this->arrEditable[0],
+				'sort' => 'asc'
 			);
 		}
 

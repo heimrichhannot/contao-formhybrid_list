@@ -64,8 +64,6 @@ class FormHybridListQueryBuilder
 			$strQuery .= " HAVING " . $arrOptions['having'];
 		}
 
-		$arrOptions['order'] = 'lastnameMerged ASC';
-
 		// Order by
 		if ($arrOptions['order'] !== null)
 		{
