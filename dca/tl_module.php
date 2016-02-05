@@ -59,6 +59,7 @@ $arrDca['fields']['sortingMode'] = array
 	'exclude'                 => true,
 	'inputType'               => 'select',
 	'options'                 => array(OPTION_FORMHYBRID_SORTINGMODE_FIELD, OPTION_FORMHYBRID_SORTINGMODE_TEXT),
+	'reference'               => &$GLOBALS['TL_LANG']['tl_module']['sortingMode'],
 	'eval'                    => array('tl_class'=>'w50', 'submitOnChange' => true),
 	'sql'                     => "varchar(16) NOT NULL default 'field'"
 );
@@ -223,14 +224,13 @@ class tl_module_formhybrid_list {
 		{
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
-			switch ($objModule->type) {
-				case MODULE_FORMHYBRID_LIST:
-				case MODULE_FORMHYBRID_MEMBER_LIST:
-					// override labels for suiting a list module
-					$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
-					$arrDca['fields']['formHybridDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
-					$arrDca['fields']['formHybridTemplate']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridFilterTemplate'];
-					break;
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+					$objModule->type, 'formhybrid_list', 'HeimrichHannot\FormHybridList\ModuleList'))
+			{
+				// override labels for suiting a list module
+				$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
+				$arrDca['fields']['formHybridDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
+				$arrDca['fields']['formHybridTemplate']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridFilterTemplate'];
 			}
 		}
 	}

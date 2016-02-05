@@ -6,10 +6,13 @@
  */
 $GLOBALS['TL_LANG']['tl_module']['hideFilter']							= array('Filter verstecken', 'Klicken Sie hier, um den Filter zu verstecken.');
 $GLOBALS['TL_LANG']['tl_module']['showItemCount']						= array('Ergebnisanzahl anzeigen', 'Klicken Sie hier, um die Anzahl der gefundenen Objekte anzuzeigen.');
-$GLOBALS['TL_LANG']['tl_module']['itemSorting']						= array('Initiale Sortierung', 'Wählen Sie hier eine initiale Sortierung aus.');
-$GLOBALS['TL_LANG']['tl_module']['itemSorting']['asc']				= ' (aufsteigend)';
-$GLOBALS['TL_LANG']['tl_module']['itemSorting']['desc']				= ' (absteigend)';
-$GLOBALS['TL_LANG']['tl_module']['itemSorting']['random']			= 'Zufällige Reihenfolge';
+$GLOBALS['TL_LANG']['tl_module']['sortingMode']							= array('Sortiermodus', 'Wählen Sie hier aus, ob Sie zur Sortierung ein Feld auswählen oder über eine Freitexteingabe der Form "<fieldname>_<asc|desc>" sortieren möchten.');
+$GLOBALS['TL_LANG']['tl_module']['sortingMode']['field']				= 'Feld';
+$GLOBALS['TL_LANG']['tl_module']['sortingMode']['text']					= 'Freitext';
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']							= array('Initiale Sortierung', 'Wählen Sie hier eine initiale Sortierung aus.');
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']['asc']					= ' (aufsteigend)';
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']['desc']					= ' (absteigend)';
+$GLOBALS['TL_LANG']['tl_module']['itemSorting']['random']				= 'Zufällige Reihenfolge';
 $GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues']	= array('Initiale Filter hinzufügen', 'Wählen Sie diese Option, um initiale Filter für das Modul hinzuzufügen.');
 $GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues']		= array(' ', 'Definieren Sie hier initiale Filter für das Modul.');
 $GLOBALS['TL_LANG']['tl_module']['formHybridFilterTemplate']			= array('Filterformular-Template', 'Hier können Sie das Formular-Template überschreiben.');
