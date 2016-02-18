@@ -16,11 +16,13 @@ use HeimrichHannot\FormHybrid\Form;
 class ListFilterForm extends Form
 {
 	protected $isFilterForm = true;
+	protected $objListModule;
 
-	public function __construct($objModule)
+	public function __construct($objModule, $objListModule)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_GET;
 		$this->isFilterForm = true;
+		$this->objListModule = $objListModule;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_list_filter';
 
 		if ($objModule->addCustomFilterFields)
@@ -55,5 +57,10 @@ class ListFilterForm extends Form
 			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_FILTER],
 			'eval' => array('class' => 'filter')
 		));
+	}
+
+	public function modifyDC(&$arrDca = null)
+	{
+		$this->objListModule->modifyDC($arrDca);
 	}
 }

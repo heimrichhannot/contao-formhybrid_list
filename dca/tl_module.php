@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,formHybridAddDefaultValues,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,useDummyImage,formHybridAddDefaultValues,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -16,10 +16,12 @@ $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FO
 /**
  * Subpalettes
  */
-$arrDca['palettes']['__selector__'][]                = 'addCustomFilterFields';
-$arrDca['palettes']['__selector__'][]                = 'addDetailsCol';
+$arrDca['palettes']['__selector__'][] = 'addCustomFilterFields';
+$arrDca['palettes']['__selector__'][] = 'addDetailsCol';
+$arrDca['palettes']['__selector__'][] = 'useDummyImage';
 $arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
+$arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 
 /**
  * Callbacks
@@ -100,12 +102,14 @@ $arrDca['fields']['addCustomFilterFields'] = array(
 
 $arrDca['fields']['customFilterFields'] = array
 (
-	'inputType'								=> 'checkboxWizard',
-	'label'									=> &$GLOBALS['TL_LANG']['tl_module']['customFilterFields'],
-	'options_callback'						=> array('tl_form_hybrid_module', 'getFields'),
-	'exclude'								=> true,
-	'eval'									=> array('multiple'=>true, 'includeBlankOption' => true, 'tl_class' => 'w50 autoheight clr', 'mandatory' => true),
-	'sql'									=> "blob NULL"
+	'inputType'        => 'checkboxWizard',
+	'label'            => &$GLOBALS['TL_LANG']['tl_module']['customFilterFields'],
+	'options_callback' => array('tl_form_hybrid_module', 'getFields'),
+	'exclude'          => true,
+	'eval'             => array('multiple' => true, 'includeBlankOption' => true,
+								'tl_class' => 'w50 autoheight clr', 'mandatory' => true
+	),
+	'sql'              => "blob NULL"
 );
 
 $arrDca['fields']['filterArchives']    = array
@@ -198,6 +202,25 @@ $arrDca['fields']['itemTemplate'] = array
 	'options_callback' => array('tl_module_formhybrid_list', 'getFormHybridListItemTemplates'),
 	'eval'             => array('tl_class' => 'w50 clr'),
 	'sql'              => "varchar(255) NOT NULL default ''",
+);
+
+$arrDca['fields']['useDummyImage'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['useDummyImage'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$arrDca['fields']['dummyImage'] = array
+(
+	'label'     => &$GLOBALS['TL_LANG']['tl_module']['dummyImage'],
+	'exclude'   => true,
+	'inputType' => 'fileTree',
+	'eval'      => array('tl_class' => 'w50', 'filesOnly' => true, 'extensions' => Config::get('validImageTypes'),
+						 'fieldType' => 'radio', 'mandatory' => true
+	),
+	'sql'       => "binary(16) NULL"
 );
 
 class tl_module_formhybrid_list {

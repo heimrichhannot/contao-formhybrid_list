@@ -29,6 +29,8 @@ $GLOBALS['TL_LANG']['tl_module']['invertPublishedField']				= array('Veröffentl
 $GLOBALS['TL_LANG']['tl_module']['emptyText']							= array('Meldung bei leerer Ergebnismenge', 'Geben Sie hier die Meldung ein, die erscheinen soll, wenn keine Ergebnisse gefunden wurden (mit ##<Feldname>## können Filtereingaben eingefügt werden).');
 $GLOBALS['TL_LANG']['tl_module']['addDetailsCol']						= array('Details-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Anzeigen von Details hinzuzufügen.');
 $GLOBALS['TL_LANG']['tl_module']['jumpToDetails']						= array('Weiterleitungsseite (Details)', 'Wählen Sie hier die Seite aus, zu der weitergeleitet wird, wenn es eine Detailseite gibt.');
+$GLOBALS['TL_LANG']['tl_module']['useDummyImage']						= array('Platzhalterbild nutzen', 'Wählen Sie diese Option, um immer dann ein Platzhalterbild zu nutzen, wenn es kein der Nachricht kein reguläres Bild zugewiesen wurde.');
+$GLOBALS['TL_LANG']['tl_module']['dummyImage']							= array('Platzhalterbild', 'Wählen Sie hier das Platzhalterbild aus.');
 
 
 // events

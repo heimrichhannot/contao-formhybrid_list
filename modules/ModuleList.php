@@ -12,6 +12,7 @@
 namespace HeimrichHannot\FormHybridList;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\FormHybrid\Form;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\HastePlus\Files;
@@ -26,6 +27,7 @@ class ModuleList extends \Module
 	protected $arrColumns = array();
 	protected $arrValues = array();
 	protected $arrOptions = array();
+	protected $objFilterForm;
 
 	public function generate()
 	{
@@ -75,14 +77,14 @@ class ModuleList extends \Module
 
 		if (!$this->hideFilter)
 		{
-			$objFilterForm = new ListFilterForm($this->objModel);
-			$this->Template->filterForm = $objFilterForm->generate();
+			$this->objFilterForm = new ListFilterForm($this->objModel,  $this);
+			$this->Template->filterForm = $this->objFilterForm->generate();
 		}
 
-		if (!$this->hideFilter && $objFilterForm->isSubmitted() && !$objFilterForm->doNotSubmit())
+		if (!$this->hideFilter && $this->objFilterForm->isSubmitted() && !$this->objFilterForm->doNotSubmit())
 		{
 			// submission ain't formatted
-			list($objItems, $this->Template->count) = $this->getItems($objFilterForm->getSubmission(false));
+			list($objItems, $this->Template->count) = $this->getItems($this->objFilterForm->getSubmission(false));
 		}
 		else
 		{
@@ -223,7 +225,7 @@ class ModuleList extends \Module
 
 		foreach ($this->arrEditable as $strName)
 		{
-			$arrItem['fields'][$strName] = static::getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName]);
+			$arrItem['fields'][$strName] = $this->getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName], $objItem);
 
 			// anti-xss: escape everything besides some tags
 			$arrItem['fields'][$strName] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strName, $arrItem['fields'][$strName]);
@@ -232,7 +234,7 @@ class ModuleList extends \Module
 		// add raw values
 		foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'] as $strField => $arrData)
 		{
-			$arrItem['raw'][$strField] = $objItem->{$strName};
+			$arrItem['raw'][$strField] = $objItem->{$strField};
 		}
 
 		if ($this->publishedField)
@@ -244,7 +246,7 @@ class ModuleList extends \Module
 		return $arrItem;
 	}
 
-	public static function getFormattedValueByDca($value, $arrData)
+	public function getFormattedValueByDca($value, $arrData, $objItem)
 	{
 		$value = deserialize($value);
 		$rgxp = $arrData['eval']['rgxp'];
@@ -265,6 +267,11 @@ class ModuleList extends \Module
 		elseif ($rgxp == 'datim')
 		{
 			$value = \Date::parse(\Config::get('datimFormat'), $value);
+		}
+		elseif ($arrData['inputType'] == 'tag')
+		{
+			if (($arrTags = \HeimrichHannot\TagsPlus\TagsPlus::loadTags($this->formHybridDataContainer, $objItem->id)) !== null)
+				$value = implode(', ', $arrTags);
 		}
 		elseif (is_array($value))
 		{
@@ -414,6 +421,7 @@ class ModuleList extends \Module
 			{
 				$arrTags = explode(',', $varValue);
 				$strColumn = '';
+
 				foreach ($arrTags as $i => $strTag)
 				{
 					if ($i == 0)
@@ -422,14 +430,23 @@ class ModuleList extends \Module
 						$strColumn .= " OR tl_tag.tag='$strTag'";
 				}
 
-				$this->arrColumns[$strField] = $strColumn;
+				$this->doApplyDefaultFilters($strField, $strColumn, $varValue, true);
 			}
 			else
 			{
-				$this->arrColumns[$strField] = $strField . '=?';
-				$this->arrValues[$strField] = $this->replaceInsertTags($varValue);
+				$strColumn = $strField . '=?';
+				$varValue = $this->replaceInsertTags($varValue);
+
+				$this->doApplyDefaultFilters($strField, $strColumn, $varValue);
 			}
 		}
+	}
+
+	protected function doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue = false)
+	{
+		$this->arrColumns[$strField] = $strColumn;
+		if (!$blnSkipValue)
+			$this->arrValues[$strField] = $varValue;
 	}
 
 	protected function applyFilters($objFilterSubmission, $arrFilterFields)
@@ -450,7 +467,7 @@ class ModuleList extends \Module
 					switch ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'])
 					{
 						case 'tag':
-							$arrTags = explode(',', $varValue);
+							$arrTags = explode(',', urldecode($varValue));
 							$strColumn = '';
 							foreach ($arrTags as $i => $strTag)
 							{
@@ -460,22 +477,31 @@ class ModuleList extends \Module
 									$strColumn .= " OR tl_tag.tag='$strTag'";
 							}
 
-							$this->arrColumns[$strField] = $strColumn;
+							$this->doApplyFilters($strField, $strColumn, $varValue, true);
 							break;
 						case 'text':
 						case 'textarea':
 						case 'password':
-							$this->arrColumns[$strField] = $strField . " LIKE ?";
-							$this->arrValues[$strField] = $this->replaceInsertTags('%' . $varValue . '%');
+							$strColumn = $strField . " LIKE ?";
+							$varValue = $this->replaceInsertTags('%' . $varValue . '%');
+							$this->doApplyFilters($strField, $strColumn, $varValue);
 							break;
 						default:
-							$this->arrColumns[$strField] = $strField . '=?';
-							$this->arrValues[$strField] = $this->replaceInsertTags($varValue);
+							$strColumn = $strField . '=?';
+							$varValue = $this->replaceInsertTags($varValue);
+							$this->doApplyFilters($strField, $strColumn, $varValue);
 							break;
 					}
 				}
 			}
 		}
+	}
+
+	protected function doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue = false)
+	{
+		$this->arrColumns[$strField] = $strColumn;
+		if (!$blnSkipValue)
+			$this->arrValues[$strField] = $varValue;
 	}
 
 	protected function getCurrentSorting()
@@ -597,5 +623,6 @@ class ModuleList extends \Module
 		return array($offset, $limit);
 	}
 
-}
+	public function modifyDC(&$arrDca = null) {}
 
+}

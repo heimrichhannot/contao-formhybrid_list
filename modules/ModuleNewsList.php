@@ -90,13 +90,22 @@ class ModuleNewsList extends ModuleList
 		$arrItem['fields']['addImage'] = false;
 
 		// Add an image
-		if ($objItem->addImage && $objItem->singleSRC != '')
+		$this->addImage($objItem, 'singleSRC', $arrItem);
+
+		// enclosures are added in runBeforeTemplateParsing
+
+		return $arrItem;
+	}
+
+	protected function addImage($objItem, $strField, &$arrItem)
+	{
+		if ($objItem->addImage && $objItem->{$strField} != '')
 		{
-			$objModel = \FilesModel::findByUuid($objItem->singleSRC);
+			$objModel = \FilesModel::findByUuid($objItem->{$strField});
 
 			if ($objModel === null)
 			{
-				if (!\Validator::isUuid($objItem->singleSRC))
+				if (!\Validator::isUuid($objItem->{$strField}))
 				{
 					$arrItem['fields']['text'] = '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
 				}
@@ -114,21 +123,26 @@ class ModuleNewsList extends ModuleList
 					}
 				}
 
-				$arrItem['fields']['singleSRC'] = $objModel->path;
+				$arrItem['fields'][$strField] = $objModel->path;
 				$arrItem['fields']['addImage'] = true;
 				// addToImage is done in runBeforeTemplateParsing()
 			}
 		}
-
-		// enclosures are added in runBeforeTemplateParsing
-
-		return $arrItem;
 	}
 
 	protected function runBeforeTemplateParsing($objTemplate, $arrItem)
 	{
 		if ($arrItem['fields']['addImage'] && $arrItem['fields']['singleSRC'] != '')
 		{
+			if (is_file(TL_ROOT . '/' . $arrItem['fields']['singleSRC'])) {
+				$this->addImageToTemplate($objTemplate, $arrItem['fields']);
+			}
+		}
+		elseif ($this->useDummyImage && $this->dummyImage)
+		{
+			$arrItem['fields']['addImage'] = true;
+			$arrItem['fields']['singleSRC'] = $this->dummyImage;
+
 			if (is_file(TL_ROOT . '/' . $arrItem['fields']['singleSRC'])) {
 				$this->addImageToTemplate($objTemplate, $arrItem['fields']);
 			}
