@@ -123,7 +123,7 @@ class ModuleNewsList extends ModuleList
 					}
 				}
 
-				$arrItem['fields'][$strField] = $objModel->path;
+				$arrItem['fields']['singleSRC'] = $objModel->path;
 				$arrItem['fields']['addImage'] = true;
 				// addToImage is done in runBeforeTemplateParsing()
 			}
