@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,useDummyImage,formHybridAddDefaultValues,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,useDummyImage,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -140,13 +140,22 @@ $arrDca['fields']['pageTitleField'] = array
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
+$arrDca['fields']['additionalWhereSql'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['additionalWhereSql'],
+	'exclude'                 => true,
+	'inputType'               => 'text',
+	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
+	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
 $arrDca['fields']['additionalSelectSql'] = array
 (
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['additionalSelectSql'],
-		'exclude'                 => true,
-		'inputType'               => 'text',
-		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
-		'sql'                     => "varchar(255) NOT NULL default ''"
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['additionalSelectSql'],
+	'exclude'                 => true,
+	'inputType'               => 'text',
+	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
+	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
 $arrDca['fields']['additionalSql'] = array

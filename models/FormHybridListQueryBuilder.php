@@ -10,6 +10,7 @@ class FormHybridListQueryBuilder
 	{
 		$objBase = new \DcaExtractor($arrOptions['table']);
 		$strAdditionalSelectSql = $arrOptions['additionalSelectSql'] ? ', ' . $arrOptions['additionalSelectSql']: '';
+		$strAdditionalWhereSql = $arrOptions['additionalWhereSql'] ? ' AND (' . $arrOptions['additionalWhereSql'] . ')': '';
 		$strAdditionalSql = $arrOptions['additionalSql'] ? ' ' . $arrOptions['additionalSql']: '';
 
 		if (!$objBase->hasRelations())
@@ -49,7 +50,7 @@ class FormHybridListQueryBuilder
 		// Where condition
 		if ($arrOptions['column'] !== null)
 		{
-			$strQuery .= " WHERE " . (is_array($arrOptions['column']) ? implode(" AND ", $arrOptions['column']) : $arrOptions['table'] . '.' . $arrOptions['column'] . "=?");
+			$strQuery .= " WHERE " . (is_array($arrOptions['column']) ? implode(" AND ", $arrOptions['column']) : $arrOptions['table'] . '.' . $arrOptions['column'] . "=?") . $strAdditionalWhereSql;
 		}
 
 		// Group by

@@ -102,6 +102,7 @@ class ModuleList extends \Module
 	{
 		// IMPORTANT: set the table for the generic model class
 		FormHybridListModel::setTable($this->formHybridDataContainer);
+		FormHybridListModel::setAdditionalWhereSql($this->additionalWhereSql);
 		FormHybridListModel::setAdditionalSelectSql($this->additionalSelectSql);
 		FormHybridListModel::setAdditionalSql($this->additionalSql);
 
