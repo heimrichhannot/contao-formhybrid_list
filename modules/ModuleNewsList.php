@@ -5,6 +5,7 @@ namespace HeimrichHannot\FormHybridList;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybridList\ModuleList;
 use HeimrichHannot\FormHybridList\ModuleMemberList;
+use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\MemberContentArchives\MemberContentArchiveModel;
 
 class ModuleNewsList extends ModuleList
@@ -95,39 +96,6 @@ class ModuleNewsList extends ModuleList
 		// enclosures are added in runBeforeTemplateParsing
 
 		return $arrItem;
-	}
-
-	protected function addImage($objItem, $strField, &$arrItem)
-	{
-		if ($objItem->addImage && $objItem->{$strField} != '')
-		{
-			$objModel = \FilesModel::findByUuid($objItem->{$strField});
-
-			if ($objModel === null)
-			{
-				if (!\Validator::isUuid($objItem->{$strField}))
-				{
-					$arrItem['fields']['text'] = '<p class="error">'.$GLOBALS['TL_LANG']['ERR']['version2format'].'</p>';
-				}
-			}
-			elseif (is_file(TL_ROOT . '/' . $objModel->path))
-			{
-				// Override the default image size
-				if ($this->imgSize != '')
-				{
-					$size = deserialize($this->imgSize);
-
-					if ($size[0] > 0 || $size[1] > 0)
-					{
-						$arrItem['fields']['size'] = $this->imgSize;
-					}
-				}
-
-				$arrItem['fields']['singleSRC'] = $objModel->path;
-				$arrItem['fields']['addImage'] = true;
-				// addToImage is done in runBeforeTemplateParsing()
-			}
-		}
 	}
 
 	protected function runBeforeTemplateParsing($objTemplate, $arrItem)
