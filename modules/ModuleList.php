@@ -11,8 +11,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
-use HeimrichHannot\FormHybrid\DC_Hybrid;
-use HeimrichHannot\FormHybrid\Form;
+use Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\HastePlus\Environment;
@@ -49,6 +48,12 @@ class ModuleList extends \Module
 		\System::loadLanguageFile($this->formHybridDataContainer);
 
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
+
+		// Set the item from the auto_item parameter
+		if (!isset($_GET['items']) && \Config::get('useAutoItem') && isset($_GET['auto_item']))
+		{
+			\Input::setGet('items', \Input::get('auto_item'));
+		}
 
 		return parent::generate();
 	}
@@ -207,14 +212,13 @@ class ModuleList extends \Module
 
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
 		{
-			$arrItem['detailsUrl'] = Environment::addParametersToUri(
-					\Controller::generateFrontendUrl($objPageJumpTo->row()),
-					array(
-						'act' => FRONTENDEDIT_ACT_SHOW,
-						'id'  => $objItem->id,
-						'token' => \RequestToken::get()
-					)
+			$arrItem['detailsUrl'] = \Controller::generateFrontendUrl(
+					$objPageJumpTo->row(),
+					((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ? '/' : '/items/') .
+					((!\Config::get('disableAlias') && $objItem->alias != '') ? $objItem->alias : $objItem->id)
 			);
+
+			$arrItem['detailsUrlBase'] = \Controller::generateFrontendUrl($objPageJumpTo->row());
 		}
 	}
 
@@ -360,6 +364,9 @@ class ModuleList extends \Module
 		$objTemplate->addDetailsCol = $this->addDetailsCol;
 		$objTemplate->module = $this;
 		$objTemplate->imgSize = deserialize($this->imgSize, true);
+		$varIdAlias = ltrim(((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ? '/' : '/items/') .
+				((!\Config::get('disableAlias') && $arrItem['raw']['alias'] != '') ? $arrItem['raw']['alias'] : $arrItem['raw']['id']), '/');
+		$objTemplate->active = $varIdAlias && \Input::get('items') == $varIdAlias;
 
 		$this->runBeforeTemplateParsing($objTemplate, $arrItem);
 
