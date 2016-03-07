@@ -215,7 +215,7 @@ class ModuleList extends \Module
 		{
 			$arrItem['detailsUrl'] = \Controller::generateFrontendUrl(
 					$objPageJumpTo->row(),
-					General::getAliasIfAvailable($objItem)
+					'/' . General::getAliasIfAvailable($objItem)
 			);
 
 			$arrItem['detailsUrlBase'] = \Controller::generateFrontendUrl($objPageJumpTo->row());
