@@ -13,6 +13,7 @@ namespace HeimrichHannot\FormHybridList;
 
 use Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
+use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\HastePlus\Files;
@@ -214,8 +215,7 @@ class ModuleList extends \Module
 		{
 			$arrItem['detailsUrl'] = \Controller::generateFrontendUrl(
 					$objPageJumpTo->row(),
-					((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ? '/' : '/items/') .
-					((!\Config::get('disableAlias') && $objItem->alias != '') ? $objItem->alias : $objItem->id)
+					General::getAliasIfAvailable($objItem)
 			);
 
 			$arrItem['detailsUrlBase'] = \Controller::generateFrontendUrl($objPageJumpTo->row());
