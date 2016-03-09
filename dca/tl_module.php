@@ -126,7 +126,7 @@ $arrDca['fields']['filterGroups']    = array
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['filterGroups'],
 	'inputType'               => 'select',
 	'foreignKey'              => 'tl_member_group.name',
-	'eval'                    => array('multiple' => true, 'chosen' => true, 'tl_class' => 'w50'),
+	'eval'                    => array('multiple' => true, 'chosen' => true, 'tl_class' => 'w50', 'doNotCopy'=>true),
 	'sql'                     => "blob NULL"
 );
 

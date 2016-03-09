@@ -355,6 +355,11 @@ class ModuleList extends \Module
 
 	protected function parseItem($arrItem, $strClass='', $intCount=0)
 	{
+		return $this->getItem($arrItem, $strClass, $intCount)->parse();
+	}
+
+	protected function getItem($arrItem, $strClass='', $intCount=0)
+	{
 		$objTemplate = new \FrontendTemplate($this->itemTemplate);
 
 		$objTemplate->setData($arrItem);
@@ -380,7 +385,7 @@ class ModuleList extends \Module
 			}
 		}
 
-		return $objTemplate->parse();
+		return $objTemplate;
 	}
 
 	protected function runBeforeTemplateParsing($objTemplate, $arrItem) {}
