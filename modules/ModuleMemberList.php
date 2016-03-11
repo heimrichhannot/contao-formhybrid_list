@@ -24,19 +24,21 @@ class ModuleMemberList extends ModuleList
 			$arrFilterTags = deserialize($this->memberContentArchiveTags, true);
 			$arrItem['fields']['memberContent'] = '';
 
-			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findOneBy('mid', $objItem->memberId ?: $objItem->id)) !== null)
+			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findBy('mid', $objItem->memberId ?: $objItem->id)) !== null)
 			{
-				$arrItem['fields']['memberContentId'] = $objMemberContentArchives->id;
-
-				if (in_array($objMemberContentArchives->tag, $arrFilterTags))
+				while ($objMemberContentArchives->next())
 				{
-					$objElement = \ContentModel::findPublishedByPidAndTable($objMemberContentArchives->id, 'tl_member_content_archive');
-
-					if ($objElement !== null)
+					if (in_array($objMemberContentArchives->tag, $arrFilterTags))
 					{
-						while ($objElement->next())
+						$arrItem['fields']['memberContentId'] = $objMemberContentArchives->id;
+						$objElement = \ContentModel::findPublishedByPidAndTable($objMemberContentArchives->id, 'tl_member_content_archive');
+
+						if ($objElement !== null)
 						{
-							$arrItem['fields']['memberContent'] .= \Controller::getContentElement($objElement->current());
+							while ($objElement->next())
+							{
+								$arrItem['fields']['memberContent'] .= \Controller::getContentElement($objElement->current());
+							}
 						}
 					}
 				}

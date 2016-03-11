@@ -229,9 +229,12 @@ class ModuleList extends \Module
 		// always add id
 		$arrItem['fields']['id'] = $objItem->id;
 
+		$objDc = new \DC_Table($this->formHybridDataContainer);
+		$objDc->activeRecord = $objItem;
+
 		foreach ($this->arrEditable as $strName)
 		{
-			$arrItem['fields'][$strName] = $this->getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName], $objItem);
+			$arrItem['fields'][$strName] = $this->getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName], $objItem, $objDc);
 
 			// anti-xss: escape everything besides some tags
 			$arrItem['fields'][$strName] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strName, $arrItem['fields'][$strName]);
@@ -252,7 +255,7 @@ class ModuleList extends \Module
 		return $arrItem;
 	}
 
-	public function getFormattedValueByDca($value, $arrData, $objItem)
+	public function getFormattedValueByDca($value, $arrData, $objItem, $objDc)
 	{
 		$value = deserialize($value);
 		$rgxp = $arrData['eval']['rgxp'];
@@ -281,6 +284,13 @@ class ModuleList extends \Module
 		}
 		elseif (is_array($value))
 		{
+			if (!$rfrc)
+			{
+				$value = array_map(function($value) use ($opts) {
+					return isset($opts[$value]) ? $opts[$value] : $value;
+				}, $value);
+			}
+
 			$value = static::flattenArray($value);
 
 			$value = array_filter($value); // remove empty elements
@@ -469,7 +479,7 @@ class ModuleList extends \Module
 		{
 			if (in_array($strField, deserialize($arrFilterFields, true)))
 			{
-				if (trim($varValue))
+				if (is_array($varValue) || trim($varValue))
 				{
 					// remove existing values in order to keep the order
 					if (isset($this->arrColumns[$strField]))
@@ -478,7 +488,9 @@ class ModuleList extends \Module
 					if (isset($this->arrValues[$strField]))
 						unset($this->arrValues[$strField]);
 
-					switch ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'])
+					$arrDca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField];
+
+					switch ($arrDca['inputType'])
 					{
 						case 'tag':
 							$arrTags = explode(',', urldecode($varValue));
@@ -501,9 +513,26 @@ class ModuleList extends \Module
 							$this->doApplyFilters($strField, $strColumn, $varValue);
 							break;
 						default:
-							$strColumn = $strField . '=?';
-							$varValue = $this->replaceInsertTags($varValue);
-							$this->doApplyFilters($strField, $strColumn, $varValue);
+							if ($arrDca['eval']['multiple'])
+							{
+								$varValueIn = array_map(function($val) {
+									return '"' . \Controller::replaceInsertTags($val) . '"';
+								}, $varValue);
+
+								$varValueRegExp = array_map(function($val) {
+									return '\"' . \Controller::replaceInsertTags($val) . '\"';
+								}, $varValue);
+
+								$strColumn = '(' . $strField . ' IN (' . implode(',', $varValueIn) . ') OR ' . $strField . ' REGEXP ("' . implode('|', $varValueRegExp) . '") ' . ')';
+
+								$this->doApplyFilters($strField, $strColumn, $varValue, true);
+							}
+							else
+							{
+								$strColumn = $strField . '=?';
+								$varValue = $this->replaceInsertTags($varValue);
+								$this->doApplyFilters($strField, $strColumn, $varValue);
+							}
 							break;
 					}
 				}
