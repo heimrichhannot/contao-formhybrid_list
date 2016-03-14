@@ -547,6 +547,25 @@ class ModuleList extends \Module
 			$this->arrValues[$strField] = $varValue;
 	}
 
+	protected function getDisjunctiveGroupFilter($arrFilterFields)
+	{
+		$arrFields = array();
+		foreach ($arrFilterFields as $strFilterField)
+		{
+			if (\Input::get($strFilterField))
+			{
+				$arrFields[] = $strFilterField . '=?';
+				$this->arrValues[] = \Input::get($strFilterField);
+			}
+			else
+			{
+				unset($this->arrColumns[$strFilterField]);
+				unset($this->arrValues[$strFilterField]);
+			}
+		}
+		$this->arrColumns[] = '(' . implode(' OR ', $arrFields) . ')';
+	}
+
 	protected function getCurrentSorting()
 	{
 		// user specified
