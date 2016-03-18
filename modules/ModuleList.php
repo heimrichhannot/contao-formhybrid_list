@@ -282,6 +282,19 @@ class ModuleList extends \Module
 			if (($arrTags = \HeimrichHannot\TagsPlus\TagsPlus::loadTags($this->formHybridDataContainer, $objItem->id)) !== null)
 				$value = implode(', ', $arrTags);
 		}
+		elseif ($arrData['inputType'] == 'multifileupload')
+		{
+			if (is_array($value))
+			{
+				$value = array_map(function($val) {
+					return Files::getPathFromUuid($val);
+				}, $value);
+			}
+			else
+			{
+				$value = Files::getPathFromUuid($value);
+			}
+		}
 		elseif (is_array($value))
 		{
 			if (!$rfrc)
