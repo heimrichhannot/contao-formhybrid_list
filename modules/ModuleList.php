@@ -370,7 +370,7 @@ class ModuleList extends \Module
 
 		foreach ($arrItems as $arrItem)
 		{
-			$arrResult[] = $this->parseItem($arrItem, 'item' . '_' . ++$count . (($count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2) == 0) ? ' odd' : ' even'), $count);
+			$arrResult[] = $this->parseItem($arrItem, 'item item' . '_' . ++$count . (($count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2) == 0) ? ' odd' : ' even'), $count);
 		}
 
 		return $arrResult;
