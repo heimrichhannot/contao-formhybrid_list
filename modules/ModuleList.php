@@ -93,7 +93,7 @@ class ModuleList extends \Module
 			// submission ain't formatted
 			list($objItems, $this->Template->count) = $this->getItems($this->objFilterForm->getSubmission(false));
 		}
-		else
+		elseif ($this->showInitialResults)
 		{
 			list($objItems, $this->Template->count) = $this->getItems();
 		}

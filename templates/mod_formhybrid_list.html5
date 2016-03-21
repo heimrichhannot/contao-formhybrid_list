@@ -10,10 +10,12 @@
 		<?php endif; ?>
 
 		<?php if (!$this->empty): ?>
-			<div class="items">
-				<?php foreach ($this->items as $item) echo $item; ?>
-			</div>
-			<?php echo $this->pagination; ?>
+			<?php if ($this->showInitialResults): ?>
+				<div class="items">
+					<?php foreach ($this->items as $item) echo $item; ?>
+				</div>
+				<?php echo $this->pagination; ?>
+			<?php endif; ?>
 		<?php else: ?>
 			<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
 		<?php endif; ?>

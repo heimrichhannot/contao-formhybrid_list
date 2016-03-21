@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,useDummyImage,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{template_legend:hide},itemTemplate,formHybridTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,showInitialResults,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,useDummyImage,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -90,6 +90,14 @@ $arrDca['fields']['showItemCount'] = array(
 	'inputType'               => 'checkbox',
 	'eval'                    => array('tl_class' => 'w50 clr'),
 	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$arrDca['fields']['showInitialResults'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['showInitialResults'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "char(1) NOT NULL default '1'"
 );
 
 $arrDca['fields']['addCustomFilterFields'] = array(
@@ -231,6 +239,8 @@ $arrDca['fields']['dummyImage'] = array
 	),
 	'sql'       => "binary(16) NULL"
 );
+
+$arrDca['fields']['formHybridCustomSubTemplates']['eval']['tl_class'] = 'w50';
 
 class tl_module_formhybrid_list {
 
