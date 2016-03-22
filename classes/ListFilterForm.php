@@ -26,6 +26,10 @@ class ListFilterForm extends Form
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_list_filter';
 		$objModule->formHybridEditable = $objModule->customFilterFields;
 
+		$arrHeadline = deserialize($objModule->filterHeadline);
+		$objModule->filterHeadline = is_array($arrHeadline) ? $arrHeadline['value'] : $arrHeadline;
+		$objModule->filterHl = is_array($arrHeadline) ? $arrHeadline['unit'] : 'h1';
+
 		parent::__construct($objModule);
 	}
 

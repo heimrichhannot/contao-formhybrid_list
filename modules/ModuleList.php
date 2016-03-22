@@ -70,10 +70,6 @@ class ModuleList extends \Module
 		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
 		$this->Template->currentSorting = $this->getCurrentSorting();
 
-		$arrHeadline = deserialize($this->filterHeadline);
-		$this->filterHeadline = is_array($arrHeadline) ? $arrHeadline['value'] : $arrHeadline;
-		$this->hl = is_array($arrHeadline) ? $arrHeadline['unit'] : 'h1';
-
 		$this->addColumns();
 
 		// set initial filters
