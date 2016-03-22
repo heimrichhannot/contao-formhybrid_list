@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterTitle,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -228,9 +228,9 @@ $arrDca['fields']['emptyText'] = array
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
-$arrDca['fields']['filterTitle'] = array
+$arrDca['fields']['filterHeadline'] = array
 (
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['filterTitle'],
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['filterHeadline'],
 	'exclude'                 => true,
 	'inputType'               => 'inputUnit',
 	'options'                 => array('h1', 'h2', 'h3', 'h4', 'h5', 'h6'),

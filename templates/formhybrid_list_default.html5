@@ -8,8 +8,8 @@
 	<?php echo $this->novalidate; ?>
 	<?php if($this->formClass):?> class="<?php echo $this->formClass; ?>"<?php endif;?>>
 		<!-- formhybrid::stop -->
-		<?php if ($this->filterTitle): ?>
-			<h2><?= $this->filterTitle ?></h2>
+		<?php if ($this->filterHeadline): ?>
+			<<?= $this->hl ?>><?= $this->filterHeadline ?></<?= $this->hl ?>>
 		<?php endif; ?>
 		<div class="formbody">
 			<?php if($this->message): ?>

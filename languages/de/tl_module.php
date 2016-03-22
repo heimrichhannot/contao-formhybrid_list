@@ -5,7 +5,7 @@
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_module']['hideFilter']							= array('Filter verstecken', 'Klicken Sie hier, um den Filter zu verstecken.');
-$GLOBALS['TL_LANG']['tl_module']['filterTitle']							= array('Filterüberschrift', 'Geben Sie hier eine Überschrift für den Filter ein.');
+$GLOBALS['TL_LANG']['tl_module']['filterHeadline']						= array('Filterüberschrift', 'Geben Sie hier eine Überschrift für den Filter ein.');
 $GLOBALS['TL_LANG']['tl_module']['showItemCount']						= array('Ergebnisanzahl anzeigen', 'Klicken Sie hier, um die Anzahl der gefundenen Objekte anzuzeigen.');
 $GLOBALS['TL_LANG']['tl_module']['showInitialResults']					= array('Initial Ergebnisse anzeigen', 'Wählen Sie diese Option, wenn initial eine Ergebnisliste angezeigt werden soll (dafür werden die initialen Filter verwendet sofern gesetzt).');
 $GLOBALS['TL_LANG']['tl_module']['sortingMode']							= array('Sortiermodus', 'Wählen Sie hier aus, ob Sie zur Sortierung ein Feld auswählen oder über eine Freitexteingabe der Form "<fieldname>_<asc|desc>" sortieren möchten.');
