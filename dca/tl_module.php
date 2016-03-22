@@ -133,7 +133,7 @@ $arrDca['fields']['customFilterFields'] = array
 	'options_callback' => array('tl_form_hybrid_module', 'getFields'),
 	'exclude'          => true,
 	'eval'             => array('multiple' => true, 'includeBlankOption' => true,
-								'tl_class' => 'w50 autoheight clr', 'mandatory' => true
+								'tl_class' => 'w50 autoheight clr'
 	),
 	'sql'              => "blob NULL"
 );
