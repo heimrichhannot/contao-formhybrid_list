@@ -16,7 +16,7 @@ class FormHybridListRunOnce extends \Controller
 	{
 		$objDatabase = \Database::getInstance();
 
-		if ($objDatabase->fieldExists('tableFields', 'tl_module')) {
+		if (!$objDatabase->fieldExists('tableFields', 'tl_module')) {
 			return;
 		}
 
