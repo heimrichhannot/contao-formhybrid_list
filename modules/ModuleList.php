@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2015 Heimrich & Hannot GmbH
  * @package formhybrid_list
- * @author Dennis Patzer <d.patzer@heimrich-hannot.de>
+ * @author Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
 
@@ -63,9 +63,9 @@ class ModuleList extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
-		$this->strTemplate = $this->customTpl ?: $this->strTemplate;
+		$this->strTemplate = $this->customTpl ?: ($this->isTableList ? 'mod_formhybrid_list_table' : $this->strTemplate);
 		$this->arrSkipInstances = deserialize($this->skipInstances, true);
-		$this->arrEditable = deserialize($this->formHybridEditable, true);
+		$this->arrTableFields = deserialize($this->tableFields, true);
 		$this->addDefaultValues = $this->formHybridAddDefaultValues;
 		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
 		$this->Template->currentSorting = $this->getCurrentSorting();
@@ -80,7 +80,8 @@ class ModuleList extends \Module
 			$this->applyDefaultFilters();
 		}
 
-		$this->Template->header = $this->getHeader();
+		if ($this->hasHeader)
+			$this->Template->header = $this->getHeader();
 
 		if (!$this->hideFilter)
 		{
@@ -120,11 +121,7 @@ class ModuleList extends \Module
 		// set filter values
 		if (!$this->hideFilter && $objFilterSubmission)
 		{
-			$arrFilterFields = $this->formHybridEditable;
-			if ($this->addCustomFilterFields)
-			{
-				$arrFilterFields = $this->customFilterFields;
-			}
+			$arrFilterFields = $this->customFilterFields;
 
 			$this->applyFilters($objFilterSubmission, $arrFilterFields);
 		}
@@ -233,12 +230,25 @@ class ModuleList extends \Module
 		$objDc = new \DC_Table($this->formHybridDataContainer);
 		$objDc->activeRecord = $objItem;
 
-		foreach ($this->arrEditable as $strName)
+		if ($this->isTableList)
 		{
-			$arrItem['fields'][$strName] = $this->getFormattedValueByDca($objItem->{$strName}, $this->dca['fields'][$strName], $objItem, $objDc);
+			foreach ($this->arrTableFields as $strField)
+			{
+				$arrItem['fields'][$strField] = $this->getFormattedValueByDca($objItem->{$strField}, $this->dca['fields'][$strField], $objItem, $objDc);
 
-			// anti-xss: escape everything besides some tags
-			$arrItem['fields'][$strName] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strName, $arrItem['fields'][$strName]);
+				// anti-xss: escape everything besides some tags
+				$arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
+			}
+		}
+		else
+		{
+			foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'] as $strField => $arrData)
+			{
+				$arrItem['fields'][$strField] = $this->getFormattedValueByDca($objItem->{$strField}, $this->dca['fields'][$strField], $objItem, $objDc);
+
+				// anti-xss: escape everything besides some tags
+				$arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
+			}
 		}
 
 		// add raw values
@@ -607,11 +617,11 @@ class ModuleList extends \Module
 				);
 			}
 		}
-		// default -> the first editable field
+		// default -> the first table field
 		else
 		{
 			$arrCurrentSorting = array(
-				'order' => $this->arrEditable[0],
+				'order' => $this->arrTableFields[0],
 				'sort' => 'asc'
 			);
 		}
@@ -624,7 +634,7 @@ class ModuleList extends \Module
 		$arrHeader = array();
 		$arrCurrentSorting = $this->getCurrentSorting();
 
-		foreach ($this->arrEditable as $strName)
+		foreach ($this->arrTableFields as $strName)
 		{
 			$isCurrentOrderField = ($strName == $arrCurrentSorting['order']);
 

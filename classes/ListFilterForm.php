@@ -5,7 +5,7 @@
  *
  * Copyright (c) 2015 Heimrich & Hannot GmbH
  * @package formhybrid_list
- * @author Dennis Patzer <d.patzer@heimrich-hannot.de>
+ * @author Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
 
@@ -24,11 +24,7 @@ class ListFilterForm extends Form
 		$this->isFilterForm = true;
 		$this->objListModule = $objListModule;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_list_filter';
-
-		if ($objModule->addCustomFilterFields)
-		{
-			$objModule->formHybridEditable = $objModule->customFilterFields;
-		}
+		$objModule->formHybridEditable = $objModule->customFilterFields;
 
 		parent::__construct($objModule);
 	}

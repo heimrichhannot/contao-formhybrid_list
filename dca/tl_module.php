@@ -5,7 +5,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{config_legend},formHybridSkipScrollingToSuccessMessage,numberOfItems,perPage,skipFirst,skipInstances,showItemCount,showInitialResults,emptyText,addDetailsCol,formHybridDataContainer,formHybridPalette,formHybridEditable,hideFilter,sortingMode,itemSorting,addCustomFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,imgSize,useDummyImage,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterTitle,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 // members
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
@@ -16,10 +16,10 @@ $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FO
 /**
  * Subpalettes
  */
-$arrDca['palettes']['__selector__'][] = 'addCustomFilterFields';
+$arrDca['palettes']['__selector__'][] = 'isTableList';
 $arrDca['palettes']['__selector__'][] = 'addDetailsCol';
 $arrDca['palettes']['__selector__'][] = 'useDummyImage';
-$arrDca['subpalettes']['addCustomFilterFields'] = 'customFilterFields';
+$arrDca['subpalettes']['isTableList'] = 'hasHeader,tableFields';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 
@@ -40,7 +40,7 @@ $arrDca['fields']['addDetailsCol'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addDetailsCol'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'eval'                    => array('tl_class' => 'w50 clr', 'submitOnChange' => true),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -88,7 +88,7 @@ $arrDca['fields']['showItemCount'] = array(
 	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['showItemCount'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50 clr'),
+	'eval'                    => array('tl_class' => 'w50'),
 	'sql'                     => "char(1) NOT NULL default ''"
 );
 
@@ -100,12 +100,30 @@ $arrDca['fields']['showInitialResults'] = array(
 	'sql'                     => "char(1) NOT NULL default '1'"
 );
 
-$arrDca['fields']['addCustomFilterFields'] = array(
-	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addCustomFilterFields'],
+$arrDca['fields']['isTableList'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['isTableList'],
 	'exclude'                 => true,
 	'inputType'               => 'checkbox',
-	'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+	'eval'                    => array('tl_class' => 'w50 clr', 'submitOnChange' => true),
 	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$arrDca['fields']['hasHeader'] = array(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['hasHeader'],
+	'exclude'                 => true,
+	'inputType'               => 'checkbox',
+	'eval'                    => array('tl_class' => 'w50'),
+	'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$arrDca['fields']['tableFields'] = array
+(
+	'label'            => &$GLOBALS['TL_LANG']['tl_module']['tableFields'],
+	'inputType'        => 'checkboxWizard',
+	'options_callback' => array('tl_form_hybrid_module', 'getFields'),
+	'exclude'          => true,
+	'eval'             => array('multiple' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 autoheight'),
+	'sql'              => "blob NULL",
 );
 
 $arrDca['fields']['customFilterFields'] = array
@@ -207,6 +225,16 @@ $arrDca['fields']['emptyText'] = array
 	'exclude'                 => true,
 	'inputType'               => 'text',
 	'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50 clr'),
+	'sql'                     => "varchar(255) NOT NULL default ''"
+);
+
+$arrDca['fields']['filterTitle'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_module']['filterTitle'],
+	'exclude'                 => true,
+	'inputType'               => 'inputUnit',
+	'options'                 => array('h1', 'h2', 'h3', 'h4', 'h5', 'h6'),
+	'eval'                    => array('maxlength'=>200, 'tl_class'=>'w50'),
 	'sql'                     => "varchar(255) NOT NULL default ''"
 );
 
