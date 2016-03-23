@@ -36,7 +36,10 @@ $GLOBALS['TL_LANG']['tl_module']['dummyImage']							= array('Platzhalterbild', 
 $GLOBALS['TL_LANG']['tl_module']['isTableList']							= array('Als Tabelle ausgeben', 'Wählen Sie diese Option, die Liste in Form einer Tabelle ausgegeben werden soll.');
 $GLOBALS['TL_LANG']['tl_module']['hasHeader']							= array('Kopfzeile ausgeben', 'Wählen Sie diese Option, wenn die Tabelle eine Kopfzeile haben soll.');
 $GLOBALS['TL_LANG']['tl_module']['tableFields']							= array('Tabellenfelder', 'Wählen Sie die Felder aus, die in der Tabelle ausgegeben werden sollen.');
-
+$GLOBALS['TL_LANG']['tl_module']['conjunctiveMultipleFields']			= array('Konjunktiv auszuwertende Mehrfachfelder', 'Wählen Sie die Felder aus, die konjunktiv, also UND-verknüpft ausgewertet werden sollen.');
+$GLOBALS['TL_LANG']['tl_module']['addDisjunctiveFieldGroups']			= array('Disjunktiv auszuwertende Feldergruppen hinzufügen', 'Wählen Sie diese Option, wenn Sie Felder zu disjunktiven, also ODER-verknüpften, Gruppen zusammenfassen möchten.');
+$GLOBALS['TL_LANG']['tl_module']['disjunctiveFieldGroups']				= array('Disjunktiv auszuwertende Feldergruppen', 'Wählen Sie die Felder aus, die zusammen disjunktiv, also ODER-verknüpft, ausgewertet werden sollen.');
+$GLOBALS['TL_LANG']['tl_module']['disjunctiveFieldGroups']['fields']	= 'Felder';
 
 // events
 $GLOBALS['TL_LANG']['tl_module']['filterArchives']						= array('Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.');

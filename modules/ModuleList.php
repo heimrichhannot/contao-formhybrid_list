@@ -28,6 +28,9 @@ class ModuleList extends \Module
 	protected $arrColumns = array();
 	protected $arrValues = array();
 	protected $arrOptions = array();
+	protected $arrSkippedFilterFields = array();
+	protected $arrDisjunctionFieldGroups = array();
+	protected $arrDisjunctionFieldGroupsColumns = array();
 	protected $objFilterForm;
 
 	public function generate()
@@ -68,6 +71,18 @@ class ModuleList extends \Module
 		$this->arrTableFields = deserialize($this->tableFields, true);
 		$this->addDefaultValues = $this->formHybridAddDefaultValues;
 		$this->arrDefaultValues = deserialize($this->formHybridDefaultValues, true);
+		$this->arrConjunctiveMultipleFields = deserialize($this->conjunctiveMultipleFields, true);
+		if ($this->addDisjunctiveFieldGroups)
+		{
+			$arrResult = array();
+
+			foreach (deserialize($this->disjunctiveFieldGroups, true) as $intGroup => $arrGroup)
+			{
+				$arrResult[$intGroup] = $arrGroup['fields'];
+			}
+
+			$this->arrDisjunctionFieldGroups = $arrResult;
+		}
 		$this->Template->currentSorting = $this->getCurrentSorting();
 
 		$this->addColumns();
@@ -465,6 +480,7 @@ class ModuleList extends \Module
 		{
 			$strField = $arrDefaultValue['field'];
 			$varValue = deserialize($arrDefaultValue['value']);
+			$blnSkipValue = false;
 
 			// special handling for tags
 			if (in_array('tags', \ModuleLoader::getActive()) &&
@@ -481,17 +497,21 @@ class ModuleList extends \Module
 						$strColumn .= " OR tl_tag.tag='$strTag'";
 				}
 
-				$this->doApplyDefaultFilters($strField, $strColumn, $varValue, true);
+				$blnSkipValue = true;
 			}
 			else
 			{
 				$strColumn = $strField . '=?';
 				$varValue = $this->replaceInsertTags($varValue);
-
-				$this->doApplyDefaultFilters($strField, $strColumn, $varValue);
 			}
+
+			$this->customizeDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue);
+
+			$this->doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue);
 		}
 	}
+
+	protected function customizeDefaultFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue) {}
 
 	protected function doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue = false)
 	{
@@ -502,8 +522,26 @@ class ModuleList extends \Module
 
 	protected function applyFilters($objFilterSubmission, $arrFilterFields)
 	{
+		if ($this->addDisjunctiveFieldGroups)
+		{
+			// add empty values to processed columns
+			foreach ($this->arrDisjunctionFieldGroups as $intPosition => $arrGroup)
+			{
+				foreach ($arrGroup as $strFilterField)
+				{
+					if (!\Input::get($strFilterField))
+					{
+						$this->arrDisjunctionFieldGroupsColumns[$intPosition][$strFilterField] = null;
+					}
+				}
+			}
+		}
+
 		foreach ($objFilterSubmission->row() as $strField => $varValue)
 		{
+			if (in_array($strField, $this->arrSkippedFilterFields))
+				continue;
+
 			if (in_array($strField, deserialize($arrFilterFields, true)))
 			{
 				if (is_array($varValue) || trim($varValue))
@@ -517,6 +555,7 @@ class ModuleList extends \Module
 
 					$arrDca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField];
 
+					$blnSkipValue = false;
 					switch ($arrDca['inputType'])
 					{
 						case 'tag':
@@ -530,67 +569,79 @@ class ModuleList extends \Module
 									$strColumn .= " OR tl_tag.tag='$strTag'";
 							}
 
-							$this->doApplyFilters($strField, $strColumn, $varValue, true);
+							$blnSkipValue = true;
 							break;
 						case 'text':
 						case 'textarea':
 						case 'password':
 							$strColumn = $strField . " LIKE ?";
 							$varValue = $this->replaceInsertTags('%' . $varValue . '%');
-							$this->doApplyFilters($strField, $strColumn, $varValue);
 							break;
 						default:
 							if ($arrDca['eval']['multiple'])
 							{
-								$varValueIn = array_map(function($val) {
-									return '"' . \Controller::replaceInsertTags($val) . '"';
-								}, $varValue);
-
-								$varValueRegExp = array_map(function($val) {
-									return '\"' . \Controller::replaceInsertTags($val) . '\"';
-								}, $varValue);
-
-								$strColumn = '(' . $strField . ' IN (' . implode(',', $varValueIn) . ') OR ' . $strField . ' REGEXP ("' . implode('|', $varValueRegExp) . '") ' . ')';
-
-								$this->doApplyFilters($strField, $strColumn, $varValue, true);
+								$strColumn = static::generateMultipleValueMatchSql($strField, $varValue,
+										in_array($strField, $this->arrConjunctiveMultipleFields));
+								$blnSkipValue = true;
 							}
 							else
 							{
 								$strColumn = $strField . '=?';
 								$varValue = $this->replaceInsertTags($varValue);
-								$this->doApplyFilters($strField, $strColumn, $varValue);
 							}
 							break;
+					}
+
+					$this->customizeFilters($strField, $strColumn, $varValue, $blnSkipValue);
+
+					if ($this->addDisjunctiveFieldGroups && ($intPosition = $this->getDisjunctionGroupIndex($strField)) > -1)
+					{
+						$this->arrDisjunctionFieldGroupsColumns[$intPosition][$strField] = $strColumn;
+
+						if (!$blnSkipValue)
+						{
+							$this->arrValues[$strField] = $varValue;
+						}
+
+						$arrFields = $this->arrDisjunctionFieldGroups[$intPosition];
+						sort($arrFields);
+						$arrFieldsColumn = array_keys($this->arrDisjunctionFieldGroupsColumns[$intPosition]);
+						sort($arrFieldsColumn);
+
+						if ($arrFields == $arrFieldsColumn)
+						{
+							$this->arrColumns[$strField] = '(' . implode(' OR ', array_map(function($val) {
+								return '(' . $val . ')';
+							}, array_filter($this->arrDisjunctionFieldGroupsColumns[$intPosition]))) . ')';
+						}
+					}
+					else
+					{
+						$this->doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue);
 					}
 				}
 			}
 		}
 	}
 
+	protected function getDisjunctionGroupIndex($strField)
+	{
+		foreach ($this->arrDisjunctionFieldGroups as $intPosition => $arrGroup)
+		{
+			if (in_array($strField, $arrGroup))
+				return $intPosition;
+		}
+
+		return -1;
+	}
+
+	protected function customizeFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue) {}
+
 	protected function doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue = false)
 	{
 		$this->arrColumns[$strField] = $strColumn;
 		if (!$blnSkipValue)
 			$this->arrValues[$strField] = $varValue;
-	}
-
-	protected function getDisjunctiveGroupFilter($arrFilterFields)
-	{
-		$arrFields = array();
-		foreach ($arrFilterFields as $strFilterField)
-		{
-			if (\Input::get($strFilterField))
-			{
-				$arrFields[] = $strFilterField . '=?';
-				$this->arrValues[] = \Input::get($strFilterField);
-			}
-			else
-			{
-				unset($this->arrColumns[$strFilterField]);
-				unset($this->arrValues[$strFilterField]);
-			}
-		}
-		$this->arrColumns[] = '(' . implode(' OR ', $arrFields) . ')';
 	}
 
 	protected function getCurrentSorting()
@@ -749,5 +800,32 @@ class ModuleList extends \Module
 	}
 
 	public function modifyDC(&$arrDca = null) {}
+
+	public static function generateMultipleValueMatchSql($strField, $varValue, $blnConjunction = false)
+	{
+		if ($blnConjunction)
+		{
+			$arrResult = '';
+			foreach ($varValue as $strOption)
+			{
+				$arrResult[] = '(' . $strField . '="' . $strOption . '" OR ' . $strField . ' REGEXP ("\"' . $strOption . '\""))';
+			}
+			$strQuery = implode(' AND ', $arrResult);
+		}
+		else
+		{
+			$arrValueIn = array_map(function($val) {
+				return '"' . \Controller::replaceInsertTags($val) . '"';
+			}, $varValue);
+
+			$arrValueRegExp = array_map(function($val) {
+				return '\"' . \Controller::replaceInsertTags($val) . '\"';
+			}, $varValue);
+
+			$strQuery = '(' . $strField . ' IN (' . implode(',', $arrValueIn) . ') OR ' . $strField . ' REGEXP ("' . implode('|', $arrValueRegExp) . '"))';
+		}
+
+		return $strQuery;
+	}
 
 }
