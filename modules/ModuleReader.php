@@ -69,6 +69,16 @@ class ModuleReader extends \Module
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 		$this->intId = \Input::get('items');
 
+		if ($this->intId && !is_numeric($this->intId))
+		{
+			$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+			if (($objItem = $strItemClass::findOneByAlias($this->intId)) !== null)
+			{
+				$this->intId = $objItem->id;
+			}
+		}
+
 		if (!$this->intId)
 		{
 			StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noIdFound'], $this->id, 'noidfound');
