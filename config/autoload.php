@@ -3,11 +3,9 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2015 Leo Feyer
+ * Copyright (c) 2005-2016 Leo Feyer
  *
- * @package Formhybrid_list
- * @link    https://contao.org
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
+ * @license LGPL-3.0+
  */
 
 
@@ -30,8 +28,11 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\FormHybridList\ModuleNews'                 => 'system/modules/formhybrid_list/modules/ModuleNews.php',
 	'HeimrichHannot\FormHybridList\ModuleList'                 => 'system/modules/formhybrid_list/modules/ModuleList.php',
 	'HeimrichHannot\FormHybridList\ModuleNewsList'             => 'system/modules/formhybrid_list/modules/ModuleNewsList.php',
+	'HeimrichHannot\FormHybridList\ModuleReader'               => 'system/modules/formhybrid_list/modules/ModuleReader.php',
+	'HeimrichHannot\FormHybridList\ModuleMemberReader'         => 'system/modules/formhybrid_list/modules/ModuleMemberReader.php',
 
 	// Classes
+	'HeimrichHannot\FormHybridList\ReaderForm'                 => 'system/modules/formhybrid_list/classes/ReaderForm.php',
 	'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
 
 	// Models
@@ -45,9 +46,14 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'mod_formhybrid_list_table'          => 'system/modules/formhybrid_list/templates',
-	'formhybrid_list_item_default'       => 'system/modules/formhybrid_list/templates',
-	'formhybrid_list_filter'             => 'system/modules/formhybrid_list/templates',
-	'formhybrid_list_item_table_default' => 'system/modules/formhybrid_list/templates',
-	'mod_formhybrid_list'                => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_default'                   => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_list_table'                 => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_item_default'              => 'system/modules/formhybrid_list/templates',
+	'formhybrid_reader_default'                 => 'system/modules/formhybrid_list/templates',
+	'formhybrid_reader_modal_wrapper_bootstrap' => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_filter'                    => 'system/modules/formhybrid_list/templates',
+	'formhybrid_list_item_table_default'        => 'system/modules/formhybrid_list/templates',
+	'formhybrid_reader_modal_bootstrap'         => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_reader'                     => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_list'                       => 'system/modules/formhybrid_list/templates',
 ));

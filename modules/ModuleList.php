@@ -53,12 +53,6 @@ class ModuleList extends \Module
 
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
-		// Set the item from the auto_item parameter
-		if (!isset($_GET['items']) && \Config::get('useAutoItem') && isset($_GET['auto_item']))
-		{
-			\Input::setGet('items', \Input::get('auto_item'));
-		}
-
 		return parent::generate();
 	}
 
@@ -83,7 +77,18 @@ class ModuleList extends \Module
 
 			$this->arrDisjunctionFieldGroups = $arrResult;
 		}
+
 		$this->Template->currentSorting = $this->getCurrentSorting();
+
+		global $objPage;
+		$this->listUrl = \Controller::generateFrontendUrl($objPage->row());
+
+		if ($this->useModal)
+		{
+			$objModalWrapper = new \FrontendTemplate($this->modalWrapperTpl ?: 'formhybrid_reader_modal_wrapper_bootstrap');
+			$objModalWrapper->setData($this->arrData);
+			$this->Template->modalWrapper = $objModalWrapper->parse();
+		}
 
 		$this->addColumns();
 
@@ -231,9 +236,9 @@ class ModuleList extends \Module
 					$objPageJumpTo->row(),
 					'/' . General::getAliasIfAvailable($objItem)
 			);
-
-			$arrItem['detailsUrlBase'] = \Controller::generateFrontendUrl($objPageJumpTo->row());
 		}
+
+		$arrItem['listUrl'] = $this->listUrl;
 	}
 
 	protected function generateFields($objItem)

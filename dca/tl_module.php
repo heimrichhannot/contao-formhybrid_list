@@ -5,12 +5,20 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 /**
  * Palettes
  */
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+// reader
+$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;{misc_legend},imgSize,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
-// members
-$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace('filterArchives', 'filterGroups', $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
+// list
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage,useModal;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(array(
+	'filterArchives',
+	'imgSize'
+), array(
+	'filterGroups',
+	'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag'
+), $arrDca['palettes'][MODULE_FORMHYBRID_LIST]);
 
-// news
 $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
 
 /**
@@ -20,10 +28,14 @@ $arrDca['palettes']['__selector__'][] = 'isTableList';
 $arrDca['palettes']['__selector__'][] = 'addDetailsCol';
 $arrDca['palettes']['__selector__'][] = 'useDummyImage';
 $arrDca['palettes']['__selector__'][] = 'addDisjunctiveFieldGroups';
+$arrDca['palettes']['__selector__'][] = 'addShowConditions';
+$arrDca['palettes']['__selector__'][] = 'useModal';
 $arrDca['subpalettes']['isTableList'] = 'hasHeader,tableFields';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
+$arrDca['subpalettes']['addShowConditions'] = 'showConditions';
+$arrDca['subpalettes']['useModal'] = 'modalWrapperTpl,modalClass,modalInnerClass';
 
 /**
  * Callbacks
@@ -31,6 +43,7 @@ $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
 // adjust labels for suiting a list module
 $arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'adjustPalettesForLists');
 $arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'initSortingMode');
+$arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'modifyPalette');
 
 $arrDca['fields']['formHybridDataContainer']['load_callback']['setDefaultDataContainer'] =
 	array('tl_module_formhybrid_list', 'setDefaultDataContainer');
@@ -253,7 +266,7 @@ $arrFields = array(
 		'inputType'               => 'select',
 		'options_callback'        => array('tl_module_formhybrid_list', 'getMultipleFields'),
 		'eval'                    => array('tl_class'=>'w50', 'multiple' => true, 'chosen' => true),
-		'sql'                     => "varchar(255) NOT NULL default ''"
+		'sql'                     => "blob NULL"
 	),
 	'addDisjunctiveFieldGroups' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addDisjunctiveFieldGroups'],
@@ -288,11 +301,82 @@ $arrFields = array(
 		),
 		'sql'       => "blob NULL",
 	),
+	'memberContentArchiveTags' => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['memberContentArchiveTags'],
+		'inputType'        => 'select',
+		'eval'             => array(
+			'multiple' => true,
+			'tl_class' => 'w50',
+			'chosen' => true
+		),
+		'foreignKey' => 'tl_member_content_archive_tag.title',
+		'sql'        => 'blob NULL',
+	),
+	'memberContentArchiveTeaserTag' => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['memberContentArchiveTeaserTag'],
+		'inputType'        => 'select',
+		'eval'             => array(
+			'tl_class' => 'w50',
+			'includeBlankOption' => true
+		),
+		'foreignKey' => 'tl_member_content_archive_tag.title',
+		'sql'        => 'blob NULL',
+	),
+	'useModal' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['useModal'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50 clr', 'submitOnChange' => true),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'modalWrapperTpl' => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalWrapperTpl'],
+		'exclude'          => true,
+		'inputType'        => 'select',
+		'default'          => 'formhybrid_reader_modal_wrapper_bootstrap',
+		'options_callback' => array('tl_module_formhybrid_list', 'getFormHybridReaderModalWrapperTemplates'),
+		'eval'             => array('tl_class' => 'w50 clr'),
+		'sql'              => "varchar(255) NOT NULL default ''",
+	),
+	'modalTpl' => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalTpl'],
+		'exclude'          => true,
+		'inputType'        => 'select',
+		'default'          => 'formhybrid_reader_modal_bootstrap',
+		'options_callback' => array('tl_module_formhybrid_list', 'getFormHybridReaderModalTemplates'),
+		'eval'             => array('tl_class' => 'w50'),
+		'sql'              => "varchar(255) NOT NULL default ''",
+	),
+	'modalClass' => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalClass'],
+		'exclude'          => true,
+		'inputType'        => 'text',
+		'eval'             => array('tl_class' => 'w50'),
+		'sql'              => "varchar(255) NOT NULL default ''",
+	),
+	'modalInnerClass' => array
+	(
+		'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalInnerClass'],
+		'exclude'          => true,
+		'inputType'        => 'text',
+		'eval'             => array('tl_class' => 'w50'),
+		'sql'              => "varchar(255) NOT NULL default ''",
+	)
 );
 
 $arrDca['fields'] += $arrFields;
 
 $arrDca['fields']['formHybridCustomSubTemplates']['eval']['tl_class'] = 'w50';
+
+$arrDca['fields']['addShowConditions']			= $arrDca['fields']['formHybridAddDefaultValues'];
+$arrDca['fields']['addShowConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['addShowConditions'];
+$arrDca['fields']['showConditions']				= $arrDca['fields']['formHybridDefaultValues'];
+$arrDca['fields']['showConditions']['label']	= &$GLOBALS['TL_LANG']['tl_module']['showConditions'];
 
 class tl_module_formhybrid_list {
 
@@ -411,6 +495,16 @@ class tl_module_formhybrid_list {
 		return \Controller::getTemplateGroup('formhybrid_list_item_');
 	}
 
+	public function getFormHybridReaderModalWrapperTemplates()
+	{
+		return \Controller::getTemplateGroup('formhybrid_reader_modal_wrapper_');
+	}
+
+	public function getFormHybridReaderModalTemplates()
+	{
+		return \Controller::getTemplateGroup('formhybrid_reader_modal_');
+	}
+
 	public static function getFields($objDc)
 	{
 		return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false);
@@ -428,5 +522,23 @@ class tl_module_formhybrid_list {
 	public static function getMultipleFields(\DataContainer $objDc) {
 		return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false,
 				array('checkbox', 'select'));
+	}
+
+	public static function modifyPalette(\DataContainer $objDc)
+	{
+		\Controller::loadDataContainer('tl_module');
+		\System::loadLanguageFile('tl_module');
+
+		if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
+		{
+			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
+
+			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+					$objModule->type, 'formhybrid_list', 'HeimrichHannot\FormHybridList\ModuleReader'))
+			{
+				unset($arrDca['fields']['itemTemplate']['options_callback']);
+				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('formhybrid_reader_');
+			}
+		}
 	}
 }

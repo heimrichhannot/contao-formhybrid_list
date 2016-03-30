@@ -20,4 +20,8 @@
 			<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
 		<?php endif; ?>
 	</div>
+
+	<?php if ($this->useModal): ?>
+		<?= $this->modalWrapper ?>
+	<?php endif; ?>
 </div>
