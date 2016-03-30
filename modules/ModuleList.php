@@ -255,7 +255,7 @@ class ModuleList extends \Module
 		{
 			foreach ($this->arrTableFields as $strField)
 			{
-				$arrItem['fields'][$strField] = $this->getFormattedValueByDca($objItem->{$strField}, $this->dca['fields'][$strField], $objItem, $objDc);
+				$arrItem['fields'][$strField] = static::getFormattedValueByDca($objItem->{$strField}, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 
 				// anti-xss: escape everything besides some tags
 				$arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
@@ -265,7 +265,7 @@ class ModuleList extends \Module
 		{
 			foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'] as $strField => $arrData)
 			{
-				$arrItem['fields'][$strField] = $this->getFormattedValueByDca($objItem->{$strField}, $this->dca['fields'][$strField], $objItem, $objDc);
+				$arrItem['fields'][$strField] = static::getFormattedValueByDca($objItem->{$strField}, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 
 				// anti-xss: escape everything besides some tags
 				$arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
@@ -287,7 +287,7 @@ class ModuleList extends \Module
 		return $arrItem;
 	}
 
-	public function getFormattedValueByDca($value, $arrData, $objItem, $objDc)
+	public static function getFormattedValueByDca($value, $strTable, $arrData, $objItem, $objDc)
 	{
 		$value = deserialize($value);
 		$rgxp = $arrData['eval']['rgxp'];
@@ -311,7 +311,7 @@ class ModuleList extends \Module
 		}
 		elseif ($arrData['inputType'] == 'tag')
 		{
-			if (($arrTags = \HeimrichHannot\TagsPlus\TagsPlus::loadTags($this->formHybridDataContainer, $objItem->id)) !== null)
+			if (($arrTags = \HeimrichHannot\TagsPlus\TagsPlus::loadTags($strTable, $objItem->id)) !== null)
 				$value = implode(', ', $arrTags);
 		}
 		elseif ($arrData['inputType'] == 'multifileupload')

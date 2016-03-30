@@ -40,6 +40,8 @@ class ModuleReader extends \Module
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
 		\System::loadLanguageFile($this->formHybridDataContainer);
 
+		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
+
 		// Set the item from the auto_item parameter
 		if (!isset($_GET['items']) && \Config::get('useAutoItem') && isset($_GET['auto_item']))
 		{
@@ -105,12 +107,12 @@ class ModuleReader extends \Module
 					{
 						$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
 						$objModalWrapper->setData($this->arrData);
-						$objModalWrapper->item = $this->parseItem($objItem);
+						$objModalWrapper->item = $this->replaceInsertTags($this->parseItem($objItem));
 						die($objModalWrapper->parse());
 					}
 					else
 					{
-						$this->Template->item = $this->parseItem($objItem);
+						$this->Template->item = $this->replaceInsertTags($this->parseItem($objItem));
 					}
 				}
 			}
@@ -124,12 +126,7 @@ class ModuleReader extends \Module
 
 	protected function parseItem($objItem, $strClass='', $intCount=0)
 	{
-		$objTemplate = new \FrontendTemplate($this->itemTemplate);
-
-		$objTemplate->setData($objItem->row());
-		$objTemplate->class = $strClass;
-		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
-
+		// prepare item
 		$objDc = new \DC_Table($this->formHybridDataContainer);
 		$objDc->activeRecord = $objItem;
 
@@ -139,7 +136,7 @@ class ModuleReader extends \Module
 		// transform and escape values
 		foreach ($objItem->row() as $strField => $varValue)
 		{
-			$varValue = FormHelper::getFormatedValueByDca($varValue, $this->dca['fields'][$strField], $objDc);
+			$varValue = ModuleList::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 			$objItem->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
 		}
 
@@ -148,6 +145,12 @@ class ModuleReader extends \Module
 			$objItem->isPublished = ($this->invertPublishedField ?
 					!$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
 		}
+
+		$objTemplate = new \FrontendTemplate($this->itemTemplate);
+
+		$objTemplate->setData($objItem->row());
+		$objTemplate->class = $strClass;
+		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
 
 		// HOOK: add custom logic
 		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
