@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2015 Heimrich & Hannot GmbH
+ * Copyright (c) Heimrich & Hannot GmbH
  * @package frontendedit
  * @author Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
@@ -18,9 +18,6 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 class ModuleReader extends \Module
 {
 	protected $strTemplate = 'mod_formhybrid_reader';
-	protected $arrSubmitCallbacks = array();
-	protected $strFormClass = 'HeimrichHannot\\FormHybridList\\ReaderForm';
-	protected $objForm;
 
 	public function generate()
 	{
@@ -103,6 +100,13 @@ class ModuleReader extends \Module
 					// redirect on specific field value
 					DC_Hybrid::doFieldDependentRedirect($this, $objItem);
 
+					// page title
+					if ($this->setPageTitle)
+					{
+						global $objPage;
+						$objPage->pageTitle = $objItem->{$this->pageTitleField};
+					}
+
 					if (\Input::get('isAjax'))
 					{
 						$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
@@ -136,7 +140,7 @@ class ModuleReader extends \Module
 		// transform and escape values
 		foreach ($objItem->row() as $strField => $varValue)
 		{
-			$varValue = ModuleList::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
+			$varValue = Helper::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 			$objItem->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
 		}
 
@@ -189,11 +193,4 @@ class ModuleReader extends \Module
 
 		return true;
 	}
-
-	public function setSubmitCallbacks(array $callbacks)
-	{
-		$this->arrSubmitCallbacks = $callbacks;
-	}
-
-	public function modifyDC(&$arrDca = null) {}
 }

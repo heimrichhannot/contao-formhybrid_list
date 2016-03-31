@@ -32,7 +32,7 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\FormHybridList\ModuleMemberReader'         => 'system/modules/formhybrid_list/modules/ModuleMemberReader.php',
 
 	// Classes
-	'HeimrichHannot\FormHybridList\ReaderForm'                 => 'system/modules/formhybrid_list/classes/ReaderForm.php',
+	'HeimrichHannot\FormHybridList\Helper'                     => 'system/modules/formhybrid_list/classes/Helper.php',
 	'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
 
 	// Models

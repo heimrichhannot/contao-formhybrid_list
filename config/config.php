@@ -2,7 +2,7 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2015 Heimrich & Hannot GmbH
+ * Copyright (c) Heimrich & Hannot GmbH
  *
  * @package formhybrid_list
  * @author  Dennis Patzer
