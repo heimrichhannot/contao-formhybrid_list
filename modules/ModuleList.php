@@ -374,7 +374,7 @@ class ModuleList extends \Module
 		// hide unpublished
 		if ($this->hideUnpublishedItems)
 		{
-			$this->arrColumns[$this->publishedField] = $this->publishedField . '=' . ($this->invertPublishedField ? '0' : '1');
+			$this->arrColumns[$this->publishedField] = $this->formHybridDataContainer . '.' . $this->publishedField . '=' . ($this->invertPublishedField ? '0' : '1');
 		}
 	}
 

@@ -45,8 +45,10 @@ class ModuleReader extends \Module
 			\Input::setGet('items', \Input::get('auto_item'));
 		}
 
+		$this->intId = \Input::get('items') ?: \Input::get('id');
+
 		// Do not index or cache the page if no item has been specified
-		if (!\Input::get('items'))
+		if (!$this->intId)
 		{
 			/** @var \PageModel $objPage */
 			global $objPage;
@@ -66,7 +68,6 @@ class ModuleReader extends \Module
 		$this->Template->hl = $this->hl;
 
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
-		$this->intId = \Input::get('items');
 
 		if ($this->intId && !is_numeric($this->intId))
 		{
@@ -140,6 +141,9 @@ class ModuleReader extends \Module
 		// transform and escape values
 		foreach ($objItem->row() as $strField => $varValue)
 		{
+			if ($strField == 'raw')
+				continue;
+
 			$varValue = Helper::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 			$objItem->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
 		}
