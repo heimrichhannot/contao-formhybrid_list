@@ -11,6 +11,8 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use HeimrichHannot\Haste\Util\Files;
+
 class Helper extends \Controller
 {
 	public static function getFormattedValueByDca($value, $strTable, $arrData, $objItem, $objDc)
@@ -100,7 +102,7 @@ class Helper extends \Controller
 		}
 		elseif (\Validator::isBinaryUuid($value))
 		{
-			$value = \String::binToUuid($value);
+			$value = \StringUtil::binToUuid($value);
 		}
 
 		// Convert special characters (see #1890)
