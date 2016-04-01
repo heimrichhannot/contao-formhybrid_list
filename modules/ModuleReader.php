@@ -159,6 +159,8 @@ class ModuleReader extends \Module
 		$objTemplate->setData($objItem->row());
 		$objTemplate->class = $strClass;
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
+		$objTemplate->useDummyImage = $this->useDummyImage;
+		$objTemplate->dummyImage = $this->dummyImage;
 
 		// HOOK: add custom logic
 		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
