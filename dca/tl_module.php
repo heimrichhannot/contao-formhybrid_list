@@ -30,12 +30,14 @@ $arrDca['palettes']['__selector__'][] = 'useDummyImage';
 $arrDca['palettes']['__selector__'][] = 'addDisjunctiveFieldGroups';
 $arrDca['palettes']['__selector__'][] = 'addShowConditions';
 $arrDca['palettes']['__selector__'][] = 'useModal';
+$arrDca['palettes']['__selector__'][] = 'setPageTitle';
 $arrDca['subpalettes']['isTableList'] = 'hasHeader,tableFields';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
 $arrDca['subpalettes']['addShowConditions'] = 'showConditions';
 $arrDca['subpalettes']['useModal'] = 'modalWrapperTpl,modalClass,modalInnerClass';
+$arrDca['subpalettes']['setPageTitle'] = 'pageTitleField,pageTitlePattern';
 
 /**
  * Callbacks
@@ -159,13 +161,28 @@ $arrFields = array(
 		'eval'                    => array('multiple' => true, 'chosen' => true, 'tl_class' => 'w50', 'doNotCopy'=>true),
 		'sql'                     => "blob NULL"
 	),
+	'setPageTitle' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['setPageTitle'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
 	'pageTitleField' => array
 	(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['pageTitleField'],
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options_callback'        => array('tl_module_formhybrid_list', 'getTextFields'),
-		'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true),
+		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true),
+		'sql'                     => "varchar(255) NOT NULL default ''"
+	),
+	'pageTitlePattern' => array
+	(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['pageTitlePattern'],
+		'exclude'                 => true,
+		'inputType'               => 'text',
+		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
 		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
 	'additionalWhereSql' => array

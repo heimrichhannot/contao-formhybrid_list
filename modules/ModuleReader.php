@@ -106,6 +106,13 @@ class ModuleReader extends \Module
 					{
 						global $objPage;
 						$objPage->pageTitle = $objItem->{$this->pageTitleField};
+
+						if ($this->pageTitlePattern)
+						{
+							$objPage->pageTitle = preg_replace_callback('@%([^%]+)%@i', function ($arrMatches) use ($objItem) {
+								return $objItem->{$arrMatches[1]};
+							}, $this->pageTitlePattern);
+						}
 					}
 
 					if (\Input::get('isAjax'))
