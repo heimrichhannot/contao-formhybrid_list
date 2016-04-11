@@ -524,19 +524,31 @@ class tl_module_formhybrid_list {
 
 	public static function getFields($objDc)
 	{
+		if (!$objDc->activeRecord->formHybridDataContainer)
+			return array();
+
 		return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false);
 	}
 
 	public static function getTextFields(\DataContainer $objDc) {
+		if (!$objDc->activeRecord->formHybridDataContainer)
+			return array();
+
 		return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false, 'text');
 	}
 
 	public static function getBooleanFields(\DataContainer $objDc) {
+		if (!$objDc->activeRecord->formHybridDataContainer)
+			return array();
+
 		return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false,
 			array('radio', 'checkbox'));
 	}
 
 	public static function getMultipleFields(\DataContainer $objDc) {
+		if (!$objDc->activeRecord->formHybridDataContainer)
+			return array();
+
 		return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false,
 				array('checkbox', 'select'));
 	}
