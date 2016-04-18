@@ -238,7 +238,6 @@ class ModuleList extends \Module
 			);
 		}
 
-		$arrItem['addDetailsUrl'] = $this->addDetailsUrl;
 		$arrItem['listUrl'] = $this->listUrl;
 	}
 
