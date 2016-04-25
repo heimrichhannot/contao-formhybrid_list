@@ -18,11 +18,11 @@ class ListFilterForm extends Form
 	protected $isFilterForm = true;
 	protected $objListModule;
 
-	public function __construct($objModule, $objListModule)
+	public function __construct($objModule)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_GET;
 		$this->isFilterForm = true;
-		$this->objListModule = $objListModule;
+		$this->objListModule = $objModule;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_list_filter';
 		$objModule->formHybridEditable = $objModule->customFilterFields;
 

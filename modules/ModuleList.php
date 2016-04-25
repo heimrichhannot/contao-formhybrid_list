@@ -106,7 +106,7 @@ class ModuleList extends \Module
 
 		if (!$this->hideFilter)
 		{
-			$this->objFilterForm = new ListFilterForm($this->objModel,  $this);
+			$this->objFilterForm = new ListFilterForm($this,  $this);
 			$this->Template->filterForm = $this->objFilterForm->generate();
 		}
 
