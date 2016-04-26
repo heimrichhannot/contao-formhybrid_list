@@ -6,4 +6,8 @@
 	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
 	<?php echo $this->item ?: ''; ?>
+
+	<?php if ($this->addBackButton): ?>
+		<a class="back" onclick="history.go(-1)" href="#"><?= $GLOBALS['TL_LANG']['MSC']['back'] ?></a>
+	<?php endif; ?>
 </div>

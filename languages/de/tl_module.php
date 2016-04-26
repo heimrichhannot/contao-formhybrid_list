@@ -24,6 +24,7 @@ $arrLang['customFilterFields']					= array('Felder zur Filterung', 'Wählen Sie 
 $arrLang['setPageTitle']						= array('Instanzfeld als Seitentitel setzen', 'Wählen Sie diese Option, wenn nach dem Anlegen einer Instanz ein Feld als Seitentitel gesetzt werden soll (bspw. der Titel).');
 $arrLang['pageTitleField']						= array('Seitentitelfeld', 'Wählen Sie das Feld aus, dass dem Seitentitel zugewiesen werden soll.');
 $arrLang['pageTitlePattern']					= array('Seitentitelmuster', 'Geben Sie hier ein Muster für aus mehreren Feldern zusammengesetzte Seitentitel in der Form "%firstname% %lastname%" ein.');
+$arrLang['addBackButton']						= array('"Zurück"-Button hinzufügen', 'Wählen Sie diese Option, um dem Modul einen "Zurück"-Button hinzuzufügen.');
 $arrLang['additionalWhereSql']					= array('Zusätzliches WHERE-SQL', 'Geben Sie hier SQL ein, welches dem WHERE-Statement hinzugefügt wird.');
 $arrLang['additionalSelectSql']					= array('Zusätzliches SELECT-SQL', 'Geben Sie hier SQL ein, welches vor dem FROM-Statement eingefügt wird (bspw. , IF(field1 = \'\', field2, field1) as somename).');
 $arrLang['additionalSql']						= array('Zusätzliches SQL', 'Geben Sie hier SQL ein, welches nach dem SELECT-Statement eingefügt wird (bspw. INNER JOIN tl_tag ON tl_calendar_events.id = tl_tag.tid).');
