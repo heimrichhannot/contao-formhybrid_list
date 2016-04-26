@@ -45,7 +45,7 @@ class ModuleReader extends \Module
 			\Input::setGet('items', \Input::get('auto_item'));
 		}
 
-		$this->intId = \Input::get('items') ?: \Input::get('id');
+		$this->intId = $this->intId ?: (\Input::get('items') ?: \Input::get('id'));
 
 		// Do not index or cache the page if no item has been specified
 		if (!$this->intId)
@@ -138,32 +138,35 @@ class ModuleReader extends \Module
 
 	protected function parseItem($objItem, $strClass='', $intCount=0)
 	{
+		// work on a cloned item for supporting multiple reader modules on a single page
+		$objItemTmp = unserialize(serialize($objItem));
+
 		// prepare item
 		$objDc = new \DC_Table($this->formHybridDataContainer);
-		$objDc->activeRecord = $objItem;
+		$objDc->activeRecord = $objItemTmp;
 
 		// untransformed values in the raw array
-		$objItem->raw = $objItem->row();
+		$objItemTmp->raw = $objItemTmp->row();
 
 		// transform and escape values
-		foreach ($objItem->row() as $strField => $varValue)
+		foreach ($objItemTmp->row() as $strField => $varValue)
 		{
 			if ($strField == 'raw')
 				continue;
 
-			$varValue = Helper::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
-			$objItem->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
+			$varValue = Helper::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItemTmp, $objDc);
+			$objItemTmp->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
 		}
 
 		if ($this->publishedField)
 		{
-			$objItem->isPublished = ($this->invertPublishedField ?
-					!$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
+			$objItemTmp->isPublished = ($this->invertPublishedField ?
+					!$objItemTmp->{$this->publishedField} : $objItemTmp->{$this->publishedField});
 		}
 
 		$objTemplate = new \FrontendTemplate($this->itemTemplate);
 
-		$objTemplate->setData($objItem->row());
+		$objTemplate->setData($objItemTmp->row());
 		$objTemplate->class = $strClass;
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
 		$objTemplate->useDummyImage = $this->useDummyImage;
@@ -175,7 +178,7 @@ class ModuleReader extends \Module
 			foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback)
 			{
 				$this->import($callback[0]);
-				$this->$callback[0]->$callback[1]($objTemplate, $objItem, $this);
+				$this->$callback[0]->$callback[1]($objTemplate, $objItemTmp, $this);
 			}
 		}
 

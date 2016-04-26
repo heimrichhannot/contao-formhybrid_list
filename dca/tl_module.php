@@ -420,7 +420,7 @@ class tl_module_formhybrid_list {
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-					$objModule->type, 'formhybrid_list', 'HeimrichHannot\FormHybridList\ModuleList'))
+					$objModule->type, 'HeimrichHannot\FormHybridList\ModuleList'))
 			{
 				// override labels for suiting a list module
 				$arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
@@ -563,7 +563,7 @@ class tl_module_formhybrid_list {
 			$arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
 			if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-					$objModule->type, 'formhybrid_list', 'HeimrichHannot\FormHybridList\ModuleReader'))
+					$objModule->type, 'HeimrichHannot\FormHybridList\ModuleReader'))
 			{
 				unset($arrDca['fields']['itemTemplate']['options_callback']);
 				$arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('formhybrid_reader_');
