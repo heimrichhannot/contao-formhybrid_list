@@ -166,7 +166,8 @@ class ModuleReader extends \Module
 
 		$objTemplate = new \FrontendTemplate($this->itemTemplate);
 
-		$objTemplate->setData($objItemTmp->row());
+		// items contain module and item params (higher priority: item)
+		$objTemplate->setData($objItemTmp->row() + $this->arrData);
 		$objTemplate->class = $strClass;
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
 		$objTemplate->useDummyImage = $this->useDummyImage;

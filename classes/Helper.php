@@ -25,6 +25,19 @@ class Helper extends \Controller
 		$rgxp = $arrData['eval']['rgxp'];
 
 		// Call the options_callback to get the formated value
+		if ((is_array($arrData['options_callback']) || is_callable($arrData['options_callback']))) {
+			if (is_array($arrData['options_callback'])) {
+				$strClass  = $arrData['options_callback'][0];
+				$strMethod = $arrData['options_callback'][1];
+
+				$objInstance = \Controller::importStatic($strClass);
+
+				$opts = $objInstance->$strMethod($objDc);
+			} elseif (is_callable($arrData['options_callback'])) {
+				$opts = $arrData['options_callback']($objDc);
+			}
+		}
+
 		if ($rgxp == 'date')
 		{
 			$value = \Date::parse(\Config::get('dateFormat'), $value);
