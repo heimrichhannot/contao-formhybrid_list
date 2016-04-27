@@ -18,6 +18,8 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 class ModuleReader extends \Module
 {
 	protected $strTemplate = 'mod_formhybrid_reader';
+	// avoid any messages -> handled sub class
+	protected $blnSilentMode = false;
 
 	public function generate()
 	{
@@ -55,8 +57,6 @@ class ModuleReader extends \Module
 
 			$objPage->noSearch = 1;
 			$objPage->cache = 0;
-
-			return '';
 		}
 
 		return parent::generate();
@@ -81,57 +81,62 @@ class ModuleReader extends \Module
 
 		if (!$this->intId)
 		{
-			StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noIdFound'], $this->id, 'noidfound');
-			return;
+			if (!$this->blnSilentMode)
+				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noIdFound'], $this->id, 'noidfound');
+			$this->Template->invalid = true;
 		}
 		else
 		{
 			if (!$this->checkEntityExists($this->intId))
 			{
-				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
-				return;
-			}
-
-			if ($this->checkPermission($this->intId))
-			{
-				$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
-
-				if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
-				{
-					// redirect on specific field value
-					DC_Hybrid::doFieldDependentRedirect($this, $objItem);
-
-					// page title
-					if ($this->setPageTitle)
-					{
-						global $objPage;
-						$objPage->pageTitle = $objItem->{$this->pageTitleField};
-
-						if ($this->pageTitlePattern)
-						{
-							$objPage->pageTitle = preg_replace_callback('@%([^%]+)%@i', function ($arrMatches) use ($objItem) {
-								return $objItem->{$arrMatches[1]};
-							}, $this->pageTitlePattern);
-						}
-					}
-
-					if (\Input::get('isAjax'))
-					{
-						$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-						$objModalWrapper->setData($this->arrData);
-						$objModalWrapper->item = $this->replaceInsertTags($this->parseItem($objItem));
-						die($objModalWrapper->parse());
-					}
-					else
-					{
-						$this->Template->item = $this->replaceInsertTags($this->parseItem($objItem));
-					}
-				}
+				if (!$this->blnSilentMode)
+					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
+				$this->Template->invalid = true;
 			}
 			else
 			{
-				StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
-				return;
+				if ($this->checkPermission($this->intId))
+				{
+					$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+					if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
+					{
+						// redirect on specific field value
+						DC_Hybrid::doFieldDependentRedirect($this, $objItem);
+
+						// page title
+						if ($this->setPageTitle)
+						{
+							global $objPage;
+							$objPage->pageTitle = $objItem->{$this->pageTitleField};
+
+							if ($this->pageTitlePattern)
+							{
+								$objPage->pageTitle = preg_replace_callback('@%([^%]+)%@i', function ($arrMatches) use ($objItem) {
+									return $objItem->{$arrMatches[1]};
+								}, $this->pageTitlePattern);
+							}
+						}
+
+						if (\Input::get('isAjax'))
+						{
+							$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
+							$objModalWrapper->setData($this->arrData);
+							$objModalWrapper->item = $this->replaceInsertTags($this->parseItem($objItem));
+							die($objModalWrapper->parse());
+						}
+						else
+						{
+							$this->Template->item = $this->replaceInsertTags($this->parseItem($objItem));
+						}
+					}
+				}
+				else
+				{
+					if (!$this->blnSilentMode)
+						StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
+					$this->Template->invalid = true;
+				}
 			}
 		}
 	}
