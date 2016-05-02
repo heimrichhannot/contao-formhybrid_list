@@ -8,8 +8,4 @@
 	<?php if (!$this->invalid): ?>
 		<?php echo $this->item ?: ''; ?>
 	<?php endif; ?>
-
-	<?php if ($this->addBackButton): ?>
-		<a class="back" onclick="history.go(-1)" href="#"><?= $GLOBALS['TL_LANG']['MSC']['back'] ?></a>
-	<?php endif; ?>
 </div>

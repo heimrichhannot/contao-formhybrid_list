@@ -6,7 +6,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;{misc_legend},imgSize,useDummyImage,setPageTitle,addBackButton;{template_legend},itemTemplate,modalTpl,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
 // list
@@ -184,13 +184,6 @@ $arrFields = array(
 		'inputType'               => 'text',
 		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
 		'sql'                     => "varchar(255) NOT NULL default ''"
-	),
-	'addBackButton' => array(
-		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addBackButton'],
-		'exclude'                 => true,
-		'inputType'               => 'checkbox',
-		'eval'                    => array('tl_class' => 'w50'),
-		'sql'                     => "char(1) NOT NULL default ''"
 	),
 	'additionalWhereSql' => array
 	(
