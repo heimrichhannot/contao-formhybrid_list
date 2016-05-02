@@ -32,9 +32,20 @@ class Helper extends \Controller
 
 				$objInstance = \Controller::importStatic($strClass);
 
-				$opts = $objInstance->$strMethod($objDc);
+				try {
+					$opts = @$objInstance->$strMethod($objDc);
+				} catch (\Exception $e)
+				{
+					\System::log("$strClass::$strMethod raised an Exception: $e->getMessage()", __METHOD__, TL_ERROR);
+				}
 			} elseif (is_callable($arrData['options_callback'])) {
-				$opts = $arrData['options_callback']($objDc);
+				try {
+					$opts = @$arrData['options_callback']($objDc);
+				} catch (\Exception $e)
+				{
+					$strCallback = serialize($arrData['options_callback']);
+					\System::log("$strCallback raised an Exception: $e->getMessage()", __METHOD__, TL_ERROR);
+				}
 			}
 		}
 
