@@ -53,6 +53,11 @@ class ModuleList extends \Module
 
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
+		// add the class
+		$arrCssID = $this->cssID;
+		$arrCssID[1] = $arrCssID[1] ? $arrCssID[1] . ' formhybrid-list' : 'formhybrid-list';
+		$this->cssID = $arrCssID;
+
 		return parent::generate();
 	}
 

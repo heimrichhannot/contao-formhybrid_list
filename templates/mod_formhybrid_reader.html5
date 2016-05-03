@@ -1,11 +1,11 @@
-<div class="<?php echo $this->class; ?> formhybrid-reader block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-	<?php if ($this->headline): ?>
-		<<?php echo $this->hl; ?>><?php echo $this->headline; ?></<?php echo $this->hl; ?>>
-	<?php endif; ?>
+<?php $this->extend('block_searchable'); ?>
 
-	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
+<?php $this->block('content'); ?>
 
-	<?php if (!$this->invalid): ?>
-		<?php echo $this->item ?: ''; ?>
-	<?php endif; ?>
-</div>
+<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
+
+<?php if (!$this->invalid): ?>
+	<?php echo $this->item ?: ''; ?>
+<?php endif; ?>
+
+<?php $this->endblock(); ?>

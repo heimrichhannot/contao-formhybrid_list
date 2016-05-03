@@ -49,6 +49,11 @@ class ModuleReader extends \Module
 
 		$this->intId = $this->intId ?: (\Input::get('items') ?: \Input::get('id'));
 
+		// add the class
+		$arrCssID = $this->cssID;
+		$arrCssID[1] = $arrCssID[1] ? $arrCssID[1] . ' formhybrid-reader' : 'formhybrid-reader';
+		$this->cssID = $arrCssID;
+
 		// Do not index or cache the page if no item has been specified
 		if (!$this->intId)
 		{
