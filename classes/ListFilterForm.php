@@ -29,6 +29,7 @@ class ListFilterForm extends Form
 		$arrHeadline = deserialize($objModule->filterHeadline);
 		$objModule->filterHeadline = is_array($arrHeadline) ? $arrHeadline['value'] : $arrHeadline;
 		$objModule->filterHl = is_array($arrHeadline) ? $arrHeadline['unit'] : 'h1';
+		$objModule->formHybridSkipValidation = true;
 
 		parent::__construct($objModule);
 	}

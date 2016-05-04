@@ -249,6 +249,7 @@ class ModuleList extends \Module
 	protected function generateFields($objItem)
 	{
 		$arrItem = array();
+		$arrDca = &$GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
 		// always add id
 		$arrItem['fields']['id'] = $objItem->id;
@@ -262,13 +263,20 @@ class ModuleList extends \Module
 			{
 				$arrItem['fields'][$strField] = Helper::getFormattedValueByDca($objItem->{$strField}, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 
+				if (is_array($arrDca['fields'][$strField]['load_callback'])) {
+					foreach ($arrDca['fields'][$strField]['load_callback'] as $callback) {
+						$this->import($callback[0]);
+						$arrItem['fields'][$strField] = $this->$callback[0]->$callback[1]($arrItem['fields'][$strField], $this);
+					}
+				}
+
 				// anti-xss: escape everything besides some tags
 				$arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
 			}
 		}
 		else
 		{
-			foreach ($GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'] as $strField => $arrData)
+			foreach ($arrDca['fields'] as $strField => $arrData)
 			{
 				$arrItem['fields'][$strField] = Helper::getFormattedValueByDca($objItem->{$strField}, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
 
@@ -372,7 +380,7 @@ class ModuleList extends \Module
 
 			if (!empty($arrFilterArchives))
 			{
-				$this->arrColumns['pid'] = 'pid IN (' . implode(',', $arrFilterArchives) . ')';
+				$this->arrColumns['pid'] = $this->formHybridDataContainer . '.pid IN (' . implode(',', $arrFilterArchives) . ')';
 			}
 		}
 
