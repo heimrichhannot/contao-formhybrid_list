@@ -10,7 +10,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,ty
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
 // list
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage,useModal;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage,useModal;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(array(
 	'filterArchives',
 	'imgSize'
@@ -263,7 +263,7 @@ $arrFields = array(
 		'exclude'          => true,
 		'inputType'        => 'select',
 		'options_callback' => array('tl_module_formhybrid_list', 'getFormHybridListItemTemplates'),
-		'eval'             => array('tl_class' => 'w50 clr'),
+		'eval'             => array('tl_class' => 'w50 clr', 'includeBlankOption' => true),
 		'sql'              => "varchar(255) NOT NULL default ''",
 	),
 	'useDummyImage' => array(

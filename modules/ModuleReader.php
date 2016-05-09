@@ -174,7 +174,7 @@ class ModuleReader extends \Module
 					!$objItemTmp->{$this->publishedField} : $objItemTmp->{$this->publishedField});
 		}
 
-		$objTemplate = new \FrontendTemplate($this->itemTemplate);
+		$objTemplate = new \FrontendTemplate($this->itemTemplate ?: 'formhybrid_reader_default');
 
 		// items contain module and item params (higher priority: item)
 		$objTemplate->setData($objItemTmp->row() + $this->arrData);

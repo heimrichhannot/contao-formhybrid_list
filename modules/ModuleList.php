@@ -327,7 +327,7 @@ class ModuleList extends \Module
 
 	protected function getItem($arrItem, $strClass='', $intCount=0)
 	{
-		$objTemplate = new \FrontendTemplate($this->itemTemplate);
+		$objTemplate = new \FrontendTemplate($this->itemTemplate ?: 'formhybrid_list_item_default');
 
 		$objTemplate->setData($arrItem);
 		$objTemplate->class = $strClass;
