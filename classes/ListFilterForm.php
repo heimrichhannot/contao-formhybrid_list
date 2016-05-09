@@ -62,6 +62,14 @@ class ListFilterForm extends Form
 
 	public function modifyDC(&$arrDca = null)
 	{
+		foreach ($arrDca['fields'] as $strField => $arrData)
+		{
+			if ($arrData['inputType'] == 'textarea')
+			{
+				$arrDca['fields'][$strField]['inputType'] = 'text';
+			}
+		}
+
 		$this->objListModule->modifyDC($arrDca);
 	}
 }

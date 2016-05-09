@@ -31,7 +31,7 @@ $arrDca['palettes']['__selector__'][] = 'addDisjunctiveFieldGroups';
 $arrDca['palettes']['__selector__'][] = 'addShowConditions';
 $arrDca['palettes']['__selector__'][] = 'useModal';
 $arrDca['palettes']['__selector__'][] = 'setPageTitle';
-$arrDca['subpalettes']['isTableList'] = 'hasHeader,tableFields';
+$arrDca['subpalettes']['isTableList'] = 'tableFields,hasHeader,sortingHeader';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
@@ -125,13 +125,20 @@ $arrFields = array(
 		'eval'                    => array('tl_class' => 'w50'),
 		'sql'                     => "char(1) NOT NULL default ''"
 	),
+	'sortingHeader' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['sortingHeader'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
 	'tableFields' => array
 	(
 		'label'            => &$GLOBALS['TL_LANG']['tl_module']['tableFields'],
 		'inputType'        => 'checkboxWizard',
 		'options_callback' => array('tl_module_formhybrid_list', 'getFields'),
 		'exclude'          => true,
-		'eval'             => array('multiple' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 autoheight'),
+		'eval'             => array('multiple' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 clr autoheight'),
 		'sql'              => "blob NULL",
 	),
 	'customFilterFields' => array

@@ -37,6 +37,7 @@ $arrLang['useDummyImage']						= array('Platzhalterbild nutzen', 'Wählen Sie di
 $arrLang['dummyImage']							= array('Platzhalterbild', 'Wählen Sie hier das Platzhalterbild aus.');
 $arrLang['isTableList']							= array('Als Tabelle ausgeben', 'Wählen Sie diese Option, die Liste in Form einer Tabelle ausgegeben werden soll.');
 $arrLang['hasHeader']							= array('Kopfzeile ausgeben', 'Wählen Sie diese Option, wenn die Tabelle eine Kopfzeile haben soll.');
+$arrLang['sortingHeader']						= array('Sortierende Kopfzeile', 'Wählen Sie diese Option, wenn die Tabelle eine Kopfzeile haben soll, die Links zum Sortieren enthält.');
 $arrLang['tableFields']							= array('Tabellenfelder', 'Wählen Sie die Felder aus, die in der Tabelle ausgegeben werden sollen.');
 $arrLang['conjunctiveMultipleFields']			= array('Konjunktiv auszuwertende Mehrfachfelder', 'Wählen Sie die Felder aus, die konjunktiv, also UND-verknüpft ausgewertet werden sollen.');
 $arrLang['addDisjunctiveFieldGroups']			= array('Disjunktiv auszuwertende Feldergruppen hinzufügen', 'Wählen Sie diese Option, wenn Sie Felder zu disjunktiven, also ODER-verknüpften, Gruppen zusammenfassen möchten.');
