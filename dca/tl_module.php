@@ -87,7 +87,7 @@ $arrFields = array(
 		'exclude'                 => true,
 		'inputType'               => 'select',
 		'options_callback'        => array('tl_module_formhybrid_list', 'getSortingOptions'),
-		'eval'                    => array('tl_class'=>'w50', 'includeBlankOption' => true, 'chosen' => true),
+		'eval'                    => array('tl_class'=>'w50', 'includeBlankOption' => true, 'chosen' => true, 'mandatory' => true),
 		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
 	'hideFilter' => array(
