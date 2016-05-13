@@ -18,8 +18,10 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 class ModuleReader extends \Module
 {
 	protected $strTemplate = 'mod_formhybrid_reader';
+
 	// avoid any messages -> handled sub class
 	protected $blnSilentMode = false;
+	protected $blnUseBlob = false;
 
 	public function generate()
 	{
@@ -106,6 +108,21 @@ class ModuleReader extends \Module
 
 					if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
 					{
+						if ($this->blnUseBlob)
+						{
+							$arrBlob = deserialize($objItem->formHybridBlob, true);
+
+							foreach ($arrBlob as $strField => $varValue)
+							{
+								if ($strField == 'formHybridBlob')
+									continue;
+
+								$objItem->$strField = $varValue;
+							}
+
+							$objItem->formHybridBlob = null;
+						}
+
 						// redirect on specific field value
 						DC_Hybrid::doFieldDependentRedirect($this, $objItem);
 
