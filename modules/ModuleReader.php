@@ -108,7 +108,7 @@ class ModuleReader extends \Module
 
 					if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
 					{
-						if ($this->blnUseBlob)
+						if ($this->blnUseBlob && $objItem->formHybridBlob)
 						{
 							$arrBlob = deserialize($objItem->formHybridBlob, true);
 
