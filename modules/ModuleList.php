@@ -15,6 +15,7 @@ use Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
+use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\HastePlus\Files;
 
@@ -261,7 +262,8 @@ class ModuleList extends \Module
 		{
 			foreach ($this->arrTableFields as $strField)
 			{
-				$arrItem['fields'][$strField] = Helper::getFormattedValueByDca($objItem->{$strField}, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
+				$arrItem['fields'][$strField] = FormSubmission::prepareSpecialValueForPrint($objItem->{$strField},
+					$this->dca['fields'][$strField], $this->formHybridDataContainer, $objDc, $objItem);
 
 				if (is_array($arrDca['fields'][$strField]['load_callback'])) {
 					foreach ($arrDca['fields'][$strField]['load_callback'] as $callback) {
@@ -278,7 +280,8 @@ class ModuleList extends \Module
 		{
 			foreach ($arrDca['fields'] as $strField => $arrData)
 			{
-				$arrItem['fields'][$strField] = Helper::getFormattedValueByDca($objItem->{$strField}, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItem, $objDc);
+				$arrItem['fields'][$strField] = FormSubmission::prepareSpecialValueForPrint($objItem->{$strField},
+					$this->dca['fields'][$strField], $this->formHybridDataContainer, $objDc, $objItem);
 
 				// anti-xss: escape everything besides some tags
 				$arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);

@@ -13,6 +13,7 @@ namespace HeimrichHannot\FormHybridList;
 
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybrid\FormHelper;
+use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleReader extends \Module
@@ -181,7 +182,8 @@ class ModuleReader extends \Module
 			if ($strField == 'raw')
 				continue;
 
-			$varValue = Helper::getFormattedValueByDca($varValue, $this->formHybridDataContainer, $this->dca['fields'][$strField], $objItemTmp, $objDc);
+			$varValue = FormSubmission::prepareSpecialValueForPrint($varValue, $this->dca['fields'][$strField],
+				$this->formHybridDataContainer, $objDc, $objItemTmp);
 			$objItemTmp->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
 		}
 
