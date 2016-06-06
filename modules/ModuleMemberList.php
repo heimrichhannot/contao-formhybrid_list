@@ -24,7 +24,8 @@ class ModuleMemberList extends ModuleList
 			$arrFilterTags = deserialize($this->memberContentArchiveTags, true);
 			$arrItem['fields']['memberContent'] = '';
 
-			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findBy('mid', $objItem->memberId ?: $objItem->id)) !== null)
+			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findBy(
+					array('mid=?', 'published=?'), array($objItem->memberId ?: $objItem->id, true))) !== null)
 			{
 				while ($objMemberContentArchives->next())
 				{
@@ -98,3 +99,4 @@ class ModuleMemberList extends ModuleList
 		}
 	}
 }
+
