@@ -138,7 +138,7 @@ class ModuleList extends \Module
 	{
 		// IMPORTANT: set the table for the generic model class
 		FormHybridListModel::setTable($this->formHybridDataContainer);
-		FormHybridListModel::setAdditionalWhereSql($this->additionalWhereSql);
+		FormHybridListModel::setAdditionalWhereSql($this->replaceInsertTags($this->additionalWhereSql));
 		FormHybridListModel::setAdditionalSelectSql($this->additionalSelectSql);
 		FormHybridListModel::setAdditionalSql($this->additionalSql);
 
