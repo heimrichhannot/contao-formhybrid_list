@@ -10,7 +10,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,ty
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
 // list
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage,useModal;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage,useModal;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(array(
 	'filterArchives',
 	'imgSize'
@@ -31,6 +31,8 @@ $arrDca['palettes']['__selector__'][] = 'addDisjunctiveFieldGroups';
 $arrDca['palettes']['__selector__'][] = 'addShowConditions';
 $arrDca['palettes']['__selector__'][] = 'useModal';
 $arrDca['palettes']['__selector__'][] = 'setPageTitle';
+$arrDca['palettes']['__selector__'][] = 'addAjaxPagination';
+
 $arrDca['subpalettes']['isTableList'] = 'tableFields,hasHeader,sortingHeader';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
@@ -38,6 +40,7 @@ $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
 $arrDca['subpalettes']['addShowConditions'] = 'showConditions';
 $arrDca['subpalettes']['useModal'] = 'modalWrapperTpl,modalClass,modalInnerClass';
 $arrDca['subpalettes']['setPageTitle'] = 'pageTitleField,pageTitlePattern';
+$arrDca['subpalettes']['addAjaxPagination'] = 'addInfiniteScroll';
 
 /**
  * Callbacks
@@ -110,6 +113,20 @@ $arrFields = array(
 		'inputType'               => 'checkbox',
 		'eval'                    => array('tl_class' => 'w50'),
 		'sql'                     => "char(1) NOT NULL default '1'"
+	),
+	'addAjaxPagination' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addAjaxPagination'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'addInfiniteScroll' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addInfiniteScroll'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
 	),
 	'isTableList' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['isTableList'],

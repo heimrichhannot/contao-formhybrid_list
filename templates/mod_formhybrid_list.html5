@@ -2,26 +2,30 @@
 
 <?php $this->block('content'); ?>
 
-<?php echo $this->filterForm; ?>
-<div class="block"<?php echo $this->cssID; ?><?php if ($this->style): ?> style="<?php echo $this->style; ?>"<?php endif; ?>>
-	<?php if ($this->showItemCount): ?>
-		<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
-	<?php endif; ?>
+<div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"
+	<?php if ($this->addInfiniteScroll): ?>data-infinitescroll="1"<?php endif; ?>>
 
-	<?php if (!$this->empty): ?>
-		<?php if ($this->showInitialResults || $this->isSubmitted): ?>
-			<div class="items">
-				<?php foreach ($this->items as $item) echo $item; ?>
-			</div>
-			<?php echo $this->pagination; ?>
+	<?php echo $this->filterForm; ?>
+	<div class="block">
+		<?php if ($this->showItemCount): ?>
+			<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
 		<?php endif; ?>
-	<?php else: ?>
-		<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+
+		<?php if (!$this->empty): ?>
+			<?php if ($this->showInitialResults || $this->isSubmitted): ?>
+				<div class="items">
+					<?php foreach ($this->items as $item) echo $item; ?>
+				</div>
+				<?php echo $this->pagination; ?>
+			<?php endif; ?>
+		<?php else: ?>
+			<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+		<?php endif; ?>
+	</div>
+
+	<?php if ($this->useModal): ?>
+		<?= $this->modalWrapper ?>
 	<?php endif; ?>
 </div>
-
-<?php if ($this->useModal): ?>
-	<?= $this->modalWrapper ?>
-<?php endif; ?>
 
 <?php $this->endblock(); ?>

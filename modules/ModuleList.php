@@ -33,6 +33,8 @@ class ModuleList extends \Module
 	protected $arrDisjunctionFieldGroups = array();
 	protected $arrDisjunctionFieldGroupsColumns = array();
 	protected $objFilterForm;
+	protected $strWrapperId = 'formhybrid-list_';
+	protected $strWrapperClass = 'formhybrid-list';
 
 	public function generate()
 	{
@@ -55,9 +57,7 @@ class ModuleList extends \Module
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
 		// add the class
-		$arrCssID = $this->cssID;
-		$arrCssID[1] = $arrCssID[1] ? $arrCssID[1] . ' formhybrid-list' : 'formhybrid-list';
-		$this->cssID = $arrCssID;
+		$this->strWrapperId .= $this->id;
 
 		return parent::generate();
 	}
@@ -66,6 +66,9 @@ class ModuleList extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
+		$this->Template->wrapperClass = $this->strWrapperClass;
+		$this->Template->wrapperId = $this->strWrapperId;
+		$this->Template->addInfiniteScroll = $this->addInfiniteScroll;
 		$this->strTemplate = $this->customTpl ?: ($this->isTableList ? 'mod_formhybrid_list_table' : $this->strTemplate);
 		$this->arrSkipInstances = deserialize($this->skipInstances, true);
 		$this->arrTableFields = deserialize($this->tableFields, true);
@@ -676,7 +679,19 @@ class ModuleList extends \Module
 			}
 
 			// Add the pagination menu
-			$objPagination = new \Pagination($total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id);
+			if ($this->addAjaxPagination)
+			{
+				$objPagination = new \Pagination(
+					$total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id, new \FrontendTemplate('pagination_ajax')
+				);
+			}
+			else
+			{
+				$objPagination = new \Pagination(
+					$total, $this->perPage, $GLOBALS['TL_CONFIG']['maxPaginationLinks'], $id
+				);
+			}
+
 			$this->Template->pagination = $objPagination->generate("\n  ");
 		}
 

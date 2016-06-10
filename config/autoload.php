@@ -45,6 +45,7 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
+	'pagination_ajax'                           => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_default'                   => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_list_table'                 => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_item_default'              => 'system/modules/formhybrid_list/templates',
