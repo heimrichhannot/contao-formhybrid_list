@@ -141,16 +141,18 @@ class ModuleReader extends \Module
 							}
 						}
 
-						if (\Input::get('isAjax'))
+						$strItem = $this->replaceInsertTags($this->parseItem($objItem));
+						
+						if (\Environment::get('isAjaxRequest'))
 						{
 							$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
 							$objModalWrapper->setData($this->arrData);
-							$objModalWrapper->item = $this->replaceInsertTags($this->parseItem($objItem));
+							$objModalWrapper->item = $strItem;
 							die($objModalWrapper->parse());
 						}
 						else
 						{
-							$this->Template->item = $this->replaceInsertTags($this->parseItem($objItem));
+							$this->Template->item = $strItem;
 						}
 					}
 				}

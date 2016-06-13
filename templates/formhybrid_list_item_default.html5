@@ -5,4 +5,13 @@
 			<?= $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$strName][0] ?: $strName; ?>: <?= $varValue; ?>
 		</div>
 	<?php endforeach; ?>
+
+	<?php if ($this->addDetailsCol): ?>
+		<?php if ($this->addDetailsCol && $this->detailsUrl): ?>
+			<a class="details" href="<?php echo $this->detailsUrl; ?>"
+			   <?php if ($this->useModal): ?>data-toggle="modal" data-target="#modal_<?= $this->module->id; ?>"<?php endif; ?>>
+				<?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
+			</a>
+		<?php endif; ?>
+	<?php endif; ?>
 </div>

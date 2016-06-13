@@ -338,6 +338,7 @@ class ModuleList extends \Module
 		$objTemplate->setData($arrItem);
 		$objTemplate->class = $strClass;
 		$objTemplate->count = $intCount;
+		$objTemplate->useModal = $this->useModal;
 		$objTemplate->useDummyImage = $this->useDummyImage;
 		$objTemplate->dummyImage = $this->dummyImage;
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
