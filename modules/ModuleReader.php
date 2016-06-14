@@ -146,7 +146,7 @@ class ModuleReader extends \Module
 						if (\Environment::get('isAjaxRequest'))
 						{
 							$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-							$objModalWrapper->setData($this->arrData);
+							$objModalWrapper->setData($objItem->row() + $this->arrData);
 							$objModalWrapper->item = $strItem;
 							die($objModalWrapper->parse());
 						}
