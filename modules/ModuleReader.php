@@ -204,6 +204,8 @@ class ModuleReader extends \Module
 		$objTemplate->useDummyImage = $this->useDummyImage;
 		$objTemplate->dummyImage = $this->dummyImage;
 
+		$this->runBeforeTemplateParsing($objTemplate, $objItemTmp);
+
 		// HOOK: add custom logic
 		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
 		{
@@ -216,6 +218,8 @@ class ModuleReader extends \Module
 
 		return $objTemplate->parse();
 	}
+
+	protected function runBeforeTemplateParsing($objTemplate, $objItem) {}
 
 	public function checkEntityExists($intId)
 	{
