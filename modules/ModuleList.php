@@ -56,7 +56,6 @@ class ModuleList extends \Module
 
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
-		// add the class
 		$this->strWrapperId .= $this->id;
 
 		return parent::generate();

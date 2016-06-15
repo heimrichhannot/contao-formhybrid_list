@@ -23,6 +23,8 @@ class ModuleReader extends \Module
 	// avoid any messages -> handled sub class
 	protected $blnSilentMode = false;
 	protected $blnUseBlob = false;
+	protected $strWrapperId = 'formhybrid-reader_';
+	protected $strWrapperClass = 'formhybrid-reader';
 
 	public function generate()
 	{
@@ -42,6 +44,8 @@ class ModuleReader extends \Module
 		\DataContainer::loadDataContainer($this->formHybridDataContainer);
 		\System::loadLanguageFile($this->formHybridDataContainer);
 
+		$this->strWrapperId .= $this->id;
+
 		$this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
 		// Set the item from the auto_item parameter
@@ -51,11 +55,6 @@ class ModuleReader extends \Module
 		}
 
 		$this->intId = $this->intId ?: (\Input::get('items') ?: \Input::get('id'));
-
-		// add the class
-		$arrCssID = $this->cssID;
-		$arrCssID[1] = $arrCssID[1] ? $arrCssID[1] . ' formhybrid-reader' : 'formhybrid-reader';
-		$this->cssID = $arrCssID;
 
 		// Do not index or cache the page if no item has been specified
 		if (!$this->intId)
@@ -74,6 +73,8 @@ class ModuleReader extends \Module
 	{
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
+		$this->Template->wrapperClass = $this->strWrapperClass;
+		$this->Template->wrapperId = $this->strWrapperId;
 
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 
@@ -141,14 +142,79 @@ class ModuleReader extends \Module
 							}
 						}
 
+						// comments
+						if ($this->noComments || !in_array('comments', \ModuleLoader::getActive()))
+						{
+							$this->Template->allowComments = false;
+						}
+						else
+						{
+							$objArchive = $objItem->getRelated('pid');
+							$this->Template->allowComments = $objArchive->allowComments;
+
+							if ($objArchive->allowComments)
+							{
+								// Adjust the comments headline level
+								$intHl = min(intval(str_replace('h', '', $this->hl)), 5);
+								$this->Template->hlc = 'h' . ($intHl + 1);
+								
+								$objComments = \System::importStatic('HeimrichHannot\\FormHybridList\\Comments');
+								$arrNotifies = array();
+
+								// Notify the system administrator
+								if ($objArchive->notify != 'notify_author')
+								{
+									$arrNotifies[] = $GLOBALS['TL_ADMIN_EMAIL'];
+								}
+
+								// Notify the author
+								if ($objArchive->notify != 'notify_admin')
+								{
+									if (($objAuthor = $objItem->getRelated('memberAuthor')) !== null && $objAuthor->email != '')
+									{
+										$arrNotifies[] = $objAuthor->email;
+									}
+								}
+
+								$objConfig = new \stdClass();
+
+								$objConfig->perPage = $objArchive->perPage;
+								$objConfig->order = $objArchive->sortOrder;
+								$objConfig->template = $this->com_template;
+								$objConfig->requireLogin = $objArchive->requireLogin;
+								$objConfig->disableCaptcha = $objArchive->disableCaptcha;
+								$objConfig->bbcode = $objArchive->bbcode;
+								$objConfig->moderate = $objArchive->moderate;
+
+								$objComments->addCommentsToTemplate($this->Template, $objConfig,
+									$this->formHybridDataContainer, $objItem->id, $arrNotifies);
+							}
+						}
+
 						$strItem = $this->replaceInsertTags($this->parseItem($objItem));
 						
 						if (\Environment::get('isAjaxRequest'))
 						{
-							$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-							$objModalWrapper->setData($objItem->row() + $this->arrData);
-							$objModalWrapper->item = $strItem;
-							die($objModalWrapper->parse());
+							if (\Input::post('FORM_SUBMIT') == 'com_'. $this->formHybridDataContainer .'_'. $objItem->id)
+							{
+								if (\Input::post('reload'))
+								{
+									die();
+								}
+								else
+								{
+									$this->Template->item = $strItem;
+									die($this->Template->parse());
+								}
+							}
+							else
+							{
+								$objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
+								$objModalWrapper->setData($objItem->row() + $this->arrData);
+								$this->Template->item = $strItem;
+								$objModalWrapper->item = $this->Template->parse();
+								die($objModalWrapper->parse());
+							}
 						}
 						else
 						{

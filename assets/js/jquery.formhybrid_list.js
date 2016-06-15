@@ -2,7 +2,8 @@
 	var FORMHYBRID_LIST = {
 		init: function ()
 		{
-			FORMHYBRID_LIST.initPagination();
+			this.initPagination();
+			this.initComments();
 		},
 		initPagination: function()
 		{
@@ -60,6 +61,51 @@
 
 						$jscrollAdded.find('.ajax-pagination').appendTo($jscrollAdded.closest('.jscroll-inner'));
 						$jscrollAdded.remove();
+					}
+				});
+			});
+		},
+		initComments: function() {
+			$('body').on('submit', '.formhybrid-reader .ce_comments .form form', function(e) {
+				var $form = $(this),
+					$wrapper = $form.closest('.formhybrid-reader');
+
+				$form.find('input[type="submit"]').addClass('disabled').attr('disabled', 'disabled');
+
+				e.preventDefault();
+
+				$.ajax({
+					type : $form.attr('method'),
+					url : $form.attr('action'),
+					data: $form.serialize(),
+					success: function(data) {
+						// thanks to contao comments module we must call the page again
+						$.ajax({
+							type: $form.attr('method'),
+							url: $form.attr('action'),
+							success: function (data) {
+								console.log(data);
+								$wrapper.replaceWith($(data).find('.formhybrid-reader'));
+							}
+						});
+					}
+				});
+			});
+
+			$('body').on('submit', '.formhybrid-reader .ce_comments .actions form', function(e) {
+				var $form = $(this),
+					$wrapper = $form.closest('.formhybrid-reader');
+
+				$form.find('button.delete').addClass('disabled').attr('disabled', 'disabled');
+
+				e.preventDefault();
+
+				$.ajax({
+					type : $form.attr('method'),
+					url : $form.attr('action'),
+					data: $form.serialize(),
+					success: function(data) {
+						$form.closest('.comment_formhybrid_list').fadeOut().remove();
 					}
 				});
 			});
