@@ -1,6 +1,6 @@
 {
     "name": "heimrichhannot/contao-formhybrid_list",
-    "description":"A generic list module using formhybrid for filtering.",
+    "description":"Contains a list and a reader module in a generic flavor. The modules can display and process all kinds of contao entities containing filtering, pagination, modal handling, ...",
     "keywords":["contao", "list", "form", "module", "developer"],
     "type": "contao-module",
     "homepage":"https://github.com/heimrichhannot/contao-formhybrid_list",

@@ -1,9 +1,28 @@
 # Formhybrid List
 
-A generic list module able to display all kinds of contao entities containing filtering, pagination, ...
-If additional functionality is needed, one only has to inherit from ModuleList and create a new module like ModuleMyEntityList.
+Contains a list and a reader module in a generic flavor. The modules can display and process all kinds of contao entities containing filtering, pagination, modal handling, ...
+
+If additional functionality is needed, one simply has to inherit from ModuleList or ModuleReader.
 
 ## Features
+
+### List module
+
+- display any contao entity
+- sorting by field or free text
+- pagination (ajax or synchronous)
+- infinite scroll
+- advanced filtering using heimrichhannot/contao-formhybrid
+- defining of default filters
+- detail links with alias support
+- opening instances in modal windows
+- display as table with sortable headers
+
+### Reader module
+
+- display any contao entity
+- support for id or alias
+- security handling
 
 ### Modules
 
@@ -12,6 +31,8 @@ Name | Description
 ModuleList | A generic list module able to display all kinds of contao entities containing filtering, pagination, ...
 ModuleMemberList | Encapsulates member specific changes overriding ModuleList
 ModuleNewsList | Encapsulates news specific changes overriding ModuleList
+ModuleReader | A generic reader module able to display all kinds of contao entities
+ModuleMemberReader | Encapsulates news specific changes overriding ModuleList
 
 ### Fields
 
