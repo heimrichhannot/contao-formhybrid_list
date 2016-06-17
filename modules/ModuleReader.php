@@ -78,6 +78,28 @@ class ModuleReader extends \Module
 
 		$this->strFormId = $this->formHybridDataContainer . '_' . $this->id;
 
+		// Do not change this order (see #6191)
+		$this->Template->style = !empty($this->arrStyle) ? implode(' ', $this->arrStyle) : '';
+		$this->Template->class = trim('mod_' . $this->type . ' ' . $this->cssID[1]);
+		$this->Template->cssID = ($this->cssID[0] != '') ? ' id="' . $this->cssID[0] . '"' : '';
+
+		$this->Template->inColumn = $this->strColumn;
+
+		if ($this->Template->headline == '')
+		{
+			$this->Template->headline = $this->headline;
+		}
+
+		if ($this->Template->hl == '')
+		{
+			$this->Template->hl = $this->hl;
+		}
+
+		if (!empty($this->objModel->classes) && is_array($this->objModel->classes))
+		{
+			$this->Template->class .= ' ' . implode(' ', $this->objModel->classes);
+		}
+
 		if ($this->intId && !is_numeric($this->intId))
 		{
 			$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
