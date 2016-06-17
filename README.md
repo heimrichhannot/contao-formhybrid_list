@@ -4,6 +4,8 @@ Contains a list and a reader module in a generic flavor. The modules can display
 
 If additional functionality is needed, one simply has to inherit from ModuleList or ModuleReader.
 
+-> Click [here](docs/formhybrid.png) for a diagram visualizing the interaction between the modules [formhybrid](https://github.com/heimrichhannot/contao-formhybrid), [formhybrid_list](https://github.com/heimrichhannot/contao-formhybrid_list), [frontendedit](https://github.com/heimrichhannot/contao-frontendedit) and [submissions](https://github.com/heimrichhannot/contao-submissions).
+
 ## Features
 
 ### List module
