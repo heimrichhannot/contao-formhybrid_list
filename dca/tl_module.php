@@ -38,7 +38,7 @@ $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
 $arrDca['subpalettes']['addShowConditions'] = 'showConditions';
-$arrDca['subpalettes']['useModal'] = 'modalWrapperTpl,modalClass,modalInnerClass';
+$arrDca['subpalettes']['useModal'] = 'modalWrapperTpl,modalClass,modalInnerClass,useModalWrapperSync';
 $arrDca['subpalettes']['setPageTitle'] = 'pageTitleField,pageTitlePattern';
 $arrDca['subpalettes']['addAjaxPagination'] = 'addInfiniteScroll';
 
@@ -407,6 +407,14 @@ $arrFields = array(
 		'inputType'        => 'text',
 		'eval'             => array('tl_class' => 'w50'),
 		'sql'              => "varchar(255) NOT NULL default ''",
+	),
+	'useModalWrapperSync' => array
+	(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['useModalWrapperSync'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50 clr', 'submitOnChange' => true),
+		'sql'                     => "char(1) NOT NULL default ''"
 	)
 );
 

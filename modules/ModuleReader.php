@@ -215,7 +215,7 @@ class ModuleReader extends \Module
 
 						$strItem = $this->replaceInsertTags($this->parseItem($objItem));
 						
-						if (\Environment::get('isAjaxRequest'))
+						if (\Environment::get('isAjaxRequest') || $this->useModalWrapperSync)
 						{
 							if (\Input::post('FORM_SUBMIT') == 'com_'. $this->formHybridDataContainer .'_'. $objItem->id)
 							{
@@ -235,7 +235,15 @@ class ModuleReader extends \Module
 								$objModalWrapper->setData($objItem->row() + $this->arrData);
 								$this->Template->item = $strItem;
 								$objModalWrapper->item = $this->Template->parse();
-								die($objModalWrapper->parse());
+
+								// active modal from synchronous request
+								if(!$this->useModalWrapperSync)
+								{
+									$objModalWrapper->active = true;
+									die($objModalWrapper->parse());
+								}
+
+								$this->Template->item = $objModalWrapper->parse();
 							}
 						}
 						else
