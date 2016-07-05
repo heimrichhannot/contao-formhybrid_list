@@ -342,29 +342,6 @@ $arrFields = array(
 		),
 		'sql'       => "blob NULL",
 	),
-	'memberContentArchiveTags' => array
-	(
-		'label'            => &$GLOBALS['TL_LANG']['tl_module']['memberContentArchiveTags'],
-		'inputType'        => 'select',
-		'eval'             => array(
-			'multiple' => true,
-			'tl_class' => 'w50',
-			'chosen' => true
-		),
-		'foreignKey' => 'tl_member_content_archive_tag.title',
-		'sql'        => 'blob NULL',
-	),
-	'memberContentArchiveTeaserTag' => array
-	(
-		'label'            => &$GLOBALS['TL_LANG']['tl_module']['memberContentArchiveTeaserTag'],
-		'inputType'        => 'select',
-		'eval'             => array(
-			'tl_class' => 'w50',
-			'includeBlankOption' => true
-		),
-		'foreignKey' => 'tl_member_content_archive_tag.title',
-		'sql'        => 'blob NULL',
-	),
 	'useModal' => array(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['useModal'],
 		'exclude'                 => true,
@@ -417,6 +394,35 @@ $arrFields = array(
 		'sql'                     => "char(1) NOT NULL default ''"
 	)
 );
+
+if (in_array('member_content_archives', \ModuleLoader::getActive()))
+{
+	$arrFields = array_merge($arrFields, array(
+		'memberContentArchiveTags' => array
+		(
+			'label'            => &$GLOBALS['TL_LANG']['tl_module']['memberContentArchiveTags'],
+			'inputType'        => 'select',
+			'eval'             => array(
+				'multiple' => true,
+				'tl_class' => 'w50',
+				'chosen' => true
+			),
+			'foreignKey' => 'tl_member_content_archive_tag.title',
+			'sql'        => 'blob NULL',
+		),
+		'memberContentArchiveTeaserTag' => array
+		(
+			'label'            => &$GLOBALS['TL_LANG']['tl_module']['memberContentArchiveTeaserTag'],
+			'inputType'        => 'select',
+			'eval'             => array(
+				'tl_class' => 'w50',
+				'includeBlankOption' => true
+			),
+			'foreignKey' => 'tl_member_content_archive_tag.title',
+			'sql'        => 'blob NULL',
+		)
+	));
+}
 
 $arrDca['fields'] += $arrFields;
 
