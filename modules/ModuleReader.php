@@ -56,6 +56,29 @@ class ModuleReader extends \Module
 
 		$this->intId = $this->intId ?: (\Input::get('items') ?: \Input::get('id'));
 
+		if ($this->addExistanceConditions)
+		{
+			$arrConditions = deserialize($this->existanceConditions, true);
+			$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
+
+			if (!empty($arrConditions))
+			{
+				$arrColumns = array();
+				$arrValues = array();
+
+				foreach ($arrConditions as $arrCondition)
+				{
+					$arrColumns[] = $arrCondition['field'] . '=?';
+					$arrValues[] = $this->replaceInsertTags($arrCondition['value']);
+				}
+
+				if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
+				{
+					$this->intId = $objItem->id;
+				}
+			}
+		}
+
 		// Do not index or cache the page if no item has been specified
 		if (!$this->intId)
 		{

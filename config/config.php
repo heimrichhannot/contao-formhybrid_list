@@ -42,10 +42,10 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST] = 'HeimrichHa
 if (TL_MODE == 'FE')
 {
 	// css
-	$GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css' . (version_compare(VERSION, '3.5', '>=') ? '|static' : '');
+	$GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css|static';
 
 	// js
 	$GLOBALS['TL_JAVASCRIPT']['formhybrid_list_infinite_scroll'] =
-		'system/modules/formhybrid_list/assets/vendor/jscroll-2.3.5/jquery.jscroll.min.js';
-	$GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js';
+		'system/modules/formhybrid_list/assets/vendor/jscroll-2.3.5/jquery.jscroll.min.js|static';
+	$GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
 }

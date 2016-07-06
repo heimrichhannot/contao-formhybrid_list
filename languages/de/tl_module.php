@@ -52,6 +52,8 @@ $arrLang['modalWrapperTpl']  					= array('Modal-Template (Wrapper)', 'Wählen S
 $arrLang['modalTpl']  							= array('Modal-Template', 'Wählen Sie hier das Template für das Modalfenster aus.');
 $arrLang['modalClass']  						= array('Modal-CSS-Klasse', 'Geben Sie hier bei Bedarf CSS-Klassen für das Modalfenster ein (bspw. "fade").');
 $arrLang['modalInnerClass']  					= array('Innere Modal-CSS-Klasse', 'Geben Sie hier bei Bedarf CSS-Klassen für das innere DIV im Modalfenster ein (bspw. "modal-lg").');
+$arrLang['addExistanceConditions']				= array('Instanz über eine bestimmte Bedingung finden', 'Wählen Sie diese Option, wenn die Instanz nicht durch das auto_item gefunden werden soll, sondern durch eine bestimmte Bedingung der Datenbankabfrage.');
+$arrLang['existanceConditions']					= array('Bedingungen für das Auffinden bestehender Instanzen', 'Geben Sie hier Bedingungen ein, die für das Auffinden bestehender Instanzen gelten müssen.');
 
 // events
 $arrLang['filterArchives']						= array('Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.');

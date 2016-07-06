@@ -6,7 +6,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer,addExistanceConditions;{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
 // list
@@ -29,6 +29,7 @@ $arrDca['palettes']['__selector__'][] = 'addDetailsCol';
 $arrDca['palettes']['__selector__'][] = 'useDummyImage';
 $arrDca['palettes']['__selector__'][] = 'addDisjunctiveFieldGroups';
 $arrDca['palettes']['__selector__'][] = 'addShowConditions';
+$arrDca['palettes']['__selector__'][] = 'addExistanceConditions';
 $arrDca['palettes']['__selector__'][] = 'useModal';
 $arrDca['palettes']['__selector__'][] = 'setPageTitle';
 $arrDca['palettes']['__selector__'][] = 'addAjaxPagination';
@@ -38,6 +39,7 @@ $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
 $arrDca['subpalettes']['addShowConditions'] = 'showConditions';
+$arrDca['subpalettes']['addExistanceConditions'] = 'existanceConditions';
 $arrDca['subpalettes']['useModal'] = 'modalWrapperTpl,modalClass,modalInnerClass,useModalWrapperSync';
 $arrDca['subpalettes']['setPageTitle'] = 'pageTitleField,pageTitlePattern';
 $arrDca['subpalettes']['addAjaxPagination'] = 'addInfiniteScroll';
@@ -392,7 +394,23 @@ $arrFields = array(
 		'inputType'               => 'checkbox',
 		'eval'                    => array('tl_class' => 'w50 clr', 'submitOnChange' => true),
 		'sql'                     => "char(1) NOT NULL default ''"
-	)
+	),
+	'addExistanceConditions' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addExistanceConditions'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'existanceConditions'         => $arrDca['fields']['formHybridDefaultValues'],
+	'addShowConditions' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addShowConditions'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'showConditions'         => $arrDca['fields']['formHybridDefaultValues'],
 );
 
 if (in_array('member_content_archives', \ModuleLoader::getActive()))
@@ -428,10 +446,12 @@ $arrDca['fields'] += $arrFields;
 
 $arrDca['fields']['formHybridCustomSubTemplates']['eval']['tl_class'] = 'w50';
 
-$arrDca['fields']['addShowConditions']			= $arrDca['fields']['formHybridAddDefaultValues'];
-$arrDca['fields']['addShowConditions']['label'] = &$GLOBALS['TL_LANG']['tl_module']['addShowConditions'];
-$arrDca['fields']['showConditions']				= $arrDca['fields']['formHybridDefaultValues'];
-$arrDca['fields']['showConditions']['label']	= &$GLOBALS['TL_LANG']['tl_module']['showConditions'];
+foreach (array('existanceConditions', 'showConditions') as $strField)
+{
+	$arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
+	unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);
+	unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
+}
 
 class tl_module_formhybrid_list {
 
