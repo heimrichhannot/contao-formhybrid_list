@@ -6,11 +6,25 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer,addExistanceConditions;{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;' .
+	'{entity_legend},formHybridDataContainer,addExistanceConditions;' .
+	'{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;' .
+	'{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;' .
+	'{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
 // list
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol;{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;{misc_legend},imgSize,useDummyImage,useModal;{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;' .
+	'{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,' .
+	'showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol,deactivateTokens;' .
+	'{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,' .
+	'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,' .
+	'addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;' .
+	'{misc_legend},imgSize,useDummyImage,useModal;' .
+	'{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;' .
+	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
+
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(array(
 	'filterArchives',
 	'imgSize'
@@ -411,6 +425,13 @@ $arrFields = array(
 		'sql'                     => "char(1) NOT NULL default ''"
 	),
 	'showConditions'         => $arrDca['fields']['formHybridDefaultValues'],
+	'deactivateTokens' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['deactivateTokens'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
+	)
 );
 
 if (in_array('member_content_archives', \ModuleLoader::getActive()))

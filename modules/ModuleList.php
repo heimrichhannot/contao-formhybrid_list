@@ -57,7 +57,7 @@ class ModuleList extends \Module
 
 		$this->strWrapperId .= $this->id;
 
-		$this->strTemplate = $this->customTpl ?: ($this->isTableList ? 'mod_formhybrid_list_table' : 'mod_formhybrid_list');
+		$this->strTemplate = $this->customTpl ?: ($this->strTemplate ?: ($this->isTableList ? 'mod_formhybrid_list_table' : 'mod_formhybrid_list'));
 		$this->itemTemplate = $this->itemTemplate ?: ($this->isTableList ? 'formhybrid_list_item_table_default' : 'formhybrid_list_item_default');
 
 		return parent::generate();
