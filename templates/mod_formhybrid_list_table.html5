@@ -23,10 +23,10 @@
 										<?php if ($this->sortingHeader): ?>
 											<a href="<?php echo $arrField['link']; ?>">
 												<?php if ($arrField['class']): ?><i class="fa <?php echo $arrField['class'] == 'asc' ? 'fa-caret-up' : 'fa-caret-down'; ?>"></i><?php endif; ?>
-												<?php echo $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$arrField['field']][0] ?: $arrField['field']; ?>
+												<?php echo $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$arrField['field']]['label'][0] ?: $arrField['field']; ?>
 											</a>
 										<?php else: ?>
-											<?php echo $GLOBALS['TL_LANG'][$this->formHybridDataContainer][$arrField['field']][0] ?: $arrField['field']; ?>
+											<?php echo $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$arrField['field']]['label'][0] ?: $arrField['field']; ?>
 										<?php endif; ?>
 									</th>
 								<?php endforeach; ?>
