@@ -21,7 +21,6 @@ use HeimrichHannot\HastePlus\Files;
 
 class ModuleList extends \Module
 {
-	protected $strTemplate = 'mod_formhybrid_list';
 	protected $arrSkipInstances = array();
 	protected $arrItems = array();
 	protected $objItems;
@@ -58,6 +57,9 @@ class ModuleList extends \Module
 
 		$this->strWrapperId .= $this->id;
 
+		$this->strTemplate = $this->customTpl ?: ($this->isTableList ? 'mod_formhybrid_list_table' : 'mod_formhybrid_list');
+		$this->itemTemplate = $this->itemTemplate ?: ($this->isTableList ? 'formhybrid_list_item_table_default' : 'formhybrid_list_item_default');
+
 		return parent::generate();
 	}
 
@@ -68,7 +70,6 @@ class ModuleList extends \Module
 		$this->Template->wrapperClass = $this->strWrapperClass;
 		$this->Template->wrapperId = $this->strWrapperId;
 		$this->Template->addInfiniteScroll = $this->addInfiniteScroll;
-		$this->strTemplate = $this->customTpl ?: ($this->isTableList ? 'mod_formhybrid_list_table' : $this->strTemplate);
 		$this->arrSkipInstances = deserialize($this->skipInstances, true);
 		$this->arrTableFields = deserialize($this->tableFields, true);
 		$this->addDefaultValues = $this->formHybridAddDefaultValues;
@@ -255,7 +256,7 @@ class ModuleList extends \Module
 		$arrDca = &$GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
 		// always add id
-		$arrItem['fields']['id'] = $objItem->id;
+		$arrItem['raw']['id'] = $objItem->id;
 
 		$objDc = new \DC_Table($this->formHybridDataContainer);
 		$objDc->activeRecord = $objItem;
@@ -332,7 +333,7 @@ class ModuleList extends \Module
 
 	protected function getItem($arrItem, $strClass='', $intCount=0)
 	{
-		$objTemplate = new \FrontendTemplate($this->itemTemplate ?: 'formhybrid_list_item_default');
+		$objTemplate = new \FrontendTemplate($this->itemTemplate);
 
 		$objTemplate->setData($arrItem);
 		$objTemplate->class = $strClass;
