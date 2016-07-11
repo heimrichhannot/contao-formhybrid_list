@@ -47,14 +47,14 @@ class ModuleNewsList extends ModuleList
 		{
 			if ($objPage->outputFormat == 'xhtml')
 			{
-				$arrItem['fields']['teaser'] = \String::toXhtml($objItem->teaser);
+				$arrItem['fields']['teaser'] = \StringUtil::toXhtml($objItem->teaser);
 			}
 			else
 			{
-				$arrItem['fields']['teaser'] = \String::toHtml5($objItem->teaser);
+				$arrItem['fields']['teaser'] = \StringUtil::toHtml5($objItem->teaser);
 			}
 
-			$arrItem['fields']['teaser'] = \String::encodeEmail($arrItem['fields']['teaser']);
+			$arrItem['fields']['teaser'] = \StringUtil::encodeEmail($arrItem['fields']['teaser']);
 		}
 
 		// Display the "read more" button for external/article links

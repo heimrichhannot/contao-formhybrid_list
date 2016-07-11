@@ -138,7 +138,7 @@ abstract class ModuleNews extends \Module
 			case 'external':
 				if (substr($objItem->url, 0, 7) == 'mailto:')
 				{
-					self::$arrUrlCache[$strCacheKey] = \String::encodeEmail($objItem->url);
+					self::$arrUrlCache[$strCacheKey] = \StringUtil::encodeEmail($objItem->url);
 				}
 				else
 				{
@@ -211,7 +211,7 @@ abstract class ModuleNews extends \Module
 		// Encode e-mail addresses
 		if (substr($objArticle->url, 0, 7) == 'mailto:')
 		{
-			$strArticleUrl = \String::encodeEmail($objArticle->url);
+			$strArticleUrl = \StringUtil::encodeEmail($objArticle->url);
 		}
 
 		// Ampersand URIs
