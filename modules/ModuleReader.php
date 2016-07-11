@@ -171,7 +171,7 @@ class ModuleReader extends \Module
 						}
 
 						// redirect on specific field value
-						DC_Hybrid::doFieldDependentRedirect($this, $objItem);
+//						DC_Hybrid::doFieldDependentRedirect($this, $objItem);
 
 						// page title
 						if ($this->setPageTitle)
