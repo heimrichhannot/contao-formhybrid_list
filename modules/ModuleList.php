@@ -11,6 +11,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use HeimrichHannot\Haste\DateUtil;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
@@ -74,22 +75,23 @@ class ModuleList extends \Module
 			$strModelClass = \Model::getClassFromTable($this->formHybridDataContainer);
 			if (($objEntity = $strModelClass::findByPk($intId)) !== null)
 			{
-				$strShareToken = $objEntity->shareToken;
+				$intNow = time();
 
-				if (!$strShareToken)
+				if (FormHybridList::shareTokenExpiredOrEmpty($objEntity, $intNow))
 				{
 					$strShareToken = str_replace('.', '', uniqid('', true));
 					$objEntity->shareToken = $strShareToken;
+					$objEntity->shareTokenTime = $intNow;
 					$objEntity->save();
 				}
 
 				if ($this->shareAutoItem)
 				{
-					$strShareUrl = $strUrl . '/' . $strShareToken;
+					$strShareUrl = $strUrl . '/' . $objEntity->shareToken;
 				}
 				else
 				{
-					$strShareUrl = Url::addQueryString('share=' . $strShareToken,  $strUrl);
+					$strShareUrl = Url::addQueryString('share=' . $objEntity->shareToken,  $strUrl);
 				}
 
 				die($strShareUrl);

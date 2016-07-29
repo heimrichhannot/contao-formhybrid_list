@@ -19,6 +19,7 @@ If additional functionality is needed, one simply has to inherit from ModuleList
 - detail links with alias support
 - opening instances in modal windows
 - display as table with sortable headers
+- share entities in a list (add the necessary fields to your dca beforehands by using ```FormHybridList::addShareFields()```)
 
 ### Reader module
 
