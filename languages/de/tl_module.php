@@ -35,6 +35,10 @@ $arrLang['invertPublishedField']				= array('Veröffentlicht-Feld negieren', 'W�
 $arrLang['emptyText']							= array('Meldung bei leerer Ergebnismenge', 'Geben Sie hier die Meldung ein, die erscheinen soll, wenn keine Ergebnisse gefunden wurden (mit ##<Feldname>## können Filtereingaben eingefügt werden).');
 $arrLang['addDetailsCol']						= array('Details-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Anzeigen von Details hinzuzufügen.');
 $arrLang['jumpToDetails']						= array('Weiterleitungsseite (Details)', 'Wählen Sie hier die Seite aus, zu der weitergeleitet wird, wenn es eine Detailseite gibt.');
+$arrLang['addShareCol']							= array('Teilen-Spalte hinzufügen', 'Klicken Sie hier, um jeder Zeile einen Button zum Teilen des aktuellen Listeneintrags hinzuzufügen.');
+$arrLang['jumpToShare']							= array('Weiterleitungsseite (Teilen)', 'Wählen Sie hier die Seite aus, zu der weitergeleitet wird, wenn ein Inhalt geteilt wurde.');
+$arrLang['shareAutoItem']						= array('auto_item für den Teilen-Link verwenden', 'Wählen Sie diese Option aus, um das Share Token als auto_item auszugeben.');
+$arrLang['addTokenToShareUrl']					= array('Request-Token für den Teilen-Link verwenden', 'Wählen Sie diese Option aus, um dem Teilen-Link ein Request Token hinzuzufügen.');
 $arrLang['useDummyImage']						= array('Platzhalterbild nutzen', 'Wählen Sie diese Option, um immer dann ein Platzhalterbild zu nutzen, wenn es kein der Nachricht kein reguläres Bild zugewiesen wurde.');
 $arrLang['dummyImage']							= array('Platzhalterbild', 'Wählen Sie hier das Platzhalterbild aus.');
 $arrLang['isTableList']							= array('Als Tabelle ausgeben', 'Wählen Sie diese Option, die Liste in Form einer Tabelle ausgegeben werden soll.');
@@ -54,6 +58,7 @@ $arrLang['modalClass']  						= array('Modal-CSS-Klasse', 'Geben Sie hier bei Be
 $arrLang['modalInnerClass']  					= array('Innere Modal-CSS-Klasse', 'Geben Sie hier bei Bedarf CSS-Klassen für das innere DIV im Modalfenster ein (bspw. "modal-lg").');
 $arrLang['addExistanceConditions']				= array('Instanz über eine bestimmte Bedingung finden', 'Wählen Sie diese Option, wenn die Instanz nicht durch das auto_item gefunden werden soll, sondern durch eine bestimmte Bedingung der Datenbankabfrage.');
 $arrLang['existanceConditions']					= array('Bedingungen für das Auffinden bestehender Instanzen', 'Geben Sie hier Bedingungen ein, die für das Auffinden bestehender Instanzen gelten müssen.');
+$arrLang['aliasField']							= array('Alias-Feld', 'Wählen Sie hier das Alias-Feld aus, welches als auto_item abgefragt wird. Wenn Sie kein Feld auswählen, wird das Feld "id" verwendet.');
 $arrLang['deactivateTokens']					= array('Token-Handling deaktivieren', 'Wählen Sie diese Option, wenn die Module nicht prüfen sollen, ob der GET-Parameter "token" ein korrektes Token enthält.');
 
 // events

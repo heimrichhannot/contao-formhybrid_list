@@ -7,7 +7,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  */
 // reader
 $arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,type;' .
-	'{entity_legend},formHybridDataContainer,addExistanceConditions;' .
+	'{entity_legend},formHybridDataContainer,addExistanceConditions,aliasField;' .
 	'{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;' .
 	'{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;' .
 	'{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -17,7 +17,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'i
 // list
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;' .
 	'{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,' .
-	'showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol,deactivateTokens;' .
+	'showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol,addShareCol,deactivateTokens;' .
 	'{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,' .
 	'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,' .
 	'addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;' .
@@ -40,6 +40,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FO
  */
 $arrDca['palettes']['__selector__'][] = 'isTableList';
 $arrDca['palettes']['__selector__'][] = 'addDetailsCol';
+$arrDca['palettes']['__selector__'][] = 'addShareCol';
 $arrDca['palettes']['__selector__'][] = 'useDummyImage';
 $arrDca['palettes']['__selector__'][] = 'addDisjunctiveFieldGroups';
 $arrDca['palettes']['__selector__'][] = 'addShowConditions';
@@ -50,6 +51,7 @@ $arrDca['palettes']['__selector__'][] = 'addAjaxPagination';
 
 $arrDca['subpalettes']['isTableList'] = 'tableFields,hasHeader,sortingHeader';
 $arrDca['subpalettes']['addDetailsCol'] = 'jumpToDetails';
+$arrDca['subpalettes']['addShareCol'] = 'jumpToShare,shareAutoItem';
 $arrDca['subpalettes']['useDummyImage'] = 'dummyImage';
 $arrDca['subpalettes']['addDisjunctiveFieldGroups'] = 'disjunctiveFieldGroups';
 $arrDca['subpalettes']['addShowConditions'] = 'showConditions';
@@ -89,6 +91,30 @@ $arrFields = array(
 		'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'w50 clr'),
 		'sql'                     => "int(10) unsigned NOT NULL default '0'",
 		'relation'                => array('type'=>'hasOne', 'load'=>'eager')
+	),
+	'addShareCol' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addShareCol'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50', 'submitOnChange' => true),
+		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'jumpToShare' => array
+	(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['jumpToShare'],
+		'exclude'                 => true,
+		'inputType'               => 'pageTree',
+		'foreignKey'              => 'tl_page.title',
+		'eval'                    => array('fieldType'=>'radio', 'tl_class'=>'w50 clr'),
+		'sql'                     => "int(10) unsigned NOT NULL default '0'",
+		'relation'                => array('type'=>'hasOne', 'load'=>'eager')
+	),
+	'shareAutoItem' => array(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['shareAutoItem'],
+		'exclude'                 => true,
+		'inputType'               => 'checkbox',
+		'eval'                    => array('tl_class' => 'w50'),
+		'sql'                     => "char(1) NOT NULL default ''"
 	),
 	'sortingMode' => array
 	(
@@ -415,6 +441,16 @@ $arrFields = array(
 		'inputType'               => 'checkbox',
 		'eval'                    => array('submitOnChange' => true, 'tl_class' => 'w50 clr'),
 		'sql'                     => "char(1) NOT NULL default ''"
+	),
+	'aliasField' => array
+	(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_calendar_events']['aliasField'],
+		'inputType'               => 'select',
+		'exclude'                 => true,
+		'eval'					  => array('tl_class' => 'w50 clr', 'includeBlankOption' => true,
+											 'submitOnChange' => true, 'chosen' => true),
+		'options_callback'		  => array('tl_module_formhybrid_list', 'getTextFields'),
+		'sql'                     => "varchar(255) NOT NULL default ''"
 	),
 	'existanceConditions'         => $arrDca['fields']['formHybridDefaultValues'],
 	'addShowConditions' => array(

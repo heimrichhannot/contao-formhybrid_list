@@ -127,7 +127,8 @@ class ModuleReader extends \Module
 		{
 			$strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-			if (($objItem = $strItemClass::findOneByAlias($this->intId)) !== null)
+			$strAliasField = $this->aliasField ?: 'id';
+			if (($objItem = $strItemClass::findOneBy($strAliasField, $this->intId)) !== null)
 			{
 				$this->intId = $objItem->id;
 			}

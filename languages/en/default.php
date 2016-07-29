@@ -1,3 +1,16 @@
 <?php
 
-$GLOBALS['TL_LANG']['formhybrid_list']['filter'][0] = 'Apply filter';
+$arrLang = &$GLOBALS['TL_LANG']['formhybrid_list'];
+
+$arrLang['filter'][0] = 'Apply filter';
+$arrLang['detailsTitle'] = 'Details';
+$arrLang['shareTitle'] = 'Share';
+
+/**
+ * Messages
+ */
+$arrLang['itemsFound'] = '%s records found.';
+$arrLang['empty'] = 'No records found.';
+$arrLang['noPermission'] = 'You don\'t have the permission to access this record.';
+$arrLang['notExisting'] = 'The record you requested has not been found.';
+$arrLang['shareMessage'] = 'Share record:';

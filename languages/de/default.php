@@ -1,12 +1,16 @@
 <?php
 
-$GLOBALS['TL_LANG']['formhybrid_list']['filter'][0] = 'Filtern';
-$GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle'] = 'Details';
+$arrLang = &$GLOBALS['TL_LANG']['formhybrid_list'];
+
+$arrLang['filter'][0] = 'Filtern';
+$arrLang['detailsTitle'] = 'Details';
+$arrLang['shareTitle'] = 'Teilen';
 
 /**
  * Messages
  */
-$GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'] = 'Es wurden %s Datensätze gefunden.';
-$GLOBALS['TL_LANG']['formhybrid_list']['empty'] = 'Es wurden keine Datensätze gefunden.';
-$GLOBALS['TL_LANG']['formhybrid_list']['noPermission'] = 'Für einen Zugriff auf diesen Datensatz fehlt Ihnen die Berechtigung.';
-$GLOBALS['TL_LANG']['formhybrid_list']['notExisting'] = 'Der von Ihnen angeforderte Datensatz wurde nicht gefunden.';
+$arrLang['itemsFound'] = 'Es wurden %s Datensätze gefunden.';
+$arrLang['empty'] = 'Es wurden keine Datensätze gefunden.';
+$arrLang['noPermission'] = 'Für einen Zugriff auf diesen Datensatz fehlt Ihnen die Berechtigung.';
+$arrLang['notExisting'] = 'Der von Ihnen angeforderte Datensatz wurde nicht gefunden.';
+$arrLang['shareMessage'] = 'Datensatz teilen:';

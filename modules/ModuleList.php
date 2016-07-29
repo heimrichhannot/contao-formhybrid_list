@@ -11,13 +11,12 @@
 
 namespace HeimrichHannot\FormHybridList;
 
-use Haste\Util\Url;
+use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\HastePlus\Environment;
-use HeimrichHannot\HastePlus\Files;
 
 class ModuleList extends \Module
 {
@@ -65,6 +64,38 @@ class ModuleList extends \Module
 
 	protected function compile()
 	{
+		$strAct = \Input::get('act');
+
+		if ($strAct == FormHybridList::ACT_SHARE && $this->addShareCol)
+		{
+			$strUrl = \Input::get('url');
+			$intId = \Input::get('id');
+
+			$strModelClass = \Model::getClassFromTable($this->formHybridDataContainer);
+			if (($objEntity = $strModelClass::findByPk($intId)) !== null)
+			{
+				$strShareToken = $objEntity->shareToken;
+
+				if (!$strShareToken)
+				{
+					$strShareToken = str_replace('.', '', uniqid('', true));
+					$objEntity->shareToken = $strShareToken;
+					$objEntity->save();
+				}
+
+				if ($this->shareAutoItem)
+				{
+					$strShareUrl = $strUrl . '/' . $strShareToken;
+				}
+				else
+				{
+					$strShareUrl = Url::addQueryString('share=' . $strShareToken,  $strUrl);
+				}
+
+				die($strShareUrl);
+			}
+		}
+
 		$this->Template->headline = $this->headline;
 		$this->Template->hl = $this->hl;
 		$this->Template->wrapperClass = $this->strWrapperClass;
@@ -236,9 +267,9 @@ class ModuleList extends \Module
 
 	public function addItemColumns($objItem, &$arrItem)
 	{
-		// details url
 		global $objPage;
 
+		// details url
 		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
 		{
 			$arrItem['detailsUrl'] = \Controller::generateFrontendUrl(
@@ -247,7 +278,23 @@ class ModuleList extends \Module
 			);
 		}
 
+		// share url
+		$this->addShareColumn($objItem, $arrItem);
+
 		$arrItem['listUrl'] = $this->listUrl;
+	}
+
+	public function addShareColumn($objItem, &$arrItem)
+	{
+		global $objPage;
+
+		if (($objPageJumpTo = \PageModel::findByPk($this->jumpToShare)) !== null || $objPageJumpTo = $objPage)
+		{
+			$strShareUrl = \Environment::get('url') . '/' . \Controller::generateFrontendUrl($objPageJumpTo->row());
+
+			$arrItem['shareUrl'] = Url::addQueryString('act=share&url=' . urlencode($strShareUrl) .
+				'&id=' . $objItem->id, Url::getCurrentUrlWithoutParameters());
+		}
 	}
 
 	protected function generateFields($objItem)
@@ -343,6 +390,7 @@ class ModuleList extends \Module
 		$objTemplate->dummyImage = $this->dummyImage;
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
 		$objTemplate->addDetailsCol = $this->addDetailsCol;
+		$objTemplate->addShareCol = $this->addShareCol;
 		$objTemplate->module = $this;
 		$objTemplate->imgSize = deserialize($this->imgSize, true);
 		$varIdAlias = ltrim(((\Config::get('useAutoItem') && !\Config::get('disableAlias')) ? '/' : '/items/') .

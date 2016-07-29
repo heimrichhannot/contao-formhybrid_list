@@ -4,6 +4,21 @@
 		{
 			this.initPagination();
 			this.initComments();
+			this.initShare();
+		},
+		initShare: function() {
+			$('.formhybrid-list .share, .frontendedit-list .share').on('click', function(event) {
+				if (typeof bootbox !== 'undefined')
+				{
+					var $this = $(this);
+
+					event.preventDefault();
+
+					$.get($this.attr('href'), function (url) {
+						bootbox.alert($this.data('message') + '<br><br><textarea onclick="this.select()" class="form-control">' + url + '</textarea>');
+					});
+				}
+			});
 		},
 		initPagination: function()
 		{
