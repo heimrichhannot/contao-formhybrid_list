@@ -320,7 +320,7 @@ class ModuleList extends \Module
 				if (is_array($arrDca['fields'][$strField]['load_callback'])) {
 					foreach ($arrDca['fields'][$strField]['load_callback'] as $callback) {
 						$this->import($callback[0]);
-						$arrItem['fields'][$strField] = $this->$callback[0]->$callback[1]($arrItem['fields'][$strField], $this);
+						$arrItem['fields'][$strField] = $this->$callback[0]->$callback[1]($arrItem['fields'][$strField], $objDc);
 					}
 				}
 
