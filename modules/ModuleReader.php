@@ -144,13 +144,7 @@ class ModuleReader extends \Module
 		}
 		else
 		{
-			if (!$this->checkEntityExists($this->intId))
-			{
-				if (!$this->blnSilentMode)
-					StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
-				$this->Template->invalid = true;
-			}
-			else
+			if ($this->checkEntityExists($this->intId))
 			{
 				if ($this->checkPermission($this->intId))
 				{
