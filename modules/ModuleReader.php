@@ -130,7 +130,7 @@ class ModuleReader extends \Module
 			$strAliasField = $this->aliasField ?: 'id';
 
 			if (($objItem = $strItemClass::findOneBy($strAliasField, $this->intId)) !== null &&
-				!FormHybridList::shareTokenExpiredOrEmpty($objItem, time()))
+				(!$this->addShareCol || !FormHybridList::shareTokenExpiredOrEmpty($objItem, time())))
 			{
 				$this->intId = $objItem->id;
 			}
@@ -191,7 +191,8 @@ class ModuleReader extends \Module
 						}
 
 						// comments
-						if ($this->noComments || !in_array('comments', \ModuleLoader::getActive()))
+						if ($this->noComments || !in_array('comments', \ModuleLoader::getActive()) ||
+							!\Database::getInstance()->fieldExists('pid', $this->formHybridDataContainer))
 						{
 							$this->Template->allowComments = false;
 						}
