@@ -15,7 +15,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_READER] = '{title_legend},name,headline,ty
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] = str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
 
 // list
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridDataContainer;' .
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;' .
 	'{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,' .
 	'showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol,addShareCol,deactivateTokens;' .
 	'{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,' .
