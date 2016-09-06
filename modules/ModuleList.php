@@ -555,7 +555,7 @@ class ModuleList extends \Module
 
 			if (in_array($strField, deserialize($arrFilterFields, true)))
 			{
-				if (is_array($varValue) || trim($varValue))
+				if (is_array($varValue) || strlen(trim($varValue)) > 0)
 				{
 					// remove existing values in order to keep the order
 					if (isset($this->arrColumns[$strField]))
@@ -594,6 +594,14 @@ class ModuleList extends \Module
 						case 'password':
 							$strColumn = $strField . " LIKE ?";
 							$varValue  = $this->replaceInsertTags('%' . $varValue . '%');
+							break;
+						case 'select':
+							// Replace boolean checkbox value with "yes" and "no"
+							if($arrDca['eval']['isBoolean'] && !$arrDca['eval']['multiple'])
+							{
+								$strColumn = $strField . " = ?";
+								$varValue = $varValue == '0' ? '' : '1';
+							}
 							break;
 						default:
 							if ($arrDca['eval']['multiple'])

@@ -14,3 +14,10 @@ $arrLang['empty'] = 'No records found.';
 $arrLang['noPermission'] = 'You don\'t have the permission to access this record.';
 $arrLang['notExisting'] = 'The record you requested has not been found.';
 $arrLang['shareMessage'] = 'Share record:';
+
+
+/**
+ * References
+ */
+$arrLang['reference']['yes_no']['0'] = 'No';
+$arrLang['reference']['yes_no']['1'] = 'Yes';

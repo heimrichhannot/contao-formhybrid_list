@@ -64,9 +64,23 @@ class ListFilterForm extends Form
 	{
 		foreach ($arrDca['fields'] as $strField => $arrData)
 		{
-			if ($arrData['inputType'] == 'textarea')
+			switch($arrData['inputType'])
 			{
-				$arrDca['fields'][$strField]['inputType'] = 'text';
+				case 'textarea':
+					$arrDca['fields'][$strField]['inputType'] = 'text';
+				break;
+				case 'checkbox':
+					// Replace boolean checkbox value with "yes" and "no"
+					if($arrData['eval']['isBoolean'] || !$arrData['eval']['multiple'])
+					{
+						$arrDca['fields'][$strField]['eval']['includeBlankOption'] = true;
+						$arrDca['fields'][$strField]['eval']['isBoolean'] = true; // required to be set within Modulelist::applyFilters() cause checkbox is select there
+						$arrDca['fields'][$strField]['inputType'] = 'select';
+						$arrDca['fields'][$strField]['options'] = array('0', '1');
+						$arrDca['fields'][$strField]['reference'] = &$GLOBALS['TL_LANG']['formhybrid_list']['reference']['yes_no'];
+					}
+
+				break;
 			}
 		}
 
