@@ -150,7 +150,7 @@ class ModuleList extends \Module
 
 		if (!$this->hideFilter)
 		{
-			$this->objFilterForm        = new ListFilterForm($this->objModel, $this);
+			$this->objFilterForm        = new ListFilterForm($this);
 			$this->Template->filterForm = $this->objFilterForm->generate();
 		}
 
@@ -595,27 +595,28 @@ class ModuleList extends \Module
 							$strColumn = $strField . " LIKE ?";
 							$varValue  = $this->replaceInsertTags('%' . $varValue . '%');
 							break;
-						case 'select':
-							// Replace boolean checkbox value with "yes" and "no"
-							if($arrDca['eval']['isBoolean'] && !$arrDca['eval']['multiple'])
+						default:
+							// In ListFilterForm checkbox gets eval value isBoolean and inputType is transformed to select
+							if ($arrDca['inputType'] == 'select' && $arrDca['eval']['isBoolean'])
 							{
-								$strColumn = $strField . " = ?";
+								$strColumn = $strField . ' = ?';
 								$varValue = $varValue == '0' ? '' : '1';
 							}
-							break;
-						default:
-							if ($arrDca['eval']['multiple'])
+							else
 							{
-								$strColumn    = static::generateMultipleValueMatchSql(
-									$strField,
-									$varValue,
-									in_array($strField, $this->arrConjunctiveMultipleFields)
-								);
-								$blnSkipValue = true;
-							} else
-							{
-								$strColumn = $strField . '=?';
-								$varValue  = $this->replaceInsertTags($varValue);
+								if ($arrDca['eval']['multiple'])
+								{
+									$strColumn    = static::generateMultipleValueMatchSql(
+										$strField,
+										$varValue,
+										in_array($strField, $this->arrConjunctiveMultipleFields)
+									);
+									$blnSkipValue = true;
+								} else
+								{
+									$strColumn = $strField . '=?';
+									$varValue  = $this->replaceInsertTags($varValue);
+								}
 							}
 							break;
 					}
@@ -854,7 +855,15 @@ class ModuleList extends \Module
 		}
 	}
 
-	public function modifyDC(&$arrDca = null) { }
+	public function modifyDC(&$arrDca = null) {
+		foreach ($arrDca['fields'] as $strField => $arrData)
+		{
+			if ($arrData['inputType'] == 'select')
+			{
+				$arrDca['fields'][$strField]['eval']['includeBlankOption'] = true;
+			}
+		}
+	}
 
 	public static function generateMultipleValueMatchSql($strField, $varValue, $blnConjunction = false)
 	{

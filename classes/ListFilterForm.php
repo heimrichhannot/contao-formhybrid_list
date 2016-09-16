@@ -18,11 +18,11 @@ class ListFilterForm extends Form
 	protected $isFilterForm = true;
 	protected $objListModule;
 
-	public function __construct($objModule, $objListModule)
+	public function __construct($objModule)
 	{
 		$this->strMethod = FORMHYBRID_METHOD_GET;
 		$this->isFilterForm = true;
-		$this->objListModule = $objListModule;
+		$this->objListModule = $objModule;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_list_filter';
 		$objModule->formHybridEditable = $objModule->customFilterFields;
 
@@ -71,15 +71,14 @@ class ListFilterForm extends Form
 				break;
 				case 'checkbox':
 					// Replace boolean checkbox value with "yes" and "no"
-					if($arrData['eval']['isBoolean'] || !$arrData['eval']['multiple'])
+					if(!$arrData['eval']['multiple'])
 					{
 						$arrDca['fields'][$strField]['eval']['includeBlankOption'] = true;
 						$arrDca['fields'][$strField]['eval']['isBoolean'] = true; // required to be set within Modulelist::applyFilters() cause checkbox is select there
 						$arrDca['fields'][$strField]['inputType'] = 'select';
-						$arrDca['fields'][$strField]['options'] = array('0', '1');
+						$arrDca['fields'][$strField]['options'] = array('1', '0');
 						$arrDca['fields'][$strField]['reference'] = &$GLOBALS['TL_LANG']['formhybrid_list']['reference']['yes_no'];
 					}
-
 				break;
 			}
 		}
