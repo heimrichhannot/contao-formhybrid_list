@@ -177,6 +177,7 @@ class ModuleList extends \Module
 		FormHybridListModel::setTable($this->formHybridDataContainer);
 		FormHybridListModel::setAdditionalWhereSql($this->replaceInsertTags($this->additionalWhereSql));
 		FormHybridListModel::setAdditionalSelectSql($this->additionalSelectSql);
+		FormHybridListModel::setAdditionalHavingSql($this->additionalHavingSql);
 		FormHybridListModel::setAdditionalSql($this->additionalSql);
 
 		if ($this->additionalSql)
@@ -486,6 +487,7 @@ class ModuleList extends \Module
 		{
 			$strField     = $arrDefaultValue['field'];
 			$varValue     = deserialize($arrDefaultValue['value']);
+			$blnSkipColumn = false;
 			$blnSkipValue = false;
 
 			// special handling for tags
@@ -512,17 +514,21 @@ class ModuleList extends \Module
 				$varValue  = $this->replaceInsertTags($varValue);
 			}
 
-			$this->customizeDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue);
+			$this->customizeDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 
-			$this->doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue);
+			$this->doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 		}
 	}
 
-	protected function customizeDefaultFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue) { }
+	protected function customizeDefaultFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue, &$blnSkipColumn) { }
 
-	protected function doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue = false)
+	protected function doApplyDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue = false, $blnSkipColumn = false)
 	{
-		$this->arrColumns[$strField] = $strColumn;
+		if (!$blnSkipColumn)
+		{
+			$this->arrColumns[$strField] = $strColumn;
+		}
+
 		if (!$blnSkipValue)
 		{
 			$this->arrValues[$strField] = $varValue;
@@ -570,6 +576,7 @@ class ModuleList extends \Module
 
 					$arrDca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField];
 
+					$blnSkipColumn = false;
 					$blnSkipValue = false;
 					switch ($arrDca['inputType'])
 					{
@@ -621,11 +628,14 @@ class ModuleList extends \Module
 							break;
 					}
 
-					$this->customizeFilters($strField, $strColumn, $varValue, $blnSkipValue);
+					$this->customizeFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 
 					if ($this->addDisjunctiveFieldGroups && ($intPosition = $this->getDisjunctionGroupIndex($strField)) > -1)
 					{
-						$this->arrDisjunctionFieldGroupsColumns[$intPosition][$strField] = $strColumn;
+						if (!$blnSkipColumn)
+						{
+							$this->arrDisjunctionFieldGroupsColumns[$intPosition][$strField] = $strColumn;
+						}
 
 						if (!$blnSkipValue)
 						{
@@ -652,7 +662,7 @@ class ModuleList extends \Module
 						}
 					} else
 					{
-						$this->doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue);
+						$this->doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 					}
 				}
 			}
@@ -672,11 +682,15 @@ class ModuleList extends \Module
 		return -1;
 	}
 
-	protected function customizeFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue) { }
+	protected function customizeFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue, &$blnSkipColumn) { }
 
-	protected function doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue = false)
+	protected function doApplyFilters($strField, $strColumn, $varValue, $blnSkipValue = false, $blnSkipColumn = false)
 	{
-		$this->arrColumns[$strField] = $strColumn;
+		if (!$blnSkipColumn)
+		{
+			$this->arrColumns[$strField] = $strColumn;
+		}
+
 		if (!$blnSkipValue)
 		{
 			$this->arrValues[$strField] = $varValue;

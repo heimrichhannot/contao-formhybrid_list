@@ -8,6 +8,9 @@
 		<?php echo $this->novalidate; ?>
 		<?php if($this->formClass):?> class="<?php echo $this->formClass; ?>"<?php endif;?>>
 		<!-- formhybrid::stop -->
+		<?php if ($this->filterHeadline): ?>
+			<<?= $this->filterHl ?>><?= $this->filterHeadline ?></<?= $this->filterHl ?>>
+		<?php endif; ?>
 		<div class="formbody">
 			<?php if($this->message): ?>
 				<?= $this->message; ?>

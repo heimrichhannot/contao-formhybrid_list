@@ -25,6 +25,9 @@
 				<?php endif; ?>
 				<?php echo $this->hidden; ?>
 				<?php foreach($this->fields as $name => $objField): ?>
+					<?php if ($name == FORMHYBRID_NAME_SUBMIT): ?>
+						<a href="{{env::url}}/{{env::request}}">Filter zurücksetzen</a>
+					<?php endif; ?>
 					<?php echo $objField->parse(); ?>
 				<?php endforeach; ?>
 			<?php endif; ?>

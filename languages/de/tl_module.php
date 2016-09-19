@@ -29,6 +29,7 @@ $arrLang['pageTitlePattern']					= array('Seitentitelmuster', 'Geben Sie hier ei
 $arrLang['additionalWhereSql']					= array('Zusätzliches WHERE-SQL', 'Geben Sie hier SQL ein, welches dem WHERE-Statement hinzugefügt wird.');
 $arrLang['additionalSelectSql']					= array('Zusätzliches SELECT-SQL', 'Geben Sie hier SQL ein, welches vor dem FROM-Statement eingefügt wird (bspw. , IF(field1 = \'\', field2, field1) as somename).');
 $arrLang['additionalSql']						= array('Zusätzliches SQL', 'Geben Sie hier SQL ein, welches nach dem SELECT-Statement eingefügt wird (bspw. INNER JOIN tl_tag ON tl_calendar_events.id = tl_tag.tid).');
+$arrLang['additionalHavingSql']					= array('Zusätzliches HAVING-SQL', 'Geben Sie hier SQL ein, welches nach dem WHERE-Statement als HAVING-Statement eingefügt wird.');
 $arrLang['hideUnpublishedItems']				= array('Unveröffentlichte Instanzen verstecken', 'Wählen Sie diese Option, um unveröffentlichte Instanzen zu verstecken.');
 $arrLang['publishedField']						= array('Veröffentlicht-Feld', 'Wählen Sie hier das Feld aus, in dem der Öffentlichkeitszustand gespeichert ist (z. B. published).');
 $arrLang['invertPublishedField']				= array('Veröffentlicht-Feld negieren', 'Wählen Sie diese Option, wenn ein "true" im Veröffentlicht-Feld einem nichtöffentlichen Zustand entspricht.');

@@ -12,6 +12,7 @@
 namespace HeimrichHannot\FormHybridList;
 
 use HeimrichHannot\FormHybrid\Form;
+use HeimrichHannot\Haste\Util\Url;
 
 class ListFilterForm extends Form
 {
@@ -25,6 +26,8 @@ class ListFilterForm extends Form
 		$this->objListModule = $objModule;
 		$objModule->formHybridTemplate = $objModule->formHybridTemplate ?: 'formhybrid_list_filter';
 		$objModule->formHybridEditable = $objModule->customFilterFields;
+		$objModule->formHybridCustomSubmit = true;
+		$objModule->formHybridSubmitLabel = 'filter';
 
 		$arrHeadline = deserialize($objModule->filterHeadline);
 		$objModule->filterHeadline = is_array($arrHeadline) ? $arrHeadline['value'] : $arrHeadline;
@@ -51,13 +54,47 @@ class ListFilterForm extends Form
 
 	protected function compile() {}
 
+	protected function generateResetFilterField()
+	{
+		$arrData = array(
+			'inputType' => 'explanation',
+			'eval'      => array('text' => '<div class="form-group reset-filter"><a class="btn btn-default" href="' . Url::getCurrentUrlWithoutParameters() . '"><span>' .
+				$GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] .
+			'</span></a></div>')
+		);
+
+		$this->arrFields[FORMHYBRID_LIST_BUTTON_RESET_FILTER] = $this->generateField(FORMHYBRID_LIST_BUTTON_RESET_FILTER, $arrData);
+	}
+
 	protected function generateSubmitField()
 	{
-		$this->arrFields[FORMHYBRID_LIST_BUTTON_FILTER] = $this->generateField(FORMHYBRID_LIST_BUTTON_FILTER, array(
+		$this->generateResetFilterField();
+
+		$strLabel = &$GLOBALS['TL_LANG']['MSC']['formhybrid']['submitLabels']['default'];
+		$strClass = 'btn btn-primary';
+
+		if ($this->strSubmit != '' && isset($this->arrFields[$this->strSubmit]))
+		{
+			return false;
+		}
+
+		if ($this->customSubmit)
+		{
+			if ($this->submitLabel != '')
+			{
+				$strLabel = $GLOBALS['TL_LANG']['MSC']['formhybrid']['submitLabels'][$this->submitLabel];
+			}
+
+			$strClass = $this->submitClass;
+		}
+
+		$arrData = array(
 			'inputType' => 'submit',
-			'label'		=> &$GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_FILTER],
-			'eval' => array('class' => 'filter')
-		));
+			'label'     => is_array($strLabel) ? $strLabel : array($strLabel),
+			'eval'      => array('class' => $strClass),
+		);
+
+		$this->arrFields[FORMHYBRID_NAME_SUBMIT] = $this->generateField(FORMHYBRID_NAME_SUBMIT, $arrData);
 	}
 
 	public function modifyDC(&$arrDca = null)

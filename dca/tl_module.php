@@ -20,7 +20,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
 	'showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol,addShareCol,deactivateTokens;' .
 	'{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,' .
 	'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,' .
-	'addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql;' .
+	'addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;' .
 	'{misc_legend},imgSize,useDummyImage,useModal;' .
 	'{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -270,6 +270,14 @@ $arrFields = array(
 	'additionalSql' => array
 	(
 		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['additionalSql'],
+		'exclude'                 => true,
+		'inputType'               => 'text',
+		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),
+		'sql'                     => "varchar(255) NOT NULL default ''"
+	),
+	'additionalHavingSql' => array
+	(
+		'label'                   => &$GLOBALS['TL_LANG']['tl_module']['additionalHavingSql'],
 		'exclude'                 => true,
 		'inputType'               => 'text',
 		'eval'                    => array('maxlength'=>255, 'tl_class' => 'w50'),

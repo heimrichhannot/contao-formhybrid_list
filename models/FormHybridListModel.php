@@ -8,6 +8,7 @@ abstract class FormHybridListModel extends \Model
 	protected static $strAdditionalSql;
 	protected static $strAdditionalWhereSql;
 	protected static $strAdditionalSelectSql;
+	protected static $strAdditionalHavingSql;
 	protected static $strAdditionalGroupBy;
 
 	public static function findBy($strColumn, $varValue, array $arrOptions=array())
@@ -53,8 +54,13 @@ abstract class FormHybridListModel extends \Model
 		$arrOptions['additionalWhereSql'] = static::$strAdditionalWhereSql;
 		$arrOptions['additionalSelectSql'] = static::$strAdditionalSelectSql;
 		$arrOptions['additionalSql'] = static::$strAdditionalSql;
+
 		if ($arrOptions['additionalSql'])
 			$arrOptions['group'] = static::$strAdditionalGroupBy;
+
+		if (static::$strAdditionalHavingSql)
+			$arrOptions['having'] = static::$strAdditionalHavingSql;
+
 		$strQuery = static::buildFindQuery($arrOptions);
 
 		$objStatement = \Database::getInstance()->prepare($strQuery);
@@ -164,6 +170,11 @@ abstract class FormHybridListModel extends \Model
 	public static function setAdditionalWhereSql($strAdditionalWhereSql)
 	{
 		static::$strAdditionalWhereSql = html_entity_decode($strAdditionalWhereSql);
+	}
+
+	public static function setAdditionalHavingSql($strAdditionalHavingSql)
+	{
+		static::$strAdditionalHavingSql = html_entity_decode($strAdditionalHavingSql);
 	}
 
 	public static function setAdditionalSelectSql($strAdditionalSelectSql)

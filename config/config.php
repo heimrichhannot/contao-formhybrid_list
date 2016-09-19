@@ -12,7 +12,7 @@
 /**
  * Constants
  */
-define('FORMHYBRID_LIST_BUTTON_FILTER', 'filter');
+define('FORMHYBRID_LIST_BUTTON_RESET_FILTER', 'reset_filter');
 
 // module names
 define('MODULE_FORMHYBRID_READER', 'formhybrid_reader');
