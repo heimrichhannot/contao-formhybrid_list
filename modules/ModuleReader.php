@@ -242,7 +242,7 @@ class ModuleReader extends \Module
 
 						$strItem = $this->replaceInsertTags($this->parseItem($objItem));
 						
-						if (\Environment::get('isAjaxRequest') || $this->useModalWrapperSync)
+						if ((\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal') || $this->useModalWrapperSync)
 						{
 							if (\Input::post('FORM_SUBMIT') == 'com_'. $this->formHybridDataContainer .'_'. $objItem->id)
 							{
