@@ -20,7 +20,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
 	'showInitialResults,formHybridAddHashToAction,isTableList,addDetailsCol,addShareCol,deactivateTokens;' .
 	'{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,hideUnpublishedItems,' .
 	'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,' .
-	'addDisjunctiveFieldGroups,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;' .
+	'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;' .
 	'{misc_legend},imgSize,useDummyImage,useModal;' .
 	'{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;' .
 	'{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
