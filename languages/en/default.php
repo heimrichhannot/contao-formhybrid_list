@@ -3,6 +3,7 @@
 $arrLang = &$GLOBALS['TL_LANG']['formhybrid_list'];
 
 $arrLang['filter'][0] = 'Apply filter';
+$arrLang[FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] = 'Reset filter';
 $arrLang['detailsTitle'] = 'Details';
 $arrLang['shareTitle'] = 'Share';
 
