@@ -326,8 +326,9 @@ class ModuleReader extends \Module
 		$objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
 		$objTemplate->useDummyImage = $this->useDummyImage;
 		$objTemplate->dummyImage = $this->dummyImage;
+        $objTemplate->imgSize                 = deserialize($this->imgSize, true);
 
-		$this->runBeforeTemplateParsing($objTemplate, $objItemTmp);
+        $this->runBeforeTemplateParsing($objTemplate, $objItemTmp);
 
 		// HOOK: add custom logic
 		if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
