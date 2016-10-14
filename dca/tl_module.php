@@ -68,9 +68,6 @@ $arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'adj
 $arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'initSortingMode');
 $arrDca['config']['onload_callback'][] = array('tl_module_formhybrid_list', 'modifyPalette');
 
-$arrDca['fields']['formHybridDataContainer']['load_callback']['setDefaultDataContainer'] =
-	array('tl_module_formhybrid_list', 'setDefaultDataContainer');
-
 /**
  * Fields
  */
@@ -518,21 +515,8 @@ foreach (array('existanceConditions', 'showConditions') as $strField)
 	unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
 }
 
-class tl_module_formhybrid_list {
-
-	public function setDefaultDataContainer($varValue, $objDc)
-	{
-		if (TL_MODE == 'BE' && !$varValue && strpos($objDc->activeRecord->type, 'formhybrid_list_') !== false)
-		{
-			preg_match('@formhybrid_list_(.*)@', $objDc->activeRecord->type, $arrResult);
-
-			if (is_array($arrResult) && count($arrResult) > 1)
-				return 'tl_' . $arrResult[1];
-		}
-
-		return $varValue;
-	}
-
+class tl_module_formhybrid_list
+{
 	public static function adjustPalettesForLists(\DataContainer $objDc)
 	{
 		\Controller::loadDataContainer('tl_module');
