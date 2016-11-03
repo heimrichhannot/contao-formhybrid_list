@@ -6,6 +6,7 @@ use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybridList\ModuleList;
 use HeimrichHannot\FormHybridList\ModuleMemberList;
 use HeimrichHannot\Haste\Util\Arrays;
+use HeimrichHannot\Haste\Util\Files;
 use HeimrichHannot\MemberContentArchives\MemberContentArchiveModel;
 
 class ModuleNewsList extends ModuleList
@@ -109,7 +110,7 @@ class ModuleNewsList extends ModuleList
 		elseif ($this->useDummyImage && $this->dummyImage)
 		{
 			$arrItem['fields']['addImage'] = true;
-			$arrItem['fields']['singleSRC'] = $this->dummyImage;
+			$arrItem['fields']['singleSRC'] = Files::getPathFromUuid($this->dummyImage);
 
 			if (is_file(TL_ROOT . '/' . $arrItem['fields']['singleSRC'])) {
 				$this->addImageToTemplate($objTemplate, $arrItem['fields']);
