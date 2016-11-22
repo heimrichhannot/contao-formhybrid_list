@@ -35,6 +35,7 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\FormHybridList\FormHybridList'             => 'system/modules/formhybrid_list/classes/FormHybridList.php',
 	'HeimrichHannot\FormHybridList\Comments'                   => 'system/modules/formhybrid_list/classes/Comments.php',
 	'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
+	'HeimrichHannot\FormHybridList\RandomPagination'           => 'system/modules/formhybrid_list/classes/RandomPagination.php',
 
 	// Models
 	'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',
@@ -54,7 +55,6 @@ TemplateLoader::addFiles(array
 	'formhybrid_list_item_default'              => 'system/modules/formhybrid_list/templates',
 	'formhybrid_reader_default'                 => 'system/modules/formhybrid_list/templates',
 	'formhybrid_reader_modal_wrapper_bootstrap' => 'system/modules/formhybrid_list/templates',
-	'formhybrid_list_filter'                    => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_item_table_default'        => 'system/modules/formhybrid_list/templates',
 	'formhybrid_reader_modal_bootstrap'         => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_reader'                     => 'system/modules/formhybrid_list/templates',
