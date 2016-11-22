@@ -2,6 +2,8 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use HeimrichHannot\Haste\Util\Url;
+
 class RandomPagination extends \Contao\Pagination
 {
     protected $intRandomSeed = false;
@@ -30,18 +32,18 @@ class RandomPagination extends \Contao\Pagination
 
             if ($this->intRandomSeed)
             {
-                $strUrl .= $this->strVarConnector . FormHybridList::PARAM_RANDOM . '=' . $this->intRandomSeed;
+                $strUrl = Url::addQueryString(FormHybridList::PARAM_RANDOM . '=' . $this->intRandomSeed, $strUrl);
             }
 
             return $strUrl;
         }
         else
         {
-            $strUrl = $strUrl . $this->strVarConnector . $this->strParameter . '=' . $intPage;
+            $strUrl = Url::addQueryString($this->strParameter . '=' . $intPage, $strUrl);
 
             if ($this->intRandomSeed)
             {
-                $strUrl .= '&' . FormHybridList::PARAM_RANDOM . '=' . $this->intRandomSeed;
+                $strUrl = Url::addQueryString(FormHybridList::PARAM_RANDOM . '=' . $this->intRandomSeed, $strUrl);
             }
 
             return $strUrl;
