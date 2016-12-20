@@ -31,7 +31,7 @@ class ModuleMemberReader extends ModuleReader
 			$arrFilterTags = deserialize($this->memberContentArchiveTags, true);
 			$objItem->memberContent = '';
 
-			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findBy('mid', $objItem->memberId ?: $objItem->id)) !== null)
+			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findPublishedByMid($objItem->memberId ?: $objItem->id)) !== null)
 			{
 				while ($objMemberContentArchives->next())
 				{
