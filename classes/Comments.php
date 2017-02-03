@@ -17,9 +17,9 @@ class Comments extends \Comments
         $offset      = 0;
         $total       = 0;
         $gtotal      = 0;
-        $arrComments = array();
+        $arrComments = [];
 
-        $objTemplate->comments = array(); // see #4064
+        $objTemplate->comments = []; // see #4064
 
         // Pagination
         if ($objConfig->perPage > 0)
@@ -97,7 +97,7 @@ class Comments extends \Comments
                     $objPartial->comment = \StringUtil::toHtml5($objComments->comment);
                 }
 
-                $objPartial->comment = trim(str_replace(array('{{', '}}'), array('&#123;&#123;', '&#125;&#125;'), $objPartial->comment));
+                $objPartial->comment = trim(str_replace(['{{', '}}'], ['&#123;&#123;', '&#125;&#125;'], $objPartial->comment));
 
                 $objPartial->datim     = \Date::parse($objPage->datimFormat, $objComments->date);
                 $objPartial->date      = \Date::parse($objPage->dateFormat, $objComments->date);
@@ -187,57 +187,57 @@ class Comments extends \Comments
         }
 
         // Form fields
-        $arrFields = array(
-            'name'    => array(
+        $arrFields = [
+            'name'    => [
                 'name'      => 'name',
                 'label'     => $GLOBALS['TL_LANG']['MSC']['com_name'],
                 'value'     => trim($this->User->firstname . ' ' . $this->User->lastname),
                 'inputType' => 'text',
-                'eval'      => array('mandatory' => true, 'maxlength' => 64),
-            ),
-            'email'   => array(
+                'eval'      => ['mandatory' => true, 'maxlength' => 64],
+            ],
+            'email'   => [
                 'name'      => 'email',
                 'label'     => $GLOBALS['TL_LANG']['MSC']['com_email'],
                 'value'     => $this->User->email,
                 'inputType' => 'text',
-                'eval'      => array('rgxp' => 'email', 'mandatory' => true, 'maxlength' => 128, 'decodeEntities' => true),
-            ),
-            'website' => array(
+                'eval'      => ['rgxp' => 'email', 'mandatory' => true, 'maxlength' => 128, 'decodeEntities' => true],
+            ],
+            'website' => [
                 'name'      => 'website',
                 'label'     => $GLOBALS['TL_LANG']['MSC']['com_website'],
                 'inputType' => 'text',
-                'eval'      => array('rgxp' => 'url', 'maxlength' => 128, 'decodeEntities' => true),
-            ),
-        );
+                'eval'      => ['rgxp' => 'url', 'maxlength' => 128, 'decodeEntities' => true],
+            ],
+        ];
 
         // Captcha
         if (!$objConfig->disableCaptcha)
         {
-            $arrFields['captcha'] = array(
+            $arrFields['captcha'] = [
                 'name'      => 'captcha',
                 'inputType' => 'captcha',
-                'eval'      => array('mandatory' => true),
-            );
+                'eval'      => ['mandatory' => true],
+            ];
         }
 
         // Comment field
-        $arrFields['comment'] = array(
+        $arrFields['comment'] = [
             'name'      => 'comment',
             'label'     => $GLOBALS['TL_LANG']['MSC']['com_comment'],
             'inputType' => 'textarea',
-            'eval'      => array('mandatory' => true, 'rows' => 4, 'cols' => 40, 'preserveTags' => true),
-        );
+            'eval'      => ['mandatory' => true, 'rows' => 4, 'cols' => 40, 'preserveTags' => true],
+        ];
 
         // Notify me of new comments
-        $arrFields['notify'] = array(
+        $arrFields['notify'] = [
             'name'      => 'notify',
             'label'     => '',
             'inputType' => 'checkbox',
-            'options'   => array(1 => $GLOBALS['TL_LANG']['MSC']['com_notify']),
-        );
+            'options'   => [1 => $GLOBALS['TL_LANG']['MSC']['com_notify']],
+        ];
 
         $doNotSubmit = false;
-        $arrWidgets  = array();
+        $arrWidgets  = [];
         $strFormId   = 'com_' . $strSource . '_' . $intParent;
 
         // Initialize the widgets
@@ -304,7 +304,7 @@ class Comments extends \Comments
 
             // Do not parse any tags in the comment
             $strComment = specialchars(trim($arrWidgets['comment']->value));
-            $strComment = str_replace(array('&amp;', '&lt;', '&gt;'), array('[&]', '[lt]', '[gt]'), $strComment);
+            $strComment = str_replace(['&amp;', '&lt;', '&gt;'], ['[&]', '[lt]', '[gt]'], $strComment);
 
             // Remove multiple line feeds
             $strComment = preg_replace('@\n\n+@', "\n\n", $strComment);
@@ -325,7 +325,7 @@ class Comments extends \Comments
             $time = time();
 
             // Prepare the record
-            $arrSet = array(
+            $arrSet = [
                 'tstamp'    => $time,
                 'source'    => $strSource,
                 'parent'    => $intParent,
@@ -336,7 +336,7 @@ class Comments extends \Comments
                 'ip'        => $this->anonymizeIp(\Environment::get('ip')),
                 'date'      => $time,
                 'published' => ($objConfig->moderate ? '' : 1),
-            );
+            ];
 
             // Store the comment
             $objComment = new \CommentsModel();
@@ -367,7 +367,7 @@ class Comments extends \Comments
             // Convert the comment to plain text
             $strComment = strip_tags($strComment);
             $strComment = \StringUtil::decodeEntities($strComment);
-            $strComment = str_replace(array('[&]', '[lt]', '[gt]'), array('&', '<', '>'), $strComment);
+            $strComment = str_replace(['[&]', '[lt]', '[gt]'], ['&', '<', '>'], $strComment);
 
             // Add the comment details
             $objEmail->text = sprintf(

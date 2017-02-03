@@ -63,8 +63,8 @@ class ModuleReader extends \Module
 
 			if (!empty($arrConditions))
 			{
-				$arrColumns = array();
-				$arrValues = array();
+				$arrColumns = [];
+				$arrValues = [];
 
 				foreach ($arrConditions as $arrCondition)
 				{
@@ -208,7 +208,7 @@ class ModuleReader extends \Module
 								$this->Template->hlc = 'h' . ($intHl + 1);
 								
 								$objComments = \System::importStatic('HeimrichHannot\\FormHybridList\\Comments');
-								$arrNotifies = array();
+								$arrNotifies = [];
 
 								// Notify the system administrator
 								if ($objArchive->notify != 'notify_author')

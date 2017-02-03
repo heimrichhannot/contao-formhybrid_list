@@ -15,15 +15,15 @@ class FormHybridList
 
         $arrDca = &$GLOBALS['TL_DCA'][$strDca];
 
-        $arrDca['fields']['shareToken'] = array(
-            'eval' => array('doNotCopy' => true),
+        $arrDca['fields']['shareToken'] = [
+            'eval' => ['doNotCopy' => true],
             'sql'  => "varchar(23) NOT NULL default ''",
-        );
+        ];
 
-        $arrDca['fields']['shareTokenTime'] = array(
-            'eval' => array('doNotCopy' => true),
+        $arrDca['fields']['shareTokenTime'] = [
+            'eval' => ['doNotCopy' => true],
             'sql'  => "int(10) unsigned NOT NULL default '0'",
-        );
+        ];
     }
 
     public static function shareTokenExpiredOrEmpty($objEntity, $intNow)

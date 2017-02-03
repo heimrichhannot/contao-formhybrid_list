@@ -22,16 +22,16 @@ use HeimrichHannot\HastePlus\Environment;
 
 class ModuleList extends \Module
 {
-    protected $arrSkipInstances                 = array();
-    protected $arrItems                         = array();
+    protected $arrSkipInstances                 = [];
+    protected $arrItems                         = [];
     protected $objItems;
-    protected $arrInitialFilter                 = array();
-    protected $arrColumns                       = array();
-    protected $arrValues                        = array();
-    protected $arrOptions                       = array();
-    protected $arrSkippedFilterFields           = array();
-    protected $arrDisjunctionFieldGroups        = array();
-    protected $arrDisjunctionFieldGroupsColumns = array();
+    protected $arrInitialFilter                 = [];
+    protected $arrColumns                       = [];
+    protected $arrValues                        = [];
+    protected $arrOptions                       = [];
+    protected $arrSkippedFilterFields           = [];
+    protected $arrDisjunctionFieldGroups        = [];
+    protected $arrDisjunctionFieldGroupsColumns = [];
     protected $objFilterForm;
     protected $strWrapperId                     = 'formhybrid-list_';
     protected $strWrapperClass                  = 'formhybrid-list';
@@ -111,7 +111,7 @@ class ModuleList extends \Module
         $this->arrConjunctiveMultipleFields = deserialize($this->conjunctiveMultipleFields, true);
         if ($this->addDisjunctiveFieldGroups)
         {
-            $arrResult = array();
+            $arrResult = [];
 
             foreach (deserialize($this->disjunctiveFieldGroups, true) as $intGroup => $arrGroup)
             {
@@ -240,15 +240,15 @@ class ModuleList extends \Module
 
         if ($arrCurrentSorting['order'] == 'random')
         {
-            $intRandomSeed = \Input::get(FormHybridList::PARAM_RANDOM) ?: rand(1, 500);
+            $intRandomSeed             = \Input::get(FormHybridList::PARAM_RANDOM) ?: rand(1, 500);
             $this->arrOptions['order'] = 'RAND(' . $intRandomSeed . ')';
             list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit, $intRandomSeed);
         }
         else
         {
             $this->arrOptions['order'] =
-                (($this->sortingMode == OPTION_FORMHYBRID_SORTINGMODE_TEXT ? '' : $this->formHybridDataContainer . '.') . $arrCurrentSorting['order'] . ' '
-                 . strtoupper($arrCurrentSorting['sort']));
+                (($this->sortingMode == OPTION_FORMHYBRID_SORTINGMODE_TEXT ? '' : $this->formHybridDataContainer . '.') . $arrCurrentSorting['order']
+                 . ' ' . strtoupper($arrCurrentSorting['sort']));
             list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit);
         }
 
@@ -285,10 +285,10 @@ class ModuleList extends \Module
         {
             $this->Template->empty = true;
 
-            return array(array(), 0);
+            return [[], 0];
         }
 
-        return array($this->arrItems, $intTotal);
+        return [$this->arrItems, $intTotal];
     }
 
     public function addColumns() { }
@@ -330,7 +330,7 @@ class ModuleList extends \Module
 
     protected function generateFields($objItem)
     {
-        $arrItem = array();
+        $arrItem = [];
         $arrDca  = &$GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
         // always add id
@@ -361,7 +361,8 @@ class ModuleList extends \Module
                 }
 
                 // anti-xss: escape everything besides some tags
-                $arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
+                $arrItem['fields'][$strField] =
+                    FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
             }
         }
         else
@@ -377,7 +378,8 @@ class ModuleList extends \Module
                 );
 
                 // anti-xss: escape everything besides some tags
-                $arrItem['fields'][$strField] = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
+                $arrItem['fields'][$strField] =
+                    FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $arrItem['fields'][$strField]);
             }
         }
 
@@ -401,17 +403,18 @@ class ModuleList extends \Module
 
         if ($limit < 1)
         {
-            return array();
+            return [];
         }
 
         $count     = 0;
-        $arrResult = array();
+        $arrResult = [];
 
         foreach ($arrItems as $arrItem)
         {
             $arrResult[] = $this->parseItem(
                 $arrItem,
-                'item item' . '_' . ++$count . (($count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2) == 0) ? ' odd' : ' even'),
+                'item item' . '_' . ++$count . (($count == 1) ? ' first' : '') . (($count == $limit) ? ' last' : '') . ((($count % 2)
+                                                                                                                         == 0) ? ' odd' : ' even'),
                 $count
             );
         }
@@ -515,7 +518,9 @@ class ModuleList extends \Module
             $blnSkipValue  = false;
 
             // special handling for tags
-            if (in_array('tags', \ModuleLoader::getActive()) && $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'] == 'tag')
+            if (in_array('tags', \ModuleLoader::getActive())
+                && $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'] == 'tag'
+            )
             {
                 $arrTags   = explode(',', $varValue);
                 $strColumn = '';
@@ -731,33 +736,33 @@ class ModuleList extends \Module
         // user specified
         if (\Input::get('order') && \Input::get('sort'))
         {
-            $arrCurrentSorting = array(
+            $arrCurrentSorting = [
                 'order' => \Input::get('order'),
                 'sort'  => \Input::get('sort'),
-            );
+            ];
         } // initial
         elseif ($this->itemSorting)
         {
             if ($this->itemSorting == 'random')
             {
-                $arrCurrentSorting = array(
+                $arrCurrentSorting = [
                     'order' => 'random',
-                );
+                ];
             }
             else
             {
-                $arrCurrentSorting = array(
+                $arrCurrentSorting = [
                     'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
                     'sort'  => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc'),
-                );
+                ];
             }
         } // default -> the first table field
         else
         {
-            $arrCurrentSorting = array(
+            $arrCurrentSorting = [
                 'order' => $this->arrTableFields[0],
                 'sort'  => 'asc',
-            );
+            ];
         }
 
         return $arrCurrentSorting;
@@ -765,36 +770,36 @@ class ModuleList extends \Module
 
     protected function getHeader()
     {
-        $arrHeader         = array();
+        $arrHeader         = [];
         $arrCurrentSorting = $this->getCurrentSorting();
 
         foreach ($this->arrTableFields as $strName)
         {
             $isCurrentOrderField = ($strName == $arrCurrentSorting['order']);
 
-            $arrField = array(
+            $arrField = [
                 'field' => $strName,
-            );
+            ];
 
             if ($isCurrentOrderField)
             {
                 $arrField['class'] = ($arrCurrentSorting['sort'] == 'asc' ? 'asc' : 'desc');
                 $arrField['link']  = Environment::addParametersToUri(
                     Environment::getUrl(),
-                    array(
+                    [
                         'order' => $strName,
                         'sort'  => ($arrCurrentSorting['sort'] == 'asc' ? 'desc' : 'asc'),
-                    )
+                    ]
                 );
             }
             else
             {
                 $arrField['link'] = Environment::addParametersToUri(
                     Environment::getUrl(),
-                    array(
+                    [
                         'order' => $strName,
                         'sort'  => 'asc',
-                    )
+                    ]
                 );
             }
 
@@ -861,7 +866,7 @@ class ModuleList extends \Module
             $this->Template->pagination = $objPagination->generate("\n  ");
         }
 
-        return array($offset, $limit);
+        return [$offset, $limit];
     }
 
     protected function addImage($objItem, $strField, &$arrItem)
@@ -942,7 +947,8 @@ class ModuleList extends \Module
                 $varValue
             );
 
-            $strQuery = '(' . $strField . ' IN (' . implode(',', $arrValueIn) . ') OR ' . $strField . ' REGEXP ("' . implode('|', $arrValueRegExp) . '"))';
+            $strQuery =
+                '(' . $strField . ' IN (' . implode(',', $arrValueIn) . ') OR ' . $strField . ' REGEXP ("' . implode('|', $arrValueRegExp) . '"))';
         }
 
         return $strQuery;

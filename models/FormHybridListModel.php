@@ -11,33 +11,31 @@ abstract class FormHybridListModel extends \Model
 	protected static $strAdditionalHavingSql;
 	protected static $strAdditionalGroupBy;
 
-	public static function findBy($strColumn, $varValue, array $arrOptions=array())
+	public static function findBy($strColumn, $varValue, array $arrOptions= [])
 	{
 		$arrOptions = array_merge
 		(
-			array
-			(
+            [
 				'column' => $strColumn,
 				'value'  => $varValue,
 				'return' => 'Collection'
-			),
+            ],
 
-			$arrOptions
+            $arrOptions
 		);
 
 		return static::find($arrOptions);
 	}
 
-	public static function findAll(array $arrOptions=array())
+	public static function findAll(array $arrOptions= [])
 	{
 		$arrOptions = array_merge
 		(
-			array
-			(
+            [
 				'return' => 'Collection'
-			),
+            ],
 
-			$arrOptions
+            $arrOptions
 		);
 
 		return static::find($arrOptions);
@@ -120,14 +118,14 @@ abstract class FormHybridListModel extends \Model
 			return 0;
 		}
 
-		$strQuery = static::buildCountQuery(array
-		(
+		$strQuery = static::buildCountQuery(
+            [
 			'table'  => static::$strTable,
 			'column' => $strColumn,
 			'value'  => $varValue,
 			'additionalSql' => static::$strAdditionalSql,
-			'additionalGroupBy' => static::$strAdditionalGroupBy
-		));
+			'additionalGroupBy' => static::$strAdditionalGroupBy]
+        );
 
 		return (int) \Database::getInstance()->prepare($strQuery)->execute($varValue)->count;
 	}

@@ -120,7 +120,7 @@ class ModuleNewsList extends ModuleList
 		if ($arrItem['fields']['addEnclosure'])
 		{
 			if (!is_array($arrItem['fields']['enclosure']))
-				$arrItem['fields']['enclosure'] = array($arrItem['fields']['enclosure']);
+				$arrItem['fields']['enclosure'] = [$arrItem['fields']['enclosure']];
 			$this->addEnclosuresToTemplate($objTemplate, $arrItem['fields']);
 		}
 	}

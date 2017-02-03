@@ -1,5 +1,11 @@
-# Change Log
+# Changelog
 All notable changes to this project will be documented in this file.
+
+## [2.3.21] - 2017-02-03
+
+### Fixed
+- changed array() to []
+- fixed Where calculation
 
 ## [2.3.20] - 2016-12-20
 

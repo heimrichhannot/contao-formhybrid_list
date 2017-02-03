@@ -10,16 +10,14 @@ $arrDca['palettes']['default'] .= '{formhybrid_list_legend},shareExpirationInter
 /**
  * Fields
  */
-$arrFields = array(
-	'shareExpirationInterval' => array
-	(
-		'label'     => &$GLOBALS['TL_LANG']['tl_settings']['shareExpirationInterval'],
-		'exclude'   => true,
-		'inputType' => 'timePeriod',
-		'options'   => array('m', 'h', 'd'),
-		'reference' => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
-		'eval'      => array('mandatory' => true, 'tl_class' => 'w50')
-	)
-);
+$arrFields = [
+	'shareExpirationInterval' => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_settings']['shareExpirationInterval'],
+        'exclude'   => true,
+        'inputType' => 'timePeriod',
+        'options'   => ['m', 'h', 'd'],
+        'reference' => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
+        'eval'      => ['mandatory' => true, 'tl_class' => 'w50']]
+];
 
 $arrDca['fields'] = array_merge($arrFields, $arrDca['fields']);

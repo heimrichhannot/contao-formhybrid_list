@@ -3,9 +3,9 @@
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_READER] = array('FormHybrid-Leser', '');
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_MEMBER_READER] = array('FormHybrid-Mitgliederleser', '');
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_LISTS] = array('FormHybrid-Listen', '');
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_LIST] = array('FormHybrid-Liste', '');
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_MEMBER_LIST] = array('FormHybrid-Mitgliederliste', '');
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_NEWS_LIST] = array('FormHybrid-Nachrichtenliste', '');
+$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_READER] = ['FormHybrid-Leser', ''];
+$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_MEMBER_READER] = ['FormHybrid-Mitgliederleser', ''];
+$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_LISTS] = ['FormHybrid-Listen', ''];
+$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_LIST] = ['FormHybrid-Liste', ''];
+$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_MEMBER_LIST] = ['FormHybrid-Mitgliederliste', ''];
+$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_NEWS_LIST] = ['FormHybrid-Nachrichtenliste', ''];

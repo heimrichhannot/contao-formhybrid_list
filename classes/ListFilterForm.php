@@ -58,13 +58,13 @@ class ListFilterForm extends Form
 
     protected function generateResetFilterField()
     {
-        $arrData = array(
+        $arrData = [
             'inputType' => 'explanation',
-            'eval'      => array(
+            'eval'      => [
                 'text' => '<div class="form-group reset-filter"><a class="btn btn-default" href="' . Url::getCurrentUrlWithoutParameters() . '"><span>'
                           . $GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] . '</span></a></div>',
-            ),
-        );
+            ],
+        ];
 
         $this->arrFields[FORMHYBRID_LIST_BUTTON_RESET_FILTER] = $this->generateField(FORMHYBRID_LIST_BUTTON_RESET_FILTER, $arrData);
     }
@@ -91,11 +91,11 @@ class ListFilterForm extends Form
             $strClass = $this->submitClass;
         }
 
-        $arrData = array(
+        $arrData = [
             'inputType' => 'submit',
-            'label'     => is_array($strLabel) ? $strLabel : array($strLabel),
-            'eval'      => array('class' => $strClass),
-        );
+            'label'     => is_array($strLabel) ? $strLabel : [$strLabel],
+            'eval'      => ['class' => $strClass],
+        ];
 
         $this->arrFields[FORMHYBRID_NAME_SUBMIT] = $this->generateField(FORMHYBRID_NAME_SUBMIT, $arrData);
     }
@@ -117,7 +117,7 @@ class ListFilterForm extends Form
                         $arrDca['fields'][$strField]['eval']['isBoolean']          =
                             true; // required to be set within Modulelist::applyFilters() cause checkbox is select there
                         $arrDca['fields'][$strField]['inputType']                  = 'select';
-                        $arrDca['fields'][$strField]['options']                    = array('1', '0');
+                        $arrDca['fields'][$strField]['options']                    = ['1', '0'];
                         $arrDca['fields'][$strField]['reference']                  = &$GLOBALS['TL_LANG']['formhybrid_list']['reference']['yes_no'];
                     }
                     break;

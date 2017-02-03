@@ -12,17 +12,17 @@
 /**
  * Register the namespaces
  */
-ClassLoader::addNamespaces(array
-(
-	'HeimrichHannot',
-));
+ClassLoader::addNamespaces(
+    [
+	'HeimrichHannot',]
+);
 
 
 /**
  * Register the classes
  */
-ClassLoader::addClasses(array
-(
+ClassLoader::addClasses(
+    [
 	// Modules
 	'HeimrichHannot\FormHybridList\ModuleMemberList'           => 'system/modules/formhybrid_list/modules/ModuleMemberList.php',
 	'HeimrichHannot\FormHybridList\ModuleNews'                 => 'system/modules/formhybrid_list/modules/ModuleNews.php',
@@ -39,15 +39,15 @@ ClassLoader::addClasses(array
 
 	// Models
 	'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',
-	'HeimrichHannot\FormHybridList\FormHybridListQueryBuilder' => 'system/modules/formhybrid_list/models/FormHybridListQueryBuilder.php',
-));
+	'HeimrichHannot\FormHybridList\FormHybridListQueryBuilder' => 'system/modules/formhybrid_list/models/FormHybridListQueryBuilder.php',]
+);
 
 
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array
-(
+TemplateLoader::addFiles(
+    [
 	'pagination_ajax'                           => 'system/modules/formhybrid_list/templates',
 	'com_formhybrid_list'                       => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_default'                   => 'system/modules/formhybrid_list/templates',
@@ -58,5 +58,5 @@ TemplateLoader::addFiles(array
 	'formhybrid_list_item_table_default'        => 'system/modules/formhybrid_list/templates',
 	'formhybrid_reader_modal_bootstrap'         => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_reader'                     => 'system/modules/formhybrid_list/templates',
-	'mod_formhybrid_list'                       => 'system/modules/formhybrid_list/templates',
-));
+	'mod_formhybrid_list'                       => 'system/modules/formhybrid_list/templates',]
+);

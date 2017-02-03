@@ -25,7 +25,8 @@ class ModuleMemberList extends ModuleList
 			$arrItem['fields']['memberContent'] = '';
 
 			if (($objMemberContentArchives = \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findBy(
-					array('mid=?', 'published=?'), array($objItem->memberId ?: $objItem->id, true))) !== null)
+                    ['mid=?', 'published=?'], [$objItem->memberId ?: $objItem->id, true]
+                )) !== null)
 			{
 				while ($objMemberContentArchives->next())
 				{
