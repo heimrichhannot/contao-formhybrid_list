@@ -12,6 +12,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use HeimrichHannot\Blocks\BlockModuleModel;
 use HeimrichHannot\Haste\DateUtil;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
@@ -40,9 +41,8 @@ class ModuleList extends \Module
     {
         if (TL_MODE == 'BE')
         {
-            $objTemplate = new \BackendTemplate('be_wildcard');
-
-            $objTemplate->wildcard = '### FORMHYBRID LIST ###';
+            $objTemplate           = new \BackendTemplate('be_wildcard');
+            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0] ?: $this->type) . ' ###';
             $objTemplate->title    = $this->headline;
             $objTemplate->id       = $this->id;
             $objTemplate->link     = $this->name;
@@ -99,16 +99,31 @@ class ModuleList extends \Module
             }
         }
 
-        $this->Template->headline           = $this->headline;
-        $this->Template->hl                 = $this->hl;
-        $this->Template->wrapperClass       = $this->strWrapperClass;
-        $this->Template->wrapperId          = $this->strWrapperId;
-        $this->Template->addInfiniteScroll  = $this->addInfiniteScroll;
+        $this->Template->headline          = $this->headline;
+        $this->Template->hl                = $this->hl;
+        $this->Template->wrapperClass      = $this->strWrapperClass;
+        $this->Template->wrapperId         = $this->strWrapperId;
+        $this->Template->addInfiniteScroll = $this->addInfiniteScroll;
+
+        if ($this->addMasonry)
+        {
+            $this->Template->addMasonry                  = true;
+            $arrStamps = [];
+
+            foreach (deserialize($this->masonryStampContentElements, true) as $arrStamp)
+            {
+                $arrStamps[] = BlockModuleModel::generateContent($arrStamp['block']);
+            }
+
+            $this->Template->masonryStampContentElements = $arrStamps;
+        }
+
         $this->arrSkipInstances             = deserialize($this->skipInstances, true);
         $this->arrTableFields               = deserialize($this->tableFields, true);
         $this->addDefaultValues             = $this->formHybridAddDefaultValues;
         $this->arrDefaultValues             = deserialize($this->formHybridDefaultValues, true);
         $this->arrConjunctiveMultipleFields = deserialize($this->conjunctiveMultipleFields, true);
+
         if ($this->addDisjunctiveFieldGroups)
         {
             $arrResult = [];

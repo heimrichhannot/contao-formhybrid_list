@@ -67,3 +67,28 @@ itemTemplate | The template each item is rendered with
 Name | Arguments | Description
 ---- | --------- | -----------
 parseItems | $objTemplate, $arrItem, $objModule | Triggered just before FrontendTemplate::parse() is called
+
+## Technical instructions
+
+### Example CSS for the masonry
+
+```
+.formhybrid-list {
+    > div {
+        width: 100%;
+    }
+
+    .items {
+        width: 100%;
+        .make-row();
+
+        .item, .stamp-item {
+            .make-xs-column(12);
+            .make-sm-column(6);
+            .make-md-column(4);
+            .make-lg-column(4);
+            margin-bottom: 40px;
+        }
+    }
+}
+```

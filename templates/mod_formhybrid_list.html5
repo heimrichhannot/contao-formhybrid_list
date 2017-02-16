@@ -3,29 +3,39 @@
 <?php $this->block('content'); ?>
 
 <div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"
-	<?php if ($this->addInfiniteScroll): ?>data-infinitescroll="1"<?php endif; ?>>
+     <?php if ($this->addInfiniteScroll): ?>data-infinitescroll="1"<?php endif; ?>
+     <?php if ($this->addMasonry): ?>data-masonry="1"<?php endif; ?>>
 
-	<?php echo $this->filterForm; ?>
-	<div class="block">
-		<?php if ($this->showItemCount): ?>
-			<span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
-		<?php endif; ?>
+    <?php echo $this->filterForm; ?>
+    <div class="block">
+        <?php if ($this->showItemCount): ?>
+            <span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
+        <?php endif; ?>
 
-		<?php if (!$this->empty): ?>
-			<?php if ($this->showInitialResults || $this->isSubmitted): ?>
-				<div class="items">
-					<?php foreach ($this->items as $item) echo $item; ?>
-				</div>
-				<?php echo $this->pagination; ?>
-			<?php endif; ?>
-		<?php else: ?>
-			<p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
-		<?php endif; ?>
-	</div>
+        <?php if (!$this->empty): ?>
+            <?php if ($this->showInitialResults || $this->isSubmitted): ?>
+                <div class="items">
+                    <?php if ($this->addMasonry && !\Environment::get('isAjaxRequest')): ?>
+                        <?php foreach ($this->masonryStampContentElements as $i => $strStamp): ?>
+                            <div class="stamp-item stamp-item_<?= $i + 1 ?>">
+                                <?= $strStamp ?>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <?php foreach ($this->items as $item): ?>
+                        <?= $item ?>
+                    <?php endforeach; ?>
+                </div>
+                <?php echo $this->pagination; ?>
+            <?php endif; ?>
+        <?php else: ?>
+            <p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+        <?php endif; ?>
+    </div>
 
-	<?php if ($this->useModal): ?>
-		<?= $this->modalWrapper ?>
-	<?php endif; ?>
+    <?php if ($this->useModal): ?>
+        <?= $this->modalWrapper ?>
+    <?php endif; ?>
 </div>
 
 <?php $this->endblock(); ?>

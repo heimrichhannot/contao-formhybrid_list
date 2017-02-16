@@ -18,7 +18,11 @@
     },
     "require": {
         "contao/core": ">=3.2,<4-dev",
-        "heimrichhannot/contao-formhybrid": ">=2.3.0"
+        "heimrichhannot/contao-formhybrid": ">=2.3.0",
+        "heimrichhannot/contao-blocks": "~1.0",
+        "heimrichhannot/contao-multi_column_editor": "~1.1",
+        "desandro/imagesloaded": "v4.1.1",
+        "desandro/masonry": "v4.1.1"
     },
     "autoload": {
         "classmap": [""]

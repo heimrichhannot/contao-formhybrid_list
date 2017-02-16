@@ -28,24 +28,29 @@ define('OPTION_FORMHYBRID_SORTINGMODE_TEXT', 'text');
  * Frontend modules
  */
 // reader
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_READER] = 'HeimrichHannot\FormHybridList\ModuleReader';
+$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_READER]        = 'HeimrichHannot\FormHybridList\ModuleReader';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_READER] = 'HeimrichHannot\FormHybridList\ModuleMemberReader';
 
 // list
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST] = 'HeimrichHannot\FormHybridList\ModuleList';
+$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST]        = 'HeimrichHannot\FormHybridList\ModuleList';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST] = 'HeimrichHannot\FormHybridList\ModuleNewsList';
+$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'HeimrichHannot\FormHybridList\ModuleNewsList';
 
 /**
  * Assets
  */
 if (TL_MODE == 'FE')
 {
-	// css
-	$GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css|static';
+    // css
+    $GLOBALS['TL_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css|static';
 
-	// js
-	$GLOBALS['TL_JAVASCRIPT']['formhybrid_list_infinite_scroll'] =
-		'system/modules/formhybrid_list/assets/vendor/jscroll-2.3.5/jquery.jscroll.min.js|static';
-	$GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
+    // js
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_infinite_scroll'] =
+        'system/modules/formhybrid_list/assets/vendor/jscroll-2.3.5/jquery.jscroll.min.js|static';
+
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry'] = 'composer/vendor/desandro/masonry/dist/masonry.pkgd.min.js|static';
+
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry_imagesloaded'] = 'composer/vendor/desandro/imagesloaded/imagesloaded.pkgd.min.js|static';
+
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
 }
