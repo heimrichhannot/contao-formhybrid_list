@@ -13,7 +13,6 @@
 namespace HeimrichHannot\FormHybridList;
 
 use HeimrichHannot\Blocks\BlockModuleModel;
-use HeimrichHannot\Haste\DateUtil;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
@@ -107,12 +106,15 @@ class ModuleList extends \Module
 
         if ($this->addMasonry)
         {
-            $this->Template->addMasonry                  = true;
-            $arrStamps = [];
+            $this->Template->addMasonry = true;
+            $arrStamps                  = [];
 
             foreach (deserialize($this->masonryStampContentElements, true) as $arrStamp)
             {
-                $arrStamps[] = BlockModuleModel::generateContent($arrStamp['block']);
+                $arrStamps[] = [
+                    'content' => BlockModuleModel::generateContent($arrStamp['stampBlock']),
+                    'class'   => $arrStamp['stampCssClass']
+                ];
             }
 
             $this->Template->masonryStampContentElements = $arrStamps;

@@ -201,13 +201,20 @@ $arrFields = [
             'multiColumnEditor' => [
                 'minRowCount' => 0,
                 'fields' => [
-                    'block' => [
-                        'label'            => &$GLOBALS['TL_LANG']['tl_module']['block'],
+                    'stampBlock' => [
+                        'label'            => &$GLOBALS['TL_LANG']['tl_module']['stampBlock'],
                         'exclude'          => true,
                         'inputType'        => 'select',
                         'options_callback' => ['HeimrichHannot\Blocks\Backend\Content', 'getBlocks'],
-                        'eval'             => ['tl_class' => 'w50']
+                        'eval'             => ['tl_class' => 'w50', 'mandatory' => true, 'includeBlankOption' => true]
                     ],
+                    'stampCssClass' => [
+                        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['stampCssClass'],
+                        'exclude'                 => true,
+                        'search'                  => true,
+                        'inputType'               => 'text',
+                        'eval'                    => ['maxlength' => 255, 'tl_class' => 'w50'],
+                    ]
                 ],
             ],
         ],

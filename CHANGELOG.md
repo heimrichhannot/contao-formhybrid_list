@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.23] - 2017-02-17
+
+### Fixed
+- masonry stamps
+
 ## [2.3.22] - 2017-02-16
 
 ### Added

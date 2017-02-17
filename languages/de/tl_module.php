@@ -63,7 +63,9 @@ $arrLang['aliasField']							= ['Alias-Feld', 'Wählen Sie hier das Alias-Feld a
 $arrLang['deactivateTokens']					= ['Token-Handling deaktivieren', 'Wählen Sie diese Option, wenn die Module nicht prüfen sollen, ob der GET-Parameter "token" ein korrektes Token enthält.'];
 $arrLang['addMasonry']					        = ['Masonry hinzufügen', 'Wählen Sie diese Option, wenn das Masonry-JavaScript-Plugin auf die Liste angewendet werden soll.'];
 $arrLang['masonryCols']     					= ['Spaltenanzahl', 'Geben Sie hier an, wie viele Spalten das Masonry-Raster haben soll.'];
-$arrLang['masonryStampContentElements']     	= ['Feste Kacheln festlegen', 'Hier können Sie Kacheln festlegen, die immer gerendert werden sollen. Die Position muss anschließend per CSS festgelegt werden (-> Responsive).'];
+$arrLang['masonryStampContentElements']     	= ['Feste Blöcke festlegen', 'Hier können Sie Blöcke festlegen, die immer gerendert werden sollen. Die Position muss anschließend per CSS festgelegt werden (-> Responsive).'];
+$arrLang['stampBlock']                          = ['Block', 'Wählen Sie hier einen Block aus.'];
+$arrLang['stampCssClass']                       = ['CSS-Klasse', 'Vergeben Sie hier eine CSS-Klasse.'];
 
 // events
 $arrLang['filterArchives']						= ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

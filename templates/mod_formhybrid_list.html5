@@ -16,9 +16,9 @@
             <?php if ($this->showInitialResults || $this->isSubmitted): ?>
                 <div class="items">
                     <?php if ($this->addMasonry && !\Environment::get('isAjaxRequest')): ?>
-                        <?php foreach ($this->masonryStampContentElements as $i => $strStamp): ?>
-                            <div class="stamp-item stamp-item_<?= $i + 1 ?>">
-                                <?= $strStamp ?>
+                        <?php foreach ($this->masonryStampContentElements as $i => $arrStamp): ?>
+                            <div class="stamp-item stamp-item_<?= $i + 1 ?> <?= $arrStamp['class'] ?>">
+                                <?= $arrStamp['content'] ?>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
