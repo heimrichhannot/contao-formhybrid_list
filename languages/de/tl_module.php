@@ -62,7 +62,6 @@ $arrLang['existanceConditions']					= ['Bedingungen für das Auffinden bestehend
 $arrLang['aliasField']							= ['Alias-Feld', 'Wählen Sie hier das Alias-Feld aus, welches als auto_item abgefragt wird. Wenn Sie kein Feld auswählen, wird das Feld "id" verwendet.'];
 $arrLang['deactivateTokens']					= ['Token-Handling deaktivieren', 'Wählen Sie diese Option, wenn die Module nicht prüfen sollen, ob der GET-Parameter "token" ein korrektes Token enthält.'];
 $arrLang['addMasonry']					        = ['Masonry hinzufügen', 'Wählen Sie diese Option, wenn das Masonry-JavaScript-Plugin auf die Liste angewendet werden soll.'];
-$arrLang['masonryCols']     					= ['Spaltenanzahl', 'Geben Sie hier an, wie viele Spalten das Masonry-Raster haben soll.'];
 $arrLang['masonryStampContentElements']     	= ['Feste Blöcke festlegen', 'Hier können Sie Blöcke festlegen, die immer gerendert werden sollen. Die Position muss anschließend per CSS festgelegt werden (-> Responsive).'];
 $arrLang['stampBlock']                          = ['Block', 'Wählen Sie hier einen Block aus.'];
 $arrLang['stampCssClass']                       = ['CSS-Klasse', 'Vergeben Sie hier eine CSS-Klasse.'];

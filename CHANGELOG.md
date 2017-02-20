@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.24] - 2017-02-20
+
+### Fixed
+
+- removed masonryCols since this is done by using css
+
+### Added
+- additional sql now supports insert tags
+- chapter for customizing filters in readme
+
 ## [2.3.23] - 2017-02-17
 
 ### Fixed

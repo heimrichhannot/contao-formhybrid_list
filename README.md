@@ -92,3 +92,40 @@ parseItems | $objTemplate, $arrItem, $objModule | Triggered just before Frontend
     }
 }
 ```
+
+### Customize list filter processing behavior
+
+Just create a submodule of ModuleList, add the following function and adjust it to your needs
+
+```
+protected function customizeFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue = false)
+{
+    $arrData = $this->objFilterForm->getDca();
+
+    switch ($strField)
+    {
+        case 'startDate':
+            $strColumn = 'startDate >= ?';
+            $varValue = strtotime(str_replace('%', '', $varValue));
+            break;
+        case 'endDate':
+            $strColumn = 'startDate <= ?';
+            $varValue = strtotime(str_replace('%', '', $varValue));
+            break;
+        case 'city':
+            $strColumn = 'city = ?';
+            $varValue = $arrData['fields'][$strField]['options'][$varValue];
+            break;
+        case 'fsonly':
+            if (\Input::get('fsonly') === '0')
+            {
+                $strColumn = 'pid != 1';
+            }
+            else if (\Input::get('fsonly') === '1')
+            {
+                $strColumn = 'pid = 1';
+            }
+            break;
+    }
+}
+```

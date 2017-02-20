@@ -73,7 +73,7 @@ $arrDca['subpalettes'] = array_merge(
         'useModal'                  => 'modalWrapperTpl,modalClass,modalInnerClass,useModalWrapperSync',
         'setPageTitle'              => 'pageTitleField,pageTitlePattern',
         'addAjaxPagination'         => 'addInfiniteScroll',
-        'addMasonry'                => 'masonryCols,masonryStampContentElements'
+        'addMasonry'                => 'masonryStampContentElements'
     ]
 );
 
@@ -186,13 +186,6 @@ $arrFields = [
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
-    ],
-    'masonryCols'                 => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['masonryCols'],
-        'exclude'   => true,
-        'inputType' => 'text',
-        'eval'      => ['tl_class' => 'w50', 'rgxp' => 'digit', 'mandatory' => true],
-        'sql'       => "int(8) unsigned NOT NULL default '3'"
     ],
     'masonryStampContentElements' => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['masonryStampContentElements'],
