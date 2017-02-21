@@ -48,7 +48,7 @@
                         $jscrollAdded.imagesLoaded( function() {
                             $items.append($newItems.fadeIn(300));
 
-                            if ($list.attr('data-masonry') == 1)
+                            if ($list.attr('data-fhl-masonry') == 1)
                             {
                                 $items.masonry('appended', $newItems);
 
@@ -101,7 +101,7 @@
         },
         initMasonry: function()
         {
-            $('.formhybrid-list[data-fh-masonry="1"]').each(function()
+            $('.formhybrid-list[data-fhl-masonry="1"]').each(function()
             {
                 var $this = $(this).find('.items');
 

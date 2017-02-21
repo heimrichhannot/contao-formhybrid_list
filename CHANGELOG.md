@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.27] - 2017-02-21
+
+### Fixed
+- masonry bug
+
 ## [2.3.26] - 2017-02-21
 
 ### Fixed
