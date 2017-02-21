@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.26] - 2017-02-21
+
+### Fixed
+- masonry class name bug
+
 ## [2.3.25] - 2017-02-21
 
 ### Fixed

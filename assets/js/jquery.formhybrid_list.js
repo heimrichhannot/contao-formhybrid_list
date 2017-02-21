@@ -101,20 +101,20 @@
         },
         initMasonry: function()
         {
-            $('.formhybrid-list[data-masonry="1"]').each(function()
+            $('.formhybrid-list[data-fh-masonry="1"]').each(function()
             {
                 var $this = $(this).find('.items');
 
-                $this.imagesLoaded( function() {
-                    $this.masonry({
+                var $grid = $this.imagesLoaded( function() {
+                    $grid.masonry({
                         // fitWidth: true,
                         itemSelector: '.item'
                     });
 
-                    $this.masonry('stamp', $this.find('.stamp-item'));
+                    $grid.masonry('stamp', $grid.find('.stamp-item'));
 
                     // update due to stamps
-                    $this.masonry();
+                    $grid.masonry();
                 });
             });
         },

@@ -74,12 +74,7 @@ parseItems | $objTemplate, $arrItem, $objModule | Triggered just before Frontend
 
 ```
 .formhybrid-list {
-    > div {
-        width: 100%;
-    }
-
     .items {
-        width: 100%;
         .make-row();
 
         .item, .stamp-item {
