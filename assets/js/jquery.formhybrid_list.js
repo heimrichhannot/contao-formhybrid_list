@@ -105,15 +105,17 @@
             {
                 var $this = $(this).find('.items');
 
-                $this.masonry({
-                    // fitWidth: true,
-                    itemSelector: '.item'
+                $this.imagesLoaded( function() {
+                    $this.masonry({
+                        // fitWidth: true,
+                        itemSelector: '.item'
+                    });
+
+                    $this.masonry('stamp', $this.find('.stamp-item'));
+
+                    // update due to stamps
+                    $this.masonry();
                 });
-
-                $this.masonry('stamp', $this.find('.stamp-item'));
-
-                // update due to stamps
-                $this.masonry();
             });
         },
         initComments: function()
