@@ -27,9 +27,9 @@
         },
         initPagination: function()
         {
-            $('.formhybrid-list .ajax-pagination').each(function()
+            $('.formhybrid-list, .frontendedit-list').find('.ajax-pagination').each(function()
             {
-                var $list = $(this).closest('.formhybrid-list'),
+                var $list = $(this).closest('.formhybrid-list, .frontendedit-list'),
                     $items = $list.find('.items'),
                     id = '#' + $list.attr('id');
 
@@ -101,9 +101,12 @@
         },
         initMasonry: function()
         {
-            $('.formhybrid-list[data-fhl-masonry="1"]').each(function()
+            $('.formhybrid-list[data-fhl-masonry="1"], .frontendedit-list[data-fhl-masonry="1"]').each(function()
             {
-                var $this = $(this).find('.items');
+                var $this = $(this).find('.items'),
+                    options = $(this).data('masonry-options');
+
+                console.log(options);
 
                 var $grid = $this.imagesLoaded( function() {
                     $grid.masonry({

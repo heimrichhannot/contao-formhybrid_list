@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.28] - 2017-02-22
+
+### Added
+- frontendedit support for masonry
+
 ## [2.3.27] - 2017-02-21
 
 ### Fixed
