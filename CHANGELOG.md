@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.29] - 2017-02-24
+
+### Fixed
+- optimized loading div
+
+### Added
+- option for deactivating news comment notification
+
 ## [2.3.28] - 2017-02-22
 
 ### Added

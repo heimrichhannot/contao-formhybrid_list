@@ -34,7 +34,7 @@
                     id = '#' + $list.attr('id');
 
                 $list.jscroll({
-                    loadingHtml: '<div class="loading">Lade...</div>',
+                    loadingHtml: '<div class="loading"><span>Lade...</span></div>',
                     nextSelector: '.ajax-pagination a.next',
                     autoTrigger: $list.data('infinitescroll') == 1,
                     contentSelector: id,
@@ -105,8 +105,6 @@
             {
                 var $this = $(this).find('.items'),
                     options = $(this).data('masonry-options');
-
-                console.log(options);
 
                 var $grid = $this.imagesLoaded( function() {
                     $grid.masonry({

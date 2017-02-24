@@ -223,18 +223,21 @@ class ModuleReader extends \Module
                                 $objComments = \System::importStatic('HeimrichHannot\\FormHybridList\\Comments');
                                 $arrNotifies = [];
 
-                                // Notify the system administrator
-                                if ($objArchive->notify != 'notify_author')
+                                if ($objArchive->notify != 'none')
                                 {
-                                    $arrNotifies[] = $GLOBALS['TL_ADMIN_EMAIL'];
-                                }
-
-                                // Notify the author
-                                if ($objArchive->notify != 'notify_admin')
-                                {
-                                    if (($objAuthor = $objItem->getRelated('memberAuthor')) !== null && $objAuthor->email != '')
+                                    // Notify the system administrator
+                                    if ($objArchive->notify != 'notify_author')
                                     {
-                                        $arrNotifies[] = $objAuthor->email;
+                                        $arrNotifies[] = $GLOBALS['TL_ADMIN_EMAIL'];
+                                    }
+
+                                    // Notify the author
+                                    if ($objArchive->notify != 'notify_admin')
+                                    {
+                                        if (($objAuthor = $objItem->getRelated('memberAuthor')) !== null && $objAuthor->email != '')
+                                        {
+                                            $arrNotifies[] = $objAuthor->email;
+                                        }
                                     }
                                 }
 
