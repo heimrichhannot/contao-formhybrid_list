@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.30] - 2017-03-10
+
+### Fixed
+- ajax pagination and fiter bugs
+
 ## [2.3.29] - 2017-02-24
 
 ### Fixed

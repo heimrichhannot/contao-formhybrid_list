@@ -60,7 +60,9 @@ class ModuleList extends \Module
         $this->strTemplate  = $this->customTpl ?: ($this->strTemplate ?: ($this->isTableList ? 'mod_formhybrid_list_table' : 'mod_formhybrid_list'));
         $this->itemTemplate = $this->itemTemplate ?: ($this->isTableList ? 'formhybrid_list_item_table_default' : 'formhybrid_list_item_default');
 
-        return parent::generate();
+        $x = parent::generate();
+
+        return $x;
     }
 
     protected function compile()
@@ -449,6 +451,11 @@ class ModuleList extends \Module
     {
         $objTemplate = new \FrontendTemplate($this->itemTemplate);
 
+        if(\Input::get('FOO'))
+        {
+            die(count($arrItem));
+        }
+
         $objTemplate->setData($arrItem);
         $objTemplate->class                   = $strClass;
         $objTemplate->count                   = $intCount;
@@ -661,7 +668,7 @@ class ModuleList extends \Module
                             }
                             else
                             {
-                                if ($arrDca['eval']['multiple'])
+                                if ($arrDca['eval']['multiple'] && is_array(\Input::get($strField)))
                                 {
                                     $strColumn    = static::generateMultipleValueMatchSql(
                                         $strField,
