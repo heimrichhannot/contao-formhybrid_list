@@ -12,7 +12,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
-use HeimrichHannot\FormHybrid\DC_Hybrid;
+use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\StatusMessages\StatusMessage;
@@ -181,7 +181,7 @@ class ModuleReader extends \Module
                         }
 
                         // redirect on specific field value
-//						DC_Hybrid::doFieldDependentRedirect($this, $objItem);
+                        $this->doFieldDependentRedirect($objItem);
 
                         // page title
                         if ($this->setPageTitle)
@@ -307,6 +307,61 @@ class ModuleReader extends \Module
                         StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
                     }
                     $this->Template->invalid = true;
+                }
+            }
+        }
+    }
+
+    protected function doFieldDependentRedirect($objItem)
+    {
+        if ($this->formHybridAddFieldDependentRedirect)
+        {
+            $arrConditions = deserialize($this->formHybridFieldDependentRedirectConditions, true);
+            $blnRedirect   = true;
+
+            if (!empty($arrConditions))
+            {
+                foreach ($arrConditions as $arrCondition)
+                {
+                    if ($objItem->{$arrCondition['field']} != \Controller::replaceInsertTags($arrCondition['value']))
+                    {
+                        $blnRedirect = false;
+                    }
+                }
+            }
+
+            if ($blnRedirect)
+            {
+                global $objPage;
+
+                if (($objPageJumpTo = \PageModel::findByPk($this->formHybridFieldDependentRedirectJumpTo)) !== null
+                    || $objPageJumpTo = $objPage
+                )
+                {
+                    $strRedirect = \Controller::generateFrontendUrl($objPageJumpTo->row());
+
+                    if ($this->formHybridFieldDependentRedirectKeepParams)
+                    {
+                        $arrParamsToKeep = explode(',', $this->formHybridFieldDependentRedirectKeepParams);
+                        if (!empty($arrParamsToKeep))
+                        {
+                            foreach (Url::getUriParameters(Url::getUrl()) as $strParam => $strValue)
+                            {
+                                if (in_array($strParam, $arrParamsToKeep))
+                                {
+                                    $strRedirect = Url::addQueryString($strParam . '=' . $strValue, $strRedirect);
+                                }
+                            }
+                        }
+                    }
+
+                    if (!$this->deactivateTokens)
+                    {
+                        $strRedirect = Url::addQueryString('token=' . \RequestToken::get(), $strRedirect);
+                    }
+
+                    StatusMessage::resetAll();
+                    \Controller::redirect($strRedirect);
                 }
             }
         }

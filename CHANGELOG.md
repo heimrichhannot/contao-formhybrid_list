@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.31] - 2017-03-15
+
+### Fixed
+- field dependend redirect
+
 ## [2.3.30] - 2017-03-10
 
 ### Fixed
