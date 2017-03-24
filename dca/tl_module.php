@@ -69,7 +69,7 @@ $arrDca['subpalettes'] = array_merge(
         'useDummyImage'             => 'dummyImage',
         'addDisjunctiveFieldGroups' => 'disjunctiveFieldGroups',
         'addShowConditions'         => 'showConditions',
-        'addExistanceConditions'    => 'existanceConditions',
+        'addExistanceConditions'    => 'existanceConditions,appendIdToUrlOnFound',
         'useModal'                  => 'modalWrapperTpl,modalClass,modalInnerClass,useModalWrapperSync',
         'setPageTitle'              => 'pageTitleField,pageTitlePattern',
         'addAjaxPagination'         => 'addInfiniteScroll',
@@ -486,6 +486,13 @@ $arrFields = [
         'sql'              => "varchar(255) NOT NULL default ''"
     ],
     'existanceConditions'         => $arrDca['fields']['formHybridDefaultValues'],
+    'appendIdToUrlOnFound' => [
+        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['appendIdToUrlOnFound'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => ['tl_class' => 'w50'],
+        'sql'                     => "char(1) NOT NULL default ''"
+    ],
     'addShowConditions'           => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addShowConditions'],
         'exclude'   => true,

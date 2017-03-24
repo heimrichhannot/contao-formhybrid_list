@@ -75,6 +75,12 @@ class ModuleReader extends \Module
                 if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
                 {
                     $this->intId = $objItem->id;
+
+                    if ($this->appendIdToUrlOnFound && !\Input::get('id'))
+                    {
+                        $strUrl = Url::addQueryString('id=' . $this->intId);
+                        \Controller::redirect($strUrl);
+                    }
                 }
             }
         }

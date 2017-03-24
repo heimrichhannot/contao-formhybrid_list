@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.3.32] - 2017-03-24
+
+### Added
+- appendIdToUrlOnFound
+
 ## [2.3.31] - 2017-03-15
 
 ### Fixed
