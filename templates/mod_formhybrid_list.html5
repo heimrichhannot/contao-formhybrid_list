@@ -2,9 +2,7 @@
 
 <?php $this->block('content'); ?>
 
-<div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"
-     <?php if ($this->addInfiniteScroll): ?>data-infinitescroll="1"<?php endif; ?>
-     <?php if ($this->addMasonry): ?>data-fhl-masonry="1"<?php endif; ?>>
+<div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"<?= $this->configData ?>>
 
     <?php echo $this->filterForm; ?>
     <div class="block">

@@ -19,6 +19,7 @@ use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\Request\Request;
 
 class ModuleList extends \Module
 {
@@ -68,6 +69,17 @@ class ModuleList extends \Module
     protected function compile()
     {
         $strAct = \Input::get('act');
+
+        if ($this->addProximitySearch)
+        {
+            $arrFilterFields = deserialize($this->customFilterFields, true);
+
+            if (!in_array(FormHybridList::PROXIMITY_SEARCH_LOCATION, $arrFilterFields))
+            {
+                $arrFilterFields[] = FormHybridList::PROXIMITY_SEARCH_LOCATION;
+                $this->customFilterFields = serialize($arrFilterFields);
+            }
+        }
 
         if ($strAct == FormHybridList::ACT_SHARE && $this->addShareCol)
         {
@@ -127,6 +139,8 @@ class ModuleList extends \Module
         $this->addDefaultValues             = $this->formHybridAddDefaultValues;
         $this->arrDefaultValues             = deserialize($this->formHybridDefaultValues, true);
         $this->arrConjunctiveMultipleFields = deserialize($this->conjunctiveMultipleFields, true);
+
+        $this->addDataAttributes();
 
         if ($this->addDisjunctiveFieldGroups)
         {
@@ -190,6 +204,43 @@ class ModuleList extends \Module
         {
             $this->Template->items = $this->parseItems($objItems);
         }
+    }
+
+    protected function addDataAttributes()
+    {
+        $arrData = [];
+
+        if ($this->addInfiniteScroll)
+        {
+            $arrData[] = 'data-infinitescroll="1"';
+        }
+
+        if ($this->addMasonry)
+        {
+            $arrData[] = 'data-fhl-masonry="1"';
+        }
+
+        if ($this->addProximitySearch)
+        {
+            $arrData[] = 'data-fhl-prox-search="1"';
+
+            if ($this->proximitySearchCityField)
+            {
+                $arrData[] = 'data-fhl-prox-search-city="' . $this->proximitySearchCityField . '"';
+            }
+
+            if ($this->proximitySearchPostalField)
+            {
+                $arrData[] = 'data-fhl-prox-search-postal="' . $this->proximitySearchPostalField . '"';
+            }
+
+            if ($this->proximitySearchCountryField)
+            {
+                $arrData[] = 'data-fhl-prox-search-country="' . $this->proximitySearchCountryField . '"';
+            }
+        }
+
+        $this->Template->configData = implode(' ', $arrData);
     }
 
     protected function getItems($objFilterSubmission = null)
@@ -451,7 +502,7 @@ class ModuleList extends \Module
     {
         $objTemplate = new \FrontendTemplate($this->itemTemplate);
 
-        if(\Input::get('FOO'))
+        if (\Input::get('FOO'))
         {
             die(count($arrItem));
         }
@@ -587,7 +638,17 @@ class ModuleList extends \Module
 
         if (!$blnSkipValue)
         {
-            $this->arrValues[$strField] = $varValue;
+            if (is_array($varValue))
+            {
+                foreach ($varValue as $i => $v)
+                {
+                    $this->arrValues[$strField . '_' . $i] = $v;
+                }
+            }
+            else
+            {
+                $this->arrValues[$strField] = $varValue;
+            }
         }
     }
 
@@ -634,6 +695,7 @@ class ModuleList extends \Module
 
                     $blnSkipColumn = false;
                     $blnSkipValue  = false;
+
                     switch ($arrDca['inputType'])
                     {
                         case 'tag':
@@ -658,6 +720,7 @@ class ModuleList extends \Module
                         case 'password':
                             $strColumn = $strField . " LIKE ?";
                             $varValue  = $this->replaceInsertTags('%' . $varValue . '%');
+
                             break;
                         default:
                             // In ListFilterForm checkbox gets eval value isBoolean and inputType is transformed to select
@@ -686,6 +749,38 @@ class ModuleList extends \Module
                             break;
                     }
 
+                    if ($this->addProximitySearch)
+                    {
+                        $strRadius   = str_replace('km', '', Request::getGet(FormHybridList::PROXIMITY_SEARCH_RADIUS));
+
+                        if ($strRadius)
+                        {
+                            // ignore city and postal -> taken into account in prepareProximitySearchWhereClause()
+                            switch ($strField)
+                            {
+                                case $this->proximitySearchPostalField:
+                                case $this->proximitySearchCityField:
+                                case FormHybridList::PROXIMITY_SEARCH_USE_LOCATION:
+                                case FormHybridList::PROXIMITY_SEARCH_LOCATION:
+                                    $blnSkipColumn = true;
+                                    $blnSkipValue  = true;
+
+                                    break;
+                                case FormHybridList::PROXIMITY_SEARCH_RADIUS:
+                                    list($strColumn, $varValue) = $this->prepareProximitySearchWhereClause();
+
+                                    // no location, postal and city
+                                    if ($strColumn === false)
+                                    {
+                                        $blnSkipColumn = true;
+                                        $blnSkipValue  = true;
+                                    }
+
+                                    break;
+                            }
+                        }
+                    }
+
                     $this->customizeFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 
                     if ($this->addDisjunctiveFieldGroups && ($intPosition = $this->getDisjunctionGroupIndex($strField)) > -1)
@@ -697,7 +792,17 @@ class ModuleList extends \Module
 
                         if (!$blnSkipValue)
                         {
-                            $this->arrValues[$strField] = $varValue;
+                            if (is_array($varValue))
+                            {
+                                foreach ($varValue as $i => $v)
+                                {
+                                    $this->arrValues[$strField . '_' . $i] = $v;
+                                }
+                            }
+                            else
+                            {
+                                $this->arrValues[$strField] = $varValue;
+                            }
                         }
 
                         $arrFields = $this->arrDisjunctionFieldGroups[$intPosition];
@@ -752,7 +857,17 @@ class ModuleList extends \Module
 
         if (!$blnSkipValue)
         {
-            $this->arrValues[$strField] = $varValue;
+            if (is_array($varValue))
+            {
+                foreach ($varValue as $i => $v)
+                {
+                    $this->arrValues[$strField . '_' . $i] = $v;
+                }
+            }
+            else
+            {
+                $this->arrValues[$strField] = $varValue;
+            }
         }
     }
 
@@ -936,10 +1051,17 @@ class ModuleList extends \Module
     {
         foreach ($arrDca['fields'] as $strField => $arrData)
         {
-            if ($arrData['inputType'] == 'select')
+            if ($arrData['inputType'] == 'select' && $strField != FormHybridList::PROXIMITY_SEARCH_RADIUS)
             {
                 $arrDca['fields'][$strField]['eval']['includeBlankOption'] = true;
             }
+        }
+
+        if ($this->addProximitySearch)
+        {
+            $arrDca['fields'][FormHybridList::PROXIMITY_SEARCH_LOCATION] = [
+                'inputType' => 'hidden'
+            ];
         }
     }
 
@@ -979,4 +1101,97 @@ class ModuleList extends \Module
         return $strQuery;
     }
 
+    protected function prepareProximitySearchWhereClause()
+    {
+        $t = $this->formHybridDataContainer;
+
+        $strRadius   = str_replace('km', '', Request::getGet(FormHybridList::PROXIMITY_SEARCH_RADIUS));
+        $strLocation = Request::getGet(FormHybridList::PROXIMITY_SEARCH_LOCATION);
+        $strPostal   = $this->proximitySearchPostalField ? Request::getGet($this->proximitySearchPostalField) : null;
+        $strCity     = $this->proximitySearchCityField ? Request::getGet($this->proximitySearchCityField) : null;
+        $strCountry  = $this->proximitySearchCountryField ? Request::getGet($this->proximitySearchCountryField) : null;
+
+        $arrValues = [$strRadius];
+
+        if (!$strLocation && !$strPostal && !$strCity)
+        {
+            return [false, false];
+        }
+
+        // get queried coordinates
+        $strQueryLat  = '';
+        $strQueryLong = '';
+
+        if ($strLocation)
+        {
+            list($strQueryLat, $strQueryLong) = explode(',', $strLocation);
+        }
+        elseif ($strPostal || $strCity)
+        {
+            $arrQuery = [];
+
+            if ($strPostal)
+            {
+                $arrQuery[] = $strPostal;
+            }
+            elseif ($strCity)
+            {
+                $arrQuery[] = $strCity;
+            }
+
+            // add country
+            $arrCountries = \System::getCountries();
+            $arrQuery[]   = $arrCountries[$strCountry ?: $this->proximitySearchCountryFallback];
+
+            $objCoordinates = General::findFuzzyAddressOnGoogleMaps(
+                implode(', ', $arrQuery)
+            );
+
+            $strQueryLat  = $objCoordinates->getLatitude();
+            $strQueryLong = $objCoordinates->getLongitude();
+        }
+
+        // compose WHERE clause
+        $strLatField = $strLongField = '';
+
+        switch ($this->proximitySearchCoordinatesMode)
+        {
+            case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED:
+                $strLatField  = $this->proximitySearchLatField;
+                $strLongField = $this->proximitySearchLongField;
+                break;
+            case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND:
+                $strLatField  = "LEFT($t.$this->proximitySearchCoordinatesField,INSTR($t.$this->proximitySearchCoordinatesField,',')-1)";
+                $strLongField = "SUBSTRING_INDEX($t.$this->proximitySearchCoordinatesField,',',-1)";
+                break;
+        }
+
+        $strColumn = "(
+                6371 * acos(
+                    cos(
+                        radians($strQueryLat)
+                    ) * cos(
+                        radians($strLatField)
+                    ) * cos(
+                        radians($strLongField) - radians($strQueryLong)
+                    ) + sin(
+                        radians($strQueryLat)
+                    ) * sin(
+                        radians($strLatField)
+                    )
+                )) < ?";
+
+        if ($strPostal)
+        {
+            $strColumn   = "($strColumn OR $t.$this->proximitySearchPostalField LIKE ?)";
+            $arrValues[] = '%' . $strPostal . '%';
+        }
+        elseif ($strCity)
+        {
+            $strColumn   = "($strColumn OR $t.$this->proximitySearchCityField LIKE ?)";
+            $arrValues[] = '%' . $strCity . '%';
+        }
+
+        return [$strColumn, $arrValues];
+    }
 }

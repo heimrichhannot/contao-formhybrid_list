@@ -51,6 +51,8 @@ If additional functionality is needed, one simply has to inherit from ModuleList
 
 Just create a submodule of ModuleList, add the following function and adjust it to your needs (same is possible for customizeDefaultFilters() which are the initial filters).
 
+Hint: You can also return multiple values for one field as array.
+
 ```
 protected function customizeFilters(&$strField, &$strColumn, &$varValue, &$blnSkipValue = false)
 {

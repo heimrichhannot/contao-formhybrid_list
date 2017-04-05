@@ -18,7 +18,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
 // list
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
                                               . '{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
-                                              . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry;'
+                                              . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry,addProximitySearch;'
                                               . '{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
                                               . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
                                               . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;'
@@ -56,7 +56,9 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'useModal',
         'setPageTitle',
         'addAjaxPagination',
-        'addMasonry'
+        'addMasonry',
+        'addProximitySearch',
+        'proximitySearchCoordinatesMode'
     ]
 );
 
@@ -73,7 +75,10 @@ $arrDca['subpalettes'] = array_merge(
         'useModal'                  => 'modalWrapperTpl,modalClass,modalInnerClass,useModalWrapperSync',
         'setPageTitle'              => 'pageTitleField,pageTitlePattern',
         'addAjaxPagination'         => 'addInfiniteScroll',
-        'addMasonry'                => 'masonryStampContentElements'
+        'addMasonry'                => 'masonryStampContentElements',
+        'addProximitySearch'        => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
+        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND => 'proximitySearchCoordinatesField',
+        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField'
     ]
 );
 
@@ -81,22 +86,22 @@ $arrDca['subpalettes'] = array_merge(
  * Callbacks
  */
 // adjust labels for suiting a list module
-$arrDca['config']['onload_callback'][] = ['tl_module_formhybrid_list', 'adjustPalettesForLists'];
-$arrDca['config']['onload_callback'][] = ['tl_module_formhybrid_list', 'initSortingMode'];
-$arrDca['config']['onload_callback'][] = ['tl_module_formhybrid_list', 'modifyPalette'];
+$arrDca['config']['onload_callback'][] = ['HeimrichHannot\FormHybridList\Backend\Module', 'adjustPalettesForLists'];
+$arrDca['config']['onload_callback'][] = ['HeimrichHannot\FormHybridList\Backend\Module', 'initSortingMode'];
+$arrDca['config']['onload_callback'][] = ['HeimrichHannot\FormHybridList\Backend\Module', 'modifyPalette'];
 
 /**
  * Fields
  */
 $arrFields = [
-    'addDetailsCol'               => [
+    'addDetailsCol'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDetailsCol'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'jumpToDetails'               => [
+    'jumpToDetails'                   => [
         'label'      => &$GLOBALS['TL_LANG']['tl_module']['jumpToDetails'],
         'exclude'    => true,
         'inputType'  => 'pageTree',
@@ -105,14 +110,14 @@ $arrFields = [
         'sql'        => "int(10) unsigned NOT NULL default '0'",
         'relation'   => ['type' => 'hasOne', 'load' => 'eager']
     ],
-    'addShareCol'                 => [
+    'addShareCol'                     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addShareCol'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'jumpToShare'                 => [
+    'jumpToShare'                     => [
         'label'      => &$GLOBALS['TL_LANG']['tl_module']['jumpToShare'],
         'exclude'    => true,
         'inputType'  => 'pageTree',
@@ -121,14 +126,14 @@ $arrFields = [
         'sql'        => "int(10) unsigned NOT NULL default '0'",
         'relation'   => ['type' => 'hasOne', 'load' => 'eager']
     ],
-    'shareAutoItem'               => [
+    'shareAutoItem'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['shareAutoItem'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'sortingMode'                 => [
+    'sortingMode'                     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['sortingMode'],
         'exclude'   => true,
         'inputType' => 'select',
@@ -137,64 +142,64 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
         'sql'       => "varchar(16) NOT NULL default 'field'"
     ],
-    'itemSorting'                 => [
+    'itemSorting'                     => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['itemSorting'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getSortingOptions'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getSortingOptions'],
         'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true, 'mandatory' => true],
         'sql'              => "varchar(255) NOT NULL default ''"
     ],
-    'hideFilter'                  => [
+    'hideFilter'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['hideFilter'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'showItemCount'               => [
+    'showItemCount'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['showItemCount'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'showInitialResults'          => [
+    'showInitialResults'              => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['showInitialResults'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default '1'"
     ],
-    'addAjaxPagination'           => [
+    'addAjaxPagination'               => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addAjaxPagination'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'addInfiniteScroll'           => [
+    'addInfiniteScroll'               => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addInfiniteScroll'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'addMasonry'                  => [
+    'addMasonry'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addMasonry'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'masonryStampContentElements' => [
+    'masonryStampContentElements'     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['masonryStampContentElements'],
         'inputType' => 'multiColumnEditor',
         'eval'      => [
             'multiColumnEditor' => [
                 'minRowCount' => 0,
-                'fields' => [
-                    'stampBlock' => [
+                'fields'      => [
+                    'stampBlock'    => [
                         'label'            => &$GLOBALS['TL_LANG']['tl_module']['stampBlock'],
                         'exclude'          => true,
                         'inputType'        => 'select',
@@ -202,50 +207,138 @@ $arrFields = [
                         'eval'             => ['tl_class' => 'w50', 'mandatory' => true, 'includeBlankOption' => true]
                     ],
                     'stampCssClass' => [
-                        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['stampCssClass'],
-                        'exclude'                 => true,
-                        'search'                  => true,
-                        'inputType'               => 'text',
-                        'eval'                    => ['maxlength' => 255, 'tl_class' => 'w50'],
+                        'label'     => &$GLOBALS['TL_LANG']['tl_module']['stampCssClass'],
+                        'exclude'   => true,
+                        'search'    => true,
+                        'inputType' => 'text',
+                        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
                     ]
                 ],
             ],
         ],
         'sql'       => "blob NULL",
     ],
-    'isTableList'                 => [
+    'addProximitySearch'              => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addProximitySearch'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
+        'sql'       => "char(1) NOT NULL default ''"
+    ],
+    'proximitySearchAllowGeoLocation' => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchAllowGeoLocation'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50'],
+        'sql'       => "char(1) NOT NULL default ''"
+    ],
+    'proximitySearchCoordinatesMode'  => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchCoordinatesMode'],
+        'exclude'   => true,
+        'filter'    => true,
+        'inputType' => 'select',
+        'options'   => \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODES,
+        'reference' => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchCoordinatesModes'],
+        'eval'      => ['tl_class' => 'w50 clr', 'includeBlankOption' => true, 'submitOnChange' => true, 'mandatory' => true],
+        'sql'       => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchCoordinatesField' => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchCoordinatesField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
+        'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true, 'mandatory' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchLatField'         => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchLatField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
+        'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true, 'mandatory' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchLongField'        => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchLongField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
+        'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true, 'mandatory' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchCityField'        => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchCityField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
+        'eval'             => ['tl_class' => 'w50 clr', 'includeBlankOption' => true, 'chosen' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchPostalField'      => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchPostalField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
+        'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchCountryField'        => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchCountryField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
+        'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchCountryFallback'           => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchCountryFallback'],
+        'exclude'   => true,
+        'filter'    => true,
+        'sorting'   => true,
+        'inputType' => 'select',
+        'options'   => System::getCountries(),
+        'eval'      => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50', 'mandatory' => true],
+        'sql'       => "varchar(2) NOT NULL default ''"
+    ],
+    'isTableList'                     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['isTableList'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'hasHeader'                   => [
+    'hasHeader'                       => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['hasHeader'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'sortingHeader'               => [
+    'sortingHeader'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['sortingHeader'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'tableFields'                 => [
+    'tableFields'                     => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['tableFields'],
         'inputType'        => 'checkboxWizard',
-        'options_callback' => ['tl_module_formhybrid_list', 'getFields'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
         'exclude'          => true,
         'eval'             => ['multiple' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 clr autoheight'],
         'sql'              => "blob NULL",
     ],
-    'customFilterFields'          => [
+    'customFilterFields'              => [
         'inputType'        => 'checkboxWizard',
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['customFilterFields'],
-        'options_callback' => ['tl_module_formhybrid_list', 'getFields'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
         'exclude'          => true,
         'eval'             => [
             'multiple'           => true,
@@ -254,100 +347,100 @@ $arrFields = [
         ],
         'sql'              => "blob NULL"
     ],
-    'filterArchives'              => [
+    'filterArchives'                  => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['filterArchives'],
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getArchives'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getArchives'],
         'eval'             => ['multiple' => true, 'chosen' => true, 'tl_class' => 'w50'],
         'sql'              => "blob NULL"
     ],
-    'filterGroups'                => [
+    'filterGroups'                    => [
         'label'      => &$GLOBALS['TL_LANG']['tl_module']['filterGroups'],
         'inputType'  => 'select',
         'foreignKey' => 'tl_member_group.name',
         'eval'       => ['multiple' => true, 'chosen' => true, 'tl_class' => 'w50', 'doNotCopy' => true],
         'sql'        => "blob NULL"
     ],
-    'setPageTitle'                => [
+    'setPageTitle'                    => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['setPageTitle'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'pageTitleField'              => [
+    'pageTitleField'                  => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['pageTitleField'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getTextFields'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
         'eval'             => ['maxlength' => 255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
         'sql'              => "varchar(255) NOT NULL default ''"
     ],
-    'pageTitlePattern'            => [
+    'pageTitlePattern'                => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['pageTitlePattern'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'additionalWhereSql'          => [
+    'additionalWhereSql'              => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['additionalWhereSql'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50 clr'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'additionalSelectSql'         => [
+    'additionalSelectSql'             => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['additionalSelectSql'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'additionalSql'               => [
+    'additionalSql'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['additionalSql'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'additionalHavingSql'         => [
+    'additionalHavingSql'             => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['additionalHavingSql'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'hideUnpublishedItems'        => [
+    'hideUnpublishedItems'            => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['hideUnpublishedItems'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'publishedField'              => [
+    'publishedField'                  => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['publishedField'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getBooleanFields'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getBooleanFields'],
         'eval'             => ['maxlength' => 255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
         'sql'              => "varchar(255) NOT NULL default ''"
     ],
-    'invertPublishedField'        => [
+    'invertPublishedField'            => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['invertPublishedField'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'emptyText'                   => [
+    'emptyText'                       => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['emptyText'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['maxlength' => 255, 'tl_class' => 'w50 clr'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'filterHeadline'              => [
+    'filterHeadline'                  => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['filterHeadline'],
         'exclude'   => true,
         'inputType' => 'inputUnit',
@@ -355,22 +448,22 @@ $arrFields = [
         'eval'      => ['maxlength' => 200, 'tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''"
     ],
-    'itemTemplate'                => [
+    'itemTemplate'                    => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['itemTemplate'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getFormHybridListItemTemplates'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridListItemTemplates'],
         'eval'             => ['tl_class' => 'w50 clr', 'includeBlankOption' => true],
         'sql'              => "varchar(255) NOT NULL default ''",
     ],
-    'useDummyImage'               => [
+    'useDummyImage'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['useDummyImage'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'dummyImage'                  => [
+    'dummyImage'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['dummyImage'],
         'exclude'   => true,
         'inputType' => 'fileTree',
@@ -383,22 +476,22 @@ $arrFields = [
         ],
         'sql'       => "binary(16) NULL"
     ],
-    'conjunctiveMultipleFields'   => [
+    'conjunctiveMultipleFields'       => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['conjunctiveMultipleFields'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['tl_module_formhybrid_list', 'getMultipleFields'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getMultipleFields'],
         'eval'             => ['tl_class' => 'w50', 'multiple' => true, 'chosen' => true],
         'sql'              => "blob NULL"
     ],
-    'addDisjunctiveFieldGroups'   => [
+    'addDisjunctiveFieldGroups'       => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addDisjunctiveFieldGroups'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'disjunctiveFieldGroups'      => [
+    'disjunctiveFieldGroups'          => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['disjunctiveFieldGroups'],
         'inputType' => 'multiColumnWizard',
         'exclude'   => true,
@@ -408,7 +501,7 @@ $arrFields = [
                 'fields' => [
                     'label'            => &$GLOBALS['TL_LANG']['tl_module']['disjunctiveFieldGroups']['fields'],
                     'inputType'        => 'select',
-                    'options_callback' => ['tl_module_formhybrid_list', 'getFields'],
+                    'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
                     'eval'             => [
                         'style'    => 'width:783px',
                         'multiple' => true,
@@ -419,60 +512,60 @@ $arrFields = [
         ],
         'sql'       => "blob NULL",
     ],
-    'useModal'                    => [
+    'useModal'                        => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['useModal'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'modalWrapperTpl'             => [
+    'modalWrapperTpl'                 => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalWrapperTpl'],
         'exclude'          => true,
         'inputType'        => 'select',
         'default'          => 'formhybrid_reader_modal_wrapper_bootstrap',
-        'options_callback' => ['tl_module_formhybrid_list', 'getFormHybridReaderModalWrapperTemplates'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridReaderModalWrapperTemplates'],
         'eval'             => ['tl_class' => 'w50 clr'],
         'sql'              => "varchar(255) NOT NULL default ''",
     ],
-    'modalTpl'                    => [
+    'modalTpl'                        => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalTpl'],
         'exclude'          => true,
         'inputType'        => 'select',
         'default'          => 'formhybrid_reader_modal_bootstrap',
-        'options_callback' => ['tl_module_formhybrid_list', 'getFormHybridReaderModalTemplates'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridReaderModalTemplates'],
         'eval'             => ['tl_class' => 'w50'],
         'sql'              => "varchar(255) NOT NULL default ''",
     ],
-    'modalClass'                  => [
+    'modalClass'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['modalClass'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''",
     ],
-    'modalInnerClass'             => [
+    'modalInnerClass'                 => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['modalInnerClass'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "varchar(255) NOT NULL default ''",
     ],
-    'useModalWrapperSync'         => [
+    'useModalWrapperSync'             => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['useModalWrapperSync'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'addExistanceConditions'      => [
+    'addExistanceConditions'          => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addExistanceConditions'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'aliasField'                  => [
+    'aliasField'                      => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['aliasField'],
         'inputType'        => 'select',
         'exclude'          => true,
@@ -482,26 +575,26 @@ $arrFields = [
             'submitOnChange'     => true,
             'chosen'             => true
         ],
-        'options_callback' => ['tl_module_formhybrid_list', 'getTextFields'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
         'sql'              => "varchar(255) NOT NULL default ''"
     ],
-    'existanceConditions'         => $arrDca['fields']['formHybridDefaultValues'],
-    'appendIdToUrlOnFound' => [
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['appendIdToUrlOnFound'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'eval'                    => ['tl_class' => 'w50'],
-        'sql'                     => "char(1) NOT NULL default ''"
+    'existanceConditions'             => $arrDca['fields']['formHybridDefaultValues'],
+    'appendIdToUrlOnFound'            => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['appendIdToUrlOnFound'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50'],
+        'sql'       => "char(1) NOT NULL default ''"
     ],
-    'addShowConditions'           => [
+    'addShowConditions'               => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addShowConditions'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['submitOnChange' => true, 'tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'showConditions'              => $arrDca['fields']['formHybridDefaultValues'],
-    'deactivateTokens'            => [
+    'showConditions'                  => $arrDca['fields']['formHybridDefaultValues'],
+    'deactivateTokens'                => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['deactivateTokens'],
         'exclude'   => true,
         'inputType' => 'checkbox',
@@ -549,194 +642,4 @@ foreach (['existanceConditions', 'showConditions'] as $strField)
     $arrDca['fields'][$strField]['label'] = &$GLOBALS['TL_LANG']['tl_module'][$strField];
     unset($arrDca['fields'][$strField]['eval']['columnFields']['label']);
     unset($arrDca['fields'][$strField]['eval']['columnFields']['hidden']);
-}
-
-class tl_module_formhybrid_list
-{
-    public static function adjustPalettesForLists(\DataContainer $objDc)
-    {
-        \Controller::loadDataContainer('tl_module');
-        \System::loadLanguageFile('tl_module');
-
-        if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
-        {
-            $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
-
-            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-                $objModule->type,
-                'HeimrichHannot\FormHybridList\ModuleList'
-            )
-            )
-            {
-                // override labels for suiting a list module
-                $arrDca['fields']['formHybridAddDefaultValues']['label'] = &$GLOBALS['TL_LANG']['tl_module']['formHybridAddDefaultFilterValues'];
-                $arrDca['fields']['formHybridDefaultValues']['label']    = &$GLOBALS['TL_LANG']['tl_module']['formHybridDefaultFilterValues'];
-                $arrDca['fields']['formHybridTemplate']['label']         = &$GLOBALS['TL_LANG']['tl_module']['formHybridFilterTemplate'];
-            }
-        }
-    }
-
-    public static function initSortingMode(\DataContainer $objDc)
-    {
-        \Controller::loadDataContainer('tl_module');
-        \System::loadLanguageFile('tl_module');
-
-        if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
-        {
-            $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
-
-            switch ($objModule->sortingMode)
-            {
-                case OPTION_FORMHYBRID_SORTINGMODE_TEXT:
-                    $arrDca['fields']['itemSorting']['inputType'] = 'text';
-                    break;
-            }
-        }
-    }
-
-    public function getSortingOptions(\DataContainer $objDc)
-    {
-        if ($strDc = $objDc->activeRecord->formHybridDataContainer)
-        {
-            \Controller::loadDataContainer($strDc);
-            \System::loadLanguageFile($strDc);
-
-            $arrOptions = [];
-
-            foreach ($GLOBALS['TL_DCA'][$strDc]['fields'] as $strField => $arrData)
-            {
-                $arrOptions[$strField . '_asc']  = $strField . $GLOBALS['TL_LANG']['tl_module']['itemSorting']['asc'];
-                $arrOptions[$strField . '_desc'] = $strField . $GLOBALS['TL_LANG']['tl_module']['itemSorting']['desc'];
-            }
-
-            asort($arrOptions);
-
-            return ['random' => $GLOBALS['TL_LANG']['tl_module']['itemSorting']['random']] + $arrOptions;
-        }
-    }
-
-    public function getArchives(\DataContainer $objDc)
-    {
-        if ($strDc = $objDc->activeRecord->formHybridDataContainer)
-        {
-            \Controller::loadDataContainer($strDc);
-            \System::loadLanguageFile($strDc);
-
-            $arrDca = $GLOBALS['TL_DCA'][$strDc];
-
-            if ($strParentTable = $arrDca['config']['ptable'])
-            {
-                if ($strItemClass = \Model::getClassFromTable($strParentTable))
-                {
-                    $arrOptions = [];
-                    if (($objItems = $strItemClass::findAll()) !== null)
-                    {
-                        $arrTitleSynonyms = ['name', 'title'];
-
-                        while ($objItems->next())
-                        {
-                            $strLabel = '';
-                            foreach ($arrTitleSynonyms as $strTitleSynonym)
-                            {
-                                if ($objItems->{$strTitleSynonym})
-                                {
-                                    $strLabel = $objItems->{$strTitleSynonym};
-                                    break;
-                                }
-                            }
-                            $arrOptions[$objItems->id] = $strLabel ?: 'Archiv ' . $objItems->id;
-                        }
-                    }
-
-                    asort($arrOptions);
-
-                    return $arrOptions;
-                }
-            }
-        }
-    }
-
-    public function getFormHybridListItemTemplates()
-    {
-        return \Controller::getTemplateGroup('formhybrid_list_item_');
-    }
-
-    public function getFormHybridReaderModalWrapperTemplates()
-    {
-        return \Controller::getTemplateGroup('formhybrid_reader_modal_wrapper_');
-    }
-
-    public function getFormHybridReaderModalTemplates()
-    {
-        return \Controller::getTemplateGroup('formhybrid_reader_modal_');
-    }
-
-    public static function getFields($objDc)
-    {
-        if (!$objDc->activeRecord->formHybridDataContainer)
-        {
-            return [];
-        }
-
-        return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false);
-    }
-
-    public static function getTextFields(\DataContainer $objDc)
-    {
-        if (!$objDc->activeRecord->formHybridDataContainer)
-        {
-            return [];
-        }
-
-        return \HeimrichHannot\Haste\Dca\General::getFields($objDc->activeRecord->formHybridDataContainer, false, 'text');
-    }
-
-    public static function getBooleanFields(\DataContainer $objDc)
-    {
-        if (!$objDc->activeRecord->formHybridDataContainer)
-        {
-            return [];
-        }
-
-        return \HeimrichHannot\Haste\Dca\General::getFields(
-            $objDc->activeRecord->formHybridDataContainer,
-            false,
-            ['radio', 'checkbox']
-        );
-    }
-
-    public static function getMultipleFields(\DataContainer $objDc)
-    {
-        if (!$objDc->activeRecord->formHybridDataContainer)
-        {
-            return [];
-        }
-
-        return \HeimrichHannot\Haste\Dca\General::getFields(
-            $objDc->activeRecord->formHybridDataContainer,
-            false,
-            ['checkbox', 'select']
-        );
-    }
-
-    public static function modifyPalette(\DataContainer $objDc)
-    {
-        \Controller::loadDataContainer('tl_module');
-        \System::loadLanguageFile('tl_module');
-
-        if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null)
-        {
-            $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
-
-            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
-                $objModule->type,
-                'HeimrichHannot\FormHybridList\ModuleReader'
-            )
-            )
-            {
-                unset($arrDca['fields']['itemTemplate']['options_callback']);
-                $arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('formhybrid_reader_');
-            }
-        }
-    }
 }

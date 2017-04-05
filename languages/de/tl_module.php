@@ -65,7 +65,22 @@ $arrLang['deactivateTokens']					= ['Token-Handling deaktivieren', 'Wählen Sie 
 $arrLang['addMasonry']					        = ['Masonry hinzufügen', 'Wählen Sie diese Option, wenn das Masonry-JavaScript-Plugin auf die Liste angewendet werden soll.'];
 $arrLang['masonryStampContentElements']     	= ['Feste Blöcke festlegen', 'Hier können Sie Blöcke festlegen, die immer gerendert werden sollen. Die Position muss anschließend per CSS festgelegt werden (-> Responsive).'];
 $arrLang['stampBlock']                          = ['Block', 'Wählen Sie hier einen Block aus.'];
-$arrLang['stampCssClass']                       = ['CSS-Klasse', 'Vergeben Sie hier eine CSS-Klasse.'];
+$arrLang['addProximitySearch']                  = ['Umkreissuche hinzufügen (Hinweis beachten!)', 'ACHTUNG: Die Felder "radius" und "useLocation" müssen über die Funktion "FormHybridList::addProximitySearchFields()" zum entsprechenden DCA hinzugefügt werden. "distance" MUSS zudem unter "Felder zur Filterung" ausgewählt werden.'];
+$arrLang['proximitySearchAllowGeoLocation']     = ['HTML-Geo-Location erlauben', 'Wäjlen Sie diese Option, wenn der Nutzer auch seinen eigenen Standpunkt freigeben darf.'];
+$arrLang['proximitySearchCityField']            = ['Ort-Feld', 'Wählen Sie hier das DCA-Feld aus, dessen Wert für Berechnungen in Bezug auf den Ort genutzt werden soll. Es muss anschließend unter "Felder zur Filterung" ausgewählt werden.'];
+$arrLang['proximitySearchPostalField']          = ['Postleitzahl-Feld', 'Wählen Sie hier das DCA-Feld aus, dessen Wert für Berechnungen in Bezug auf die PLZ genutzt werden soll. Es muss anschließend unter "Felder zur Filterung" ausgewählt werden.'];
+$arrLang['proximitySearchCountryFallback']      = ['Land-Fallback', 'Wählen Sie hier das Land aus, das für den Bezug von Koordinaten aus Postleitzahlen und Städten genutzt werden soll um Mehrdeutigkeiten zu vermeiden. Sie können unter "Land-Feld" ein eigenes Feld auswählen, das dann im Filter vorhanden ist, damit der Nutzer dieses Feld überschreiben kann.'];
+$arrLang['proximitySearchCountryField']         = ['Land-Feld', 'Wählen Sie hier das DCA-Feld aus, dessen Wert für Berechnungen in Bezug auf das Land genutzt werden soll. Es muss anschließend unter "Felder zur Filterung" ausgewählt werden.'];
+$arrLang['proximitySearchCoordinatesMode']      = ['Koordinatentyp', 'Wählen Sie hier aus, ob die Koordinaten in 1 oder 2 Feldern gespeichert sind.'];
+$arrLang['proximitySearchCoordinatesModes']     = [
+    \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND => 'Zusammengesetzt (&lt;lat&gt;,&lt;long&gt;)',
+    \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'Separiert in Lat-Feld und Long-Feld'
+];
+$arrLang['proximitySearchCoordinatesField']     = ['Zusammengesetztes Koordinatenfeld', 'Wählen Sie hier das DCA-Feld aus, in dem Koordinaten in der Form &lt;lat&gt;,&lt;long&gt; gespeichert werden.'];
+$arrLang['proximitySearchLatField']             = ['Latitude-Feld', 'Wählen Sie hier das DCA-Feld aus, in dem die Latitude gespeichert wird.'];
+$arrLang['proximitySearchLongField']            = ['Longitude-Feld', 'Wählen Sie hier das DCA-Feld aus, in dem die Longitude gespeichert wird.'];
+$arrLang['proximitySearchRadius']               = ['Umkreis', ''];
+$arrLang['proximitySearchUseLocation']          = ['Aktueller Standort', ''];
 
 // events
 $arrLang['filterArchives']						= ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

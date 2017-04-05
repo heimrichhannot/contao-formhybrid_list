@@ -111,7 +111,7 @@ class ListFilterForm extends Form
                     break;
                 case 'checkbox':
                     // Replace boolean checkbox value with "yes" and "no"
-                    if (!$arrData['eval']['multiple'])
+                    if (!$arrData['eval']['multiple'] && !$arrData['eval']['skipTransformToSelect'])
                     {
                         $arrDca['fields'][$strField]['eval']['includeBlankOption'] = true;
                         $arrDca['fields'][$strField]['eval']['isBoolean']          =

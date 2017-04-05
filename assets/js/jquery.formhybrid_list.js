@@ -7,6 +7,68 @@
             this.initMasonry();
             this.initComments();
             this.initShare();
+            this.initProximitySearch();
+        },
+        initProximitySearch: function()
+        {
+            $('.formhybrid-list[data-fhl-prox-search="1"], .frontendedit-list[data-fhl-prox-search="1"]').each(function()
+            {
+                var $wrapper = $(this),
+                    $form = $wrapper.find('form'),
+                    $useLocation = $form.find('input[name="proxUseLocation"]');
+
+                updateFields($useLocation);
+
+                $useLocation.on('click', function()
+                {
+                    if ($useLocation.is(':checked'))
+                    {
+                        HASTE_PLUS.getCurrentLocation(function(lat, lng)
+                        {
+                            $form.find('input[name="proxLocation"]').val(lat + ',' + lng);
+                        });
+                    }
+                    else
+                    {
+                        $form.find('input[name="proxLocation"]').val('');
+                    }
+
+                    updateFields($useLocation);
+                });
+
+                function updateFields($checkbox)
+                {
+                    // if current location is set, postal, city and country aren't relevant anymore
+                    var fields = [];
+
+                    if ($wrapper.data('fhlProxSearchCity'))
+                    {
+                        fields.push($wrapper.data('fhlProxSearchCity'));
+                    }
+
+                    if ($wrapper.data('fhlProxSearchPostal'))
+                    {
+                        fields.push($wrapper.data('fhlProxSearchPostal'));
+                    }
+
+                    if ($wrapper.data('fhlProxSearchCountry'))
+                    {
+                        fields.push($wrapper.data('fhlProxSearchCountry'));
+                    }
+
+                    $.each(fields, function(key, field)
+                    {
+                        if ($checkbox.is(':checked'))
+                        {
+                            $form.find('.form-group.' + field).find('input,select').val('').attr('disabled', true);
+                        }
+                        else
+                        {
+                            $form.find('.form-group.' + field).find('input,select').attr('disabled', false);
+                        }
+                    });
+                }
+            });
         },
         initShare: function()
         {
@@ -45,7 +107,8 @@
 
                         $newItems.hide();
 
-                        $jscrollAdded.imagesLoaded( function() {
+                        $jscrollAdded.imagesLoaded(function()
+                        {
                             $items.append($newItems.fadeIn(300));
 
                             if ($list.attr('data-fhl-masonry') == 1)
@@ -57,15 +120,19 @@
                             }
 
                             // remove item counters...
-                            $items.find('.item').removeClass(function(index, cssClass) {
+                            $items.find('.item').removeClass(function(index, cssClass)
+                            {
                                 var matches = cssClass.match(/item_\d+/g);
 
                                 if (matches.length > 0)
+                                {
                                     return matches[0];
+                                }
                             });
 
                             //... and readd them again
-                            $items.find('.item').each(function(index) {
+                            $items.find('.item').each(function(index)
+                            {
                                 var $item = $(this);
 
                                 $(this).addClass('item_' + index).removeClass('odd even first last');
@@ -106,7 +173,8 @@
                 var $this = $(this).find('.items'),
                     options = $(this).data('masonry-options');
 
-                var $grid = $this.imagesLoaded( function() {
+                var $grid = $this.imagesLoaded(function()
+                {
                     $grid.masonry({
                         // fitWidth: true,
                         itemSelector: '.item'

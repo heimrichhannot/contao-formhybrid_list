@@ -24,6 +24,9 @@
         "desandro/imagesloaded": "v4.1.1",
         "desandro/masonry": "v4.1.1"
     },
+    "suggest": {
+        "heimrichhannot/contao-frontendedit": "A generic module using formhybrid for listing, editing, and deleting entities."
+    },
     "autoload": {
         "classmap": [""]
     },

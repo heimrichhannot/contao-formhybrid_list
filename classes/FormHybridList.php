@@ -6,8 +6,26 @@ use HeimrichHannot\Haste\DateUtil;
 
 class FormHybridList
 {
-    const ACT_SHARE    = 'share';
-    const PARAM_RANDOM = 'random';
+    const ACT_SHARE                                   = 'share';
+    const PARAM_RANDOM                                = 'random';
+    const PROXIMITY_SEARCH_RADIUS                     = 'proxRadius';
+    const PROXIMITY_SEARCH_USE_LOCATION               = 'proxUseLocation';
+    const PROXIMITY_SEARCH_LOCATION                   = 'proxLocation';
+    const PROXIMITY_SEARCH_RADIUS_STEPS               = [
+        '1km',
+        '5km',
+        '10km',
+        '25km',
+        '50km',
+        '100km',
+        '200km'
+    ];
+    const PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND  = 'compound';
+    const PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED = 'separated';
+    const PROXIMITY_SEARCH_COORDINATES_MODES          = [
+        self::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND,
+        self::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED
+    ];
 
     public static function addShareFields($strDca)
     {
@@ -38,5 +56,35 @@ class FormHybridList
         }
 
         return !$strShareToken || !$objEntity->shareTokenTime || ($objEntity->shareTokenTime > $intNow + $intInterval);
+    }
+
+    public static function addProximitySearchFields($strDca)
+    {
+        \Controller::loadDataContainer($strDca);
+        \System::loadLanguageFile('tl_module');
+
+        $arrDca = &$GLOBALS['TL_DCA'][$strDca];
+
+        $arrDca['fields'][FormHybridList::PROXIMITY_SEARCH_RADIUS] = [
+            'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchRadius'],
+            'exclude'   => true,
+            'inputType' => 'select',
+            'options'   => static::PROXIMITY_SEARCH_RADIUS_STEPS,
+            'default'   => '5km',
+            'eval'      => ['mandatory' => true],
+        ];
+
+        $arrDca['fields'][FormHybridList::PROXIMITY_SEARCH_USE_LOCATION] = [
+            'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchUseLocation'],
+            'exclude'   => true,
+            'inputType' => 'checkbox',
+            'eval'      => ['skipTransformToSelect' => true]
+        ];
+
+        $arrDca['fields'][FormHybridList::PROXIMITY_SEARCH_LOCATION] = [
+            'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchLocation'],
+            'exclude'   => true,
+            'inputType' => 'text'
+        ];
     }
 }
