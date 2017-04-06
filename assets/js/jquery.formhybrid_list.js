@@ -23,8 +23,6 @@
                 {
                     if ($useLocation.is(':checked'))
                     {
-                        $form.find('input[name="proxLocation"]').val(lat + ',' + lng);
-
                         HASTE_PLUS.getCurrentLocation(function(lat, lng)
                         {
                             $form.find('input[name="proxLocation"]').val(lat + ',' + lng);
