@@ -426,7 +426,7 @@ class ModuleReader extends \Module
             foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback)
             {
                 $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]($objTemplate, $objItemTmp, $this);
+                $this->{$callback[0]}->{$callback[1]}($objTemplate, $objItemTmp, $this);
             }
         }
 

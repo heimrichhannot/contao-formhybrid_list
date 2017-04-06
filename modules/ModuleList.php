@@ -427,7 +427,7 @@ class ModuleList extends \Module
                     foreach ($arrDca['fields'][$strField]['load_callback'] as $callback)
                     {
                         $this->import($callback[0]);
-                        $arrItem['fields'][$strField] = $this->$callback[0]->$callback[1]($arrItem['fields'][$strField], $objDc);
+                        $arrItem['fields'][$strField] = $this->{$callback[0]}->{$callback[1]}($arrItem['fields'][$strField], $objDc);
                     }
                 }
 
@@ -534,7 +534,7 @@ class ModuleList extends \Module
             foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback)
             {
                 $this->import($callback[0]);
-                $this->$callback[0]->$callback[1]($objTemplate, $arrItem, $this);
+                $this->{$callback[0]}->{$callback[1]}($objTemplate, $arrItem, $this);
             }
         }
 
