@@ -1,22 +1,22 @@
 
 <div class="comment_formhybrid_list<?= $this->class ?>" id="<?= $this->id ?>">
 
-	<div class="actions">
-		<form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> id="<?= $this->formId ?>" method="post">
-			<div class="formbody">
-				<input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
-				<input type="hidden" name="REQUEST_TOKEN" value="<?= \RequestToken::get() ?>">
+    <div class="actions">
+        <form<?php if ($this->action): ?> action="<?= $this->action ?>"<?php endif; ?> id="<?= $this->formId ?>" method="post">
+            <div class="formbody">
+                <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId ?>">
+                <input type="hidden" name="REQUEST_TOKEN" value="<?= \RequestToken::get() ?>">
 
-				<div class="submit_container">
-					<?php if ($this->delete): ?>
-						<button type="submit" name="delete" class="delete">
-							<?= $GLOBALS['TL_LANG']['MSC']['delete'] ?>
-						</button>
-					<?php endif; ?>
-				</div>
-			</div>
-		</form>
-	</div>
+                <div class="submit_container">
+                    <?php if ($this->delete): ?>
+                        <button type="submit" name="delete" class="delete">
+                            <?= $GLOBALS['TL_LANG']['MSC']['delete'] ?>
+                        </button>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </form>
+    </div>
 
   <p class="info"><?= $this->by ?> <?php if ($this->website): ?><a href="<?= $this->website ?>" rel="nofollow" target="_blank"><?php endif; ?><?= $this->name ?><?php if ($this->website): ?></a><?php endif; ?> | <time datetime="<?= $this->datetime ?>" class="date"><?= $this->date ?></time></p>
 

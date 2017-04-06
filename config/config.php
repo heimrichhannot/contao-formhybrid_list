@@ -54,3 +54,8 @@ if (TL_MODE == 'FE')
 
     $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
 }
+
+/**
+ * Insert tags
+ */
+$GLOBALS['TL_HOOKS']['replaceInsertTags']['formHybridList'] = ['HeimrichHannot\FormHybridList\FormHybridList', 'addInsertTags'];

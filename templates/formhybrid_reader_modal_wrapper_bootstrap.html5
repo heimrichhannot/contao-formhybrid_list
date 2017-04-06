@@ -1,5 +1,6 @@
-<div class="modal<?php if ($this->modalClass) echo ' ' . $this->modalClass ?><?php if ($this->active): ?> in<?php endif; ?>" id="modal_<?= $this->id; ?>" tabindex="-1" role="dialog" data-history-base="<?= $this->listUrl ?>">
-	<div class="modal-dialog<?php if ($this->modalInnerClass) echo ' ' . $this->modalInnerClass ?>" role="document">
-		<!-- content is loaded here by javascript -->
-	</div>
+<div class="modal<?php if ($this->modalClass) echo ' ' . $this->modalClass ?><?php if ($this->active): ?> in<?php endif; ?>"
+     id="modal_<?= $this->id; ?>" tabindex="-1" role="dialog" data-history-base="<?= $this->listUrl ?>">
+    <div class="modal-dialog<?php if ($this->modalInnerClass) echo ' ' . $this->modalInnerClass ?>" role="document">
+        <!-- content is loaded here by javascript -->
+    </div>
 </div>

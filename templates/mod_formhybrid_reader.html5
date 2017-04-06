@@ -3,22 +3,22 @@
 <?php $this->block('content'); ?>
 
 <div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>">
-	<?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
+    <?= \HeimrichHannot\StatusMessages\StatusMessage::generate($this->id); ?>
 
-	<?php if (!$this->invalid): ?>
-		<?php echo $this->item ?: ''; ?>
+    <?php if (!$this->invalid): ?>
+        <?= $this->item ?: ''; ?>
 
-		<?php if ($this->allowComments): ?>
-			<div class="ce_comments block">
-				<<?= $this->hlc ?>><?= $this->addComment ?></<?= $this->hlc ?>>
+        <?php if ($this->allowComments): ?>
+            <div class="ce_comments block">
+                <<?= $this->hlc ?>><?= $this->addComment ?></<?= $this->hlc ?>>
 
-				<?= implode('', $this->comments) ?>
+                    <?= implode('', $this->comments) ?>
 
-				<?= $this->pagination ?>
-				<?php include $this->getTemplate('mod_comment_form', 'html5'); ?>
-			</div>
-		<?php endif; ?>
-	<?php endif; ?>
+                    <?= $this->pagination ?>
+                    <?php include $this->getTemplate('mod_comment_form', 'html5'); ?>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
 </div>
 
 <?php $this->endblock(); ?>

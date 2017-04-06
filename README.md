@@ -101,3 +101,9 @@ ModuleMemberReader | Encapsulates news specific changes overriding ModuleList
 Name | Arguments | Description
 ---- | --------- | -----------
 parseItems | $objTemplate, $arrItem, $objModule | Triggered just before FrontendTemplate::parse() is called
+
+### Insert Tags
+
+Name | Arguments | Example
+---- | --------- | -------
+fhl_filter_url | page id – the page that contains the list module,<br>module id – the formhybrid_list list module -> ModuleList or inheriting class,<br>filter query – url encoded | {{fhl_filter_url::1::5::city=Dresden&company=Heimrich+%26+Hannot}}

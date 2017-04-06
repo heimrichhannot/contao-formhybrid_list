@@ -3,6 +3,7 @@
 namespace HeimrichHannot\FormHybridList;
 
 use HeimrichHannot\Haste\DateUtil;
+use HeimrichHannot\Haste\Util\Url;
 
 class FormHybridList
 {
@@ -87,4 +88,28 @@ class FormHybridList
             'inputType' => 'text'
         ];
     }
+
+    public static function addInsertTags($strTag)
+    {
+        $arrTag = explode('::', $strTag);
+
+        switch ($arrTag[0])
+        {
+            // {{fhl_filter_url::<pageId>::<moduleId>::<filterQuery>}}
+            case 'fhl_filter_url':
+                if (($objModule = \ModuleModel::findByPk($arrTag[2])) === null)
+                {
+                    return '';
+                }
+
+                return Url::addQueryString(
+                    sprintf('FORM_SUBMIT=%s_%s&%s', $objModule->formHybridDataContainer, $arrTag[2], $arrTag[3]),
+                    Url::generateFrontendUrl($arrTag[1])
+                );
+                break;
+        }
+
+        return false;
+    }
+
 }

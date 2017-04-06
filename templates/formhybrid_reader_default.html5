@@ -1,3 +1,3 @@
 <div class="<?= $this->class; ?> block">
-	Legen Sie bitte ein passendes Instanztemplate an.
+    Legen Sie bitte ein passendes Instanztemplate an. Kopieren Sie dafür "formhybrid_reader_default.html5" aus dem Verzeichnis "/system/modules/formhybrid_list/templates". Der Zugriff auf die Attribute der darzustellenden Entität erfolgt mit "$this->fieldName".
 </div>
