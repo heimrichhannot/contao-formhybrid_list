@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 ## [2.4.1] - 2017-04-05
 
+### Added
+- more description in formhybrid_reader_default
+
+### Fixed
+- sql issues
+
+## [2.4.1] - 2017-04-05
+
 ### Fixed
 - Codestyle
 - ajax pagination naming

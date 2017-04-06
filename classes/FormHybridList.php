@@ -73,19 +73,22 @@ class FormHybridList
             'options'   => static::PROXIMITY_SEARCH_RADIUS_STEPS,
             'default'   => '5km',
             'eval'      => ['mandatory' => true],
+            'sql'       => "varchar(16) NOT NULL default ''"
         ];
 
         $arrDca['fields'][FormHybridList::PROXIMITY_SEARCH_USE_LOCATION] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchUseLocation'],
             'exclude'   => true,
             'inputType' => 'checkbox',
-            'eval'      => ['skipTransformToSelect' => true]
+            'eval'      => ['skipTransformToSelect' => true],
+            'sql'       => "char(1) NOT NULL default ''"
         ];
 
         $arrDca['fields'][FormHybridList::PROXIMITY_SEARCH_LOCATION] = [
             'label'     => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchLocation'],
             'exclude'   => true,
-            'inputType' => 'text'
+            'inputType' => 'text',
+            'sql'       => "varchar(16) NOT NULL default ''"
         ];
     }
 

@@ -1,6 +1,6 @@
 (function($)
 {
-    var FORMHYBRID_LIST = {
+    FORMHYBRID_LIST = {
         init: function()
         {
             this.initPagination();
@@ -17,12 +17,14 @@
                     $form = $wrapper.find('form'),
                     $useLocation = $form.find('input[name="proxUseLocation"]');
 
-                updateFields($useLocation);
+                FORMHYBRID_LIST.initProximitySearchFields($wrapper);
 
                 $useLocation.on('click', function()
                 {
                     if ($useLocation.is(':checked'))
                     {
+                        $form.find('input[name="proxLocation"]').val(lat + ',' + lng);
+
                         HASTE_PLUS.getCurrentLocation(function(lat, lng)
                         {
                             $form.find('input[name="proxLocation"]').val(lat + ',' + lng);
@@ -33,40 +35,41 @@
                         $form.find('input[name="proxLocation"]').val('');
                     }
 
-                    updateFields($useLocation);
+                    FORMHYBRID_LIST.initProximitySearchFields($wrapper);
                 });
+            });
+        },
+        initProximitySearchFields: function($wrapper)
+        {
+            // if current location is set, postal, city and country aren't relevant anymore
+            var fields = [],
+                $form = $wrapper.find('form'),
+                $checkbox = $form.find('input[name="proxUseLocation"]');
 
-                function updateFields($checkbox)
+            if ($wrapper.data('fhlProxSearchCity'))
+            {
+                fields.push($wrapper.data('fhlProxSearchCity'));
+            }
+
+            if ($wrapper.data('fhlProxSearchPostal'))
+            {
+                fields.push($wrapper.data('fhlProxSearchPostal'));
+            }
+
+            if ($wrapper.data('fhlProxSearchCountry'))
+            {
+                fields.push($wrapper.data('fhlProxSearchCountry'));
+            }
+
+            $.each(fields, function(key, field)
+            {
+                if ($checkbox.is(':checked'))
                 {
-                    // if current location is set, postal, city and country aren't relevant anymore
-                    var fields = [];
-
-                    if ($wrapper.data('fhlProxSearchCity'))
-                    {
-                        fields.push($wrapper.data('fhlProxSearchCity'));
-                    }
-
-                    if ($wrapper.data('fhlProxSearchPostal'))
-                    {
-                        fields.push($wrapper.data('fhlProxSearchPostal'));
-                    }
-
-                    if ($wrapper.data('fhlProxSearchCountry'))
-                    {
-                        fields.push($wrapper.data('fhlProxSearchCountry'));
-                    }
-
-                    $.each(fields, function(key, field)
-                    {
-                        if ($checkbox.is(':checked'))
-                        {
-                            $form.find('.form-group.' + field).find('input,select').val('').attr('disabled', true);
-                        }
-                        else
-                        {
-                            $form.find('.form-group.' + field).find('input,select').attr('disabled', false);
-                        }
-                    });
+                    $form.find('.form-group.' + field).hide().find('input, select').val('');
+                }
+                else
+                {
+                    $form.find('.form-group.' + field).show();
                 }
             });
         },
