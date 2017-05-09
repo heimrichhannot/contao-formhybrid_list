@@ -148,7 +148,7 @@ $arrFields = [
         'inputType'        => 'select',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getSortingOptions'],
         'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true, 'mandatory' => true],
-        'sql'              => "varchar(255) NOT NULL default ''"
+        'sql'              => "varchar(64) NOT NULL default ''"
     ],
     'hideFilter'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['hideFilter'],
@@ -373,15 +373,15 @@ $arrFields = [
         'exclude'          => true,
         'inputType'        => 'select',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
-        'eval'             => ['maxlength' => 255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
-        'sql'              => "varchar(255) NOT NULL default ''"
+        'eval'             => ['maxlength' => 64, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
     ],
     'pageTitlePattern'                => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['pageTitlePattern'],
         'exclude'   => true,
         'inputType' => 'text',
-        'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
-        'sql'       => "varchar(255) NOT NULL default ''"
+        'eval'      => ['maxlength' => 64, 'tl_class' => 'w50'],
+        'sql'       => "varchar(64) NOT NULL default ''"
     ],
     'additionalWhereSql'              => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['additionalWhereSql'],
@@ -423,8 +423,8 @@ $arrFields = [
         'exclude'          => true,
         'inputType'        => 'select',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getBooleanFields'],
-        'eval'             => ['maxlength' => 255, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
-        'sql'              => "varchar(255) NOT NULL default ''"
+        'eval'             => ['maxlength' => 32, 'tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
+        'sql'              => "varchar(32) NOT NULL default ''"
     ],
     'invertPublishedField'            => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['invertPublishedField'],
@@ -454,7 +454,7 @@ $arrFields = [
         'inputType'        => 'select',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridListItemTemplates'],
         'eval'             => ['tl_class' => 'w50 clr', 'includeBlankOption' => true],
-        'sql'              => "varchar(255) NOT NULL default ''",
+        'sql'              => "varchar(128) NOT NULL default ''",
     ],
     'useDummyImage'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['useDummyImage'],
@@ -526,7 +526,7 @@ $arrFields = [
         'default'          => 'formhybrid_reader_modal_wrapper_bootstrap',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridReaderModalWrapperTemplates'],
         'eval'             => ['tl_class' => 'w50 clr'],
-        'sql'              => "varchar(255) NOT NULL default ''",
+        'sql'              => "varchar(128) NOT NULL default ''",
     ],
     'modalTpl'                        => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalTpl'],
@@ -535,21 +535,21 @@ $arrFields = [
         'default'          => 'formhybrid_reader_modal_bootstrap',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridReaderModalTemplates'],
         'eval'             => ['tl_class' => 'w50'],
-        'sql'              => "varchar(255) NOT NULL default ''",
+        'sql'              => "varchar(128) NOT NULL default ''",
     ],
     'modalClass'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['modalClass'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['tl_class' => 'w50'],
-        'sql'       => "varchar(255) NOT NULL default ''",
+        'sql'       => "varchar(64) NOT NULL default ''",
     ],
     'modalInnerClass'                 => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['modalInnerClass'],
         'exclude'   => true,
         'inputType' => 'text',
         'eval'      => ['tl_class' => 'w50'],
-        'sql'       => "varchar(255) NOT NULL default ''",
+        'sql'       => "varchar(64) NOT NULL default ''",
     ],
     'useModalWrapperSync'             => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['useModalWrapperSync'],
@@ -576,7 +576,7 @@ $arrFields = [
             'chosen'             => true
         ],
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getTextFields'],
-        'sql'              => "varchar(255) NOT NULL default ''"
+        'sql'              => "varchar(64) NOT NULL default ''"
     ],
     'existanceConditions'             => $arrDca['fields']['formHybridDefaultValues'],
     'appendIdToUrlOnFound'            => [

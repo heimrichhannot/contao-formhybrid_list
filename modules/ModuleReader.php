@@ -180,7 +180,7 @@ class ModuleReader extends \Module
                                     continue;
                                 }
 
-                                $objItem->$strField = $varValue;
+                                $objItem->{$strField} = $varValue;
                             }
 
                             $objItem->formHybridBlob = null;

@@ -92,7 +92,7 @@ abstract class FormHybridListModel extends \Model
 		if ($arrOptions['return'] == 'Model')
 		{
 			$strPk = static::$strPk;
-			$intPk = $objResult->$strPk;
+			$intPk = $objResult->{$strPk};
 
 			// Try to load from the registry
 			$objModel = \Model\Registry::getInstance()->fetch(static::$strTable, $intPk);

@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.4.6] - 2017-05-09
+
+### Fixed
+- php 7 support
+- field lengths
+
 ## [2.4.5] - 2017-04-12
 - created new tag
 
