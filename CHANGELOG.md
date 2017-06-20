@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.5.0] - 2017-06-20
+
+### Fixed
+- fixed deps for contao 4
+
 ## [2.4.6] - 2017-05-09
 
 ### Fixed

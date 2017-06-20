@@ -1,20 +1,26 @@
 {
     "name": "heimrichhannot/contao-formhybrid_list",
-    "description":"Contains a list and a reader module in a generic flavor. The modules can display and process all kinds of contao entities containing filtering, pagination, modal handling, ...",
-    "keywords":["contao", "list", "form", "module", "developer"],
+    "description": "Contains a list and a reader module in a generic flavor. The modules can display and process all kinds of contao entities containing filtering, pagination, modal handling, ...",
+    "keywords": [
+        "contao",
+        "list",
+        "form",
+        "module",
+        "developer"
+    ],
     "type": "contao-module",
-    "homepage":"https://github.com/heimrichhannot/contao-formhybrid_list",
-    "license":"LGPL-3.0+",
-    "authors":[
+    "homepage": "https://github.com/heimrichhannot/contao-formhybrid_list",
+    "license": "LGPL-3.0+",
+    "authors": [
         {
-            "name":"Heimrich & Hannot",
-            "email":"digitales@heimrich-hannot.de",
-            "homepage":"http://www.heimrich-hannot.de",
-            "role":"Developer"
+            "name": "Heimrich & Hannot",
+            "email": "digitales@heimrich-hannot.de",
+            "homepage": "http://www.heimrich-hannot.de",
+            "role": "Developer"
         }
     ],
-    "support":{
-        "issues":"https://github.com/heimrichhannot/contao-formhybrid_list/issues"
+    "support": {
+        "issues": "https://github.com/heimrichhannot/contao-formhybrid_list/issues"
     },
     "require": {
         "php": "~5.4 || ~7.0",
@@ -23,14 +29,16 @@
         "heimrichhannot/contao-formhybrid": ">=2.3.0",
         "heimrichhannot/contao-blocks": "~1.0",
         "heimrichhannot/contao-multi_column_editor": "~1.1",
-        "desandro/imagesloaded": "v4.1.1",
-        "desandro/masonry": "v4.1.1"
+        "heimrichhannot/masonry": "4.1.1",
+        "heimrichhannot/masonry-imagesloaded": "4.1.1"
     },
     "suggest": {
         "heimrichhannot/contao-frontendedit": "A generic module using formhybrid for listing, editing, and deleting entities."
     },
     "autoload": {
-        "classmap": [""]
+        "classmap": [
+            ""
+        ]
     },
     "extra": {
         "contao": {
