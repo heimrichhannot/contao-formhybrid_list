@@ -29,7 +29,7 @@
         "heimrichhannot/contao-formhybrid": ">=2.3.0",
         "heimrichhannot/contao-blocks": "~1.0",
         "heimrichhannot/contao-multi_column_editor": "~1.1",
-        "heimrichhannot/masonry": "4.1.1",
+        "components/masonry": "^4.2",
         "heimrichhannot/masonry-imagesloaded": "4.1.1"
     },
     "suggest": {

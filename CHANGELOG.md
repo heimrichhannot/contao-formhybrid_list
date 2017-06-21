@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [2.5.1] - 2017-06-21
+
+### Fixed
+- fixed masonry dep
+
 ## [2.5.0] - 2017-06-20
 
 ### Fixed
