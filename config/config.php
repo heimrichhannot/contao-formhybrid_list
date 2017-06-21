@@ -41,7 +41,7 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'Heimrich
  */
 if (TL_MODE == 'FE')
 {
-    $strMasonryPath = version_compare(VERSION, '4.0', '<') ? 'composer/vendor/desandro' : 'assets';
+    $strMasonryPath = version_compare(VERSION, '4.0', '<') ? 'composer/vendor/desandro/masonry/dist' : 'assets/masonry';
     $strImagesLoadedPath = version_compare(VERSION, '4.0', '<') ? 'composer/vendor/desandro/imagesloaded' : 'assets/masonry-imagesloaded';
 
     // css
@@ -51,7 +51,7 @@ if (TL_MODE == 'FE')
     $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_infinite_scroll'] =
         'system/modules/formhybrid_list/assets/vendor/jscroll-2.3.5/jquery.jscroll.min.js|static';
 
-    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry'] = $strMasonryPath . '/masonry/dist/masonry.pkgd.min.js|static';
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry'] = $strMasonryPath . '/masonry.pkgd.min.js|static';
 
     $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry_imagesloaded'] = $strImagesLoadedPath . '/imagesloaded.pkgd.min.js|static';
 
