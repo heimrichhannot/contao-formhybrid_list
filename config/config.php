@@ -41,8 +41,8 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'Heimrich
  */
 if (TL_MODE == 'FE')
 {
-    $strMasonryPath = version_compare(VERSION, '4.0', '<') ? 'composer/vendor/desandro/masonry/dist' : 'assets/masonry';
-    $strImagesLoadedPath = version_compare(VERSION, '4.0', '<') ? 'composer/vendor/desandro/imagesloaded' : 'assets/masonry-imagesloaded';
+    $strMasonryPath = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry' : 'assets/masonry';
+    $strImagesLoadedPath = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry-imagesloaded' : 'assets/masonry-imagesloaded';
 
     // css
     $GLOBALS['TL_USER_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css|static';
