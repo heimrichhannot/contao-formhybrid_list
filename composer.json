@@ -29,13 +29,13 @@
         "robloach/component-installer": "*",
         "heimrichhannot/contao-formhybrid": ">=2.3.0",
         "heimrichhannot/contao-blocks": "~1.0",
+        "heimrichhannot/contao-modal": "~1.3",
         "heimrichhannot/contao-multi_column_editor": "~1.1",
         "components/masonry": "^4.2",
         "heimrichhannot/masonry-imagesloaded": "4.1.1"
     },
     "suggest": {
-        "heimrichhannot/contao-frontendedit": "A generic module using formhybrid for listing, editing, and deleting entities.",
-        "heimrichhannot/contao-modal": "Allows opening entities in modal windows."
+        "heimrichhannot/contao-frontendedit": "A generic module using formhybrid for listing, editing, and deleting entities."
     },
     "autoload": {
         "classmap": [
