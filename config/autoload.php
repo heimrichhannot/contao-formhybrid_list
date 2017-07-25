@@ -55,9 +55,7 @@ TemplateLoader::addFiles(array
 	'mod_formhybrid_list_table'                 => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_item_default'              => 'system/modules/formhybrid_list/templates',
 	'formhybrid_reader_default'                 => 'system/modules/formhybrid_list/templates',
-	'formhybrid_reader_modal_wrapper_bootstrap' => 'system/modules/formhybrid_list/templates',
 	'formhybrid_list_item_table_default'        => 'system/modules/formhybrid_list/templates',
-	'formhybrid_reader_modal_bootstrap'         => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_reader'                     => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_list'                       => 'system/modules/formhybrid_list/templates',
 ));

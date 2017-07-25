@@ -269,35 +269,16 @@ class ModuleReader extends \Module
 
                         $strItem = $this->replaceInsertTags($this->parseItem($objItem));
 
-                        if ((\Environment::get('isAjaxRequest') && \Input::get('scope') == 'modal') || $this->useModalWrapperSync)
+                        if (\Input::post('FORM_SUBMIT') == 'com_' . $this->formHybridDataContainer . '_' . $objItem->id)
                         {
-                            if (\Input::post('FORM_SUBMIT') == 'com_' . $this->formHybridDataContainer . '_' . $objItem->id)
+                            if (\Input::post('reload'))
                             {
-                                if (\Input::post('reload'))
-                                {
-                                    die();
-                                }
-                                else
-                                {
-                                    $this->Template->item = $strItem;
-                                    die($this->Template->parse());
-                                }
+                                die();
                             }
                             else
                             {
-                                $objModalWrapper = new \FrontendTemplate($this->modalTpl ?: 'formhybrid_reader_modal_bootstrap');
-                                $objModalWrapper->setData($objItem->row() + $this->arrData);
-                                $this->Template->item  = $strItem;
-                                $objModalWrapper->item = $this->Template->parse();
-
-                                // active modal from synchronous request
-                                if (!$this->useModalWrapperSync)
-                                {
-                                    $objModalWrapper->active = true;
-                                    die($objModalWrapper->parse());
-                                }
-
-                                $this->Template->item = $objModalWrapper->parse();
+                                $this->Template->item = $strItem;
+                                die($this->Template->parse());
                             }
                         }
                         else

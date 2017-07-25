@@ -17,7 +17,7 @@ If additional functionality is needed, one simply has to inherit from ModuleList
 - advanced filtering using heimrichhannot/contao-formhybrid
 - defining of default filters
 - detail links with alias support
-- opening instances in modal windows
+- opening instances in modal windows (install heimrichhannot/contao-modal for this)
 - display as table with sortable headers
 - share entities in a list (add the necessary fields to your dca beforehands by using ```FormHybridList::addShareFields()```)
 

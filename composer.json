@@ -34,7 +34,8 @@
         "heimrichhannot/masonry-imagesloaded": "4.1.1"
     },
     "suggest": {
-        "heimrichhannot/contao-frontendedit": "A generic module using formhybrid for listing, editing, and deleting entities."
+        "heimrichhannot/contao-frontendedit": "A generic module using formhybrid for listing, editing, and deleting entities.",
+        "heimrichhannot/contao-modal": "Allows opening entities in modal windows."
     },
     "autoload": {
         "classmap": [

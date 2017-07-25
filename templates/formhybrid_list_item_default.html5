@@ -10,11 +10,18 @@
     <?php endforeach; ?>
 
     <?php if ($this->addDetailsCol && $this->detailsUrl): ?>
-        <a class="details" href="<?php echo $this->detailsUrl; ?>"
-           <?php if ($this->useModal): ?>data-toggle="modal" data-target="#modal_<?= $this->module->id; ?>"<?php endif; ?>>
-            <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
-        </a>
+        <?php if ($this->useModal): ?>
+            <a class="btn btn-xs btn-default details" href="{{modal_url::<?= $this->modal->id ?>::<?= $this->jumpToDetails; ?>::<?= $this->idAlias; ?>}}"
+               data-toggle="modal">
+                <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
+            </a>
+        <?php else: ?>
+            <a class="btn btn-xs btn-default details" href="<?= $this->detailsUrl ?>">
+                <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
+            </a>
+        <?php endif; ?>
     <?php endif; ?>
+
     <?php if ($this->addShareCol && $this->shareUrl): ?>
         <a class="share" href="<?php echo $this->shareUrl; ?>" data-message="<?php echo $GLOBALS['TL_LANG']['formhybrid_list']['shareMessage']; ?>">
             <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['shareTitle']; ?>

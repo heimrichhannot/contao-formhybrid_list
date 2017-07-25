@@ -19,6 +19,7 @@ use HeimrichHannot\Haste\Dca\General;
 use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\Modal\ModalModel;
 use HeimrichHannot\Request\Request;
 
 class ModuleList extends \Module
@@ -158,13 +159,6 @@ class ModuleList extends \Module
 
         global $objPage;
         $this->listUrl = \Controller::generateFrontendUrl($objPage->row());
-
-        if ($this->useModal)
-        {
-            $objModalWrapper = new \FrontendTemplate($this->modalWrapperTpl ?: 'formhybrid_reader_modal_wrapper_bootstrap');
-            $objModalWrapper->setData($this->arrData);
-            $this->Template->modalWrapper = $objModalWrapper->parse();
-        }
 
         $this->addColumns();
 
@@ -502,19 +496,26 @@ class ModuleList extends \Module
     {
         $objTemplate = new \FrontendTemplate($this->itemTemplate);
 
-        if (\Input::get('FOO'))
-        {
-            die(count($arrItem));
-        }
-
         $objTemplate->setData($arrItem);
         $objTemplate->class                   = $strClass;
         $objTemplate->count                   = $intCount;
-        $objTemplate->useModal                = $this->useModal;
         $objTemplate->useDummyImage           = $this->useDummyImage;
         $objTemplate->dummyImage              = $this->dummyImage;
         $objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
         $objTemplate->addDetailsCol           = $this->addDetailsCol;
+        $objTemplate->useModal                = $this->useModal;
+        $objTemplate->jumpToDetails           = $this->jumpToDetails;
+
+        global $objPage;
+
+        if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage)
+        {
+            if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null)
+            {
+                $objTemplate->modal = $objModal;
+            }
+        }
+
         $objTemplate->addShareCol             = $this->addShareCol;
         $objTemplate->module                  = $this;
         $objTemplate->imgSize                 = deserialize($this->imgSize, true);
@@ -524,6 +525,7 @@ class ModuleList extends \Module
                                                                                                       != '') ? $arrItem['raw']['alias'] : $arrItem['raw']['id']),
             '/'
         );
+        $objTemplate->idAlias                 = $varIdAlias;
         $objTemplate->active                  = $varIdAlias && \Input::get('items') == $varIdAlias;
 
         $this->runBeforeTemplateParsing($objTemplate, $arrItem);

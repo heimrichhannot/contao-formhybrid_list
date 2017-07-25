@@ -111,7 +111,7 @@ abstract class FormHybridListModel extends \Model
 	}
 
 
-	public static function countBy($strColumn=null, $varValue=null)
+	public static function countBy($strColumn=null, $varValue=null, array $arrOptions = [])
 	{
 		if (static::$strTable == '')
 		{

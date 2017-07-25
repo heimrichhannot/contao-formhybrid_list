@@ -9,7 +9,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 $arrDca['palettes'][MODULE_FORMHYBRID_READER] =
     '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,addExistanceConditions,aliasField;'
     . '{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;'
-    . '{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,modalTpl,customTpl;'
+    . '{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,customTpl;'
     . '{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
@@ -22,7 +22,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
                                               . '{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
                                               . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
                                               . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;'
-                                              . '{misc_legend},imgSize,useDummyImage,useModal;'
+                                              . '{misc_legend},imgSize,useDummyImage;'
                                               . '{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;'
                                               . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
@@ -53,7 +53,6 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'addDisjunctiveFieldGroups',
         'addShowConditions',
         'addExistanceConditions',
-        'useModal',
         'setPageTitle',
         'addAjaxPagination',
         'addMasonry',
@@ -66,13 +65,12 @@ $arrDca['subpalettes'] = array_merge(
     $arrDca['subpalettes'],
     [
         'isTableList'               => 'tableFields,hasHeader,sortingHeader',
-        'addDetailsCol'             => 'jumpToDetails',
+        'addDetailsCol'             => 'useModal,jumpToDetails',
         'addShareCol'               => 'jumpToShare,shareAutoItem',
         'useDummyImage'             => 'dummyImage',
         'addDisjunctiveFieldGroups' => 'disjunctiveFieldGroups',
         'addShowConditions'         => 'showConditions',
         'addExistanceConditions'    => 'existanceConditions,appendIdToUrlOnFound',
-        'useModal'                  => 'modalWrapperTpl,modalClass,modalInnerClass,useModalWrapperSync',
         'setPageTitle'              => 'pageTitleField,pageTitlePattern',
         'addAjaxPagination'         => 'addInfiniteScroll',
         'addMasonry'                => 'masonryStampContentElements',
@@ -114,7 +112,7 @@ $arrFields = [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addShareCol'],
         'exclude'   => true,
         'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
+        'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
         'sql'       => "char(1) NOT NULL default ''"
     ],
     'jumpToShare'                     => [
@@ -512,52 +510,6 @@ $arrFields = [
         ],
         'sql'       => "blob NULL",
     ],
-    'useModal'                        => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['useModal'],
-        'exclude'   => true,
-        'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
-        'sql'       => "char(1) NOT NULL default ''"
-    ],
-    'modalWrapperTpl'                 => [
-        'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalWrapperTpl'],
-        'exclude'          => true,
-        'inputType'        => 'select',
-        'default'          => 'formhybrid_reader_modal_wrapper_bootstrap',
-        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridReaderModalWrapperTemplates'],
-        'eval'             => ['tl_class' => 'w50 clr'],
-        'sql'              => "varchar(128) NOT NULL default ''",
-    ],
-    'modalTpl'                        => [
-        'label'            => &$GLOBALS['TL_LANG']['tl_module']['modalTpl'],
-        'exclude'          => true,
-        'inputType'        => 'select',
-        'default'          => 'formhybrid_reader_modal_bootstrap',
-        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFormHybridReaderModalTemplates'],
-        'eval'             => ['tl_class' => 'w50'],
-        'sql'              => "varchar(128) NOT NULL default ''",
-    ],
-    'modalClass'                      => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['modalClass'],
-        'exclude'   => true,
-        'inputType' => 'text',
-        'eval'      => ['tl_class' => 'w50'],
-        'sql'       => "varchar(64) NOT NULL default ''",
-    ],
-    'modalInnerClass'                 => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['modalInnerClass'],
-        'exclude'   => true,
-        'inputType' => 'text',
-        'eval'      => ['tl_class' => 'w50'],
-        'sql'       => "varchar(64) NOT NULL default ''",
-    ],
-    'useModalWrapperSync'             => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['useModalWrapperSync'],
-        'exclude'   => true,
-        'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
-        'sql'       => "char(1) NOT NULL default ''"
-    ],
     'addExistanceConditions'          => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addExistanceConditions'],
         'exclude'   => true,
@@ -598,7 +550,7 @@ $arrFields = [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['deactivateTokens'],
         'exclude'   => true,
         'inputType' => 'checkbox',
-        'eval'      => ['tl_class' => 'w50'],
+        'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''"
     ]
 ];

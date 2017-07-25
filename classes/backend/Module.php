@@ -114,16 +114,6 @@ class Module extends \Backend
         return \Controller::getTemplateGroup('formhybrid_list_item_');
     }
 
-    public function getFormHybridReaderModalWrapperTemplates()
-    {
-        return \Controller::getTemplateGroup('formhybrid_reader_modal_wrapper_');
-    }
-
-    public function getFormHybridReaderModalTemplates()
-    {
-        return \Controller::getTemplateGroup('formhybrid_reader_modal_');
-    }
-
     public static function getFields($objDc)
     {
         if (!$objDc->activeRecord->formHybridDataContainer)

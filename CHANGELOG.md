@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2017-07-25
+
+### Changed
+- outsourced modal handling to heimrichhannot/contao-modal
+
 ## [2.5.4] - 2017-06-27
 
 ### Fixed
