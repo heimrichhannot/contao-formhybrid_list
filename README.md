@@ -29,6 +29,8 @@ If additional functionality is needed, one simply has to inherit from ModuleList
 
 ## Technical instructions
 
+###
+
 ### Example CSS for the masonry
 
 ```

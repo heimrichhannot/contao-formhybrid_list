@@ -65,7 +65,7 @@ $arrDca['subpalettes'] = array_merge(
     $arrDca['subpalettes'],
     [
         'isTableList'               => 'tableFields,hasHeader,sortingHeader',
-        'addDetailsCol'             => 'useModal,jumpToDetails',
+        'addDetailsCol'             => 'useModalExplanation,useModal,jumpToDetails',
         'addShareCol'               => 'jumpToShare,shareAutoItem',
         'useDummyImage'             => 'dummyImage',
         'addDisjunctiveFieldGroups' => 'disjunctiveFieldGroups',
