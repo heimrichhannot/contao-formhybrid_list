@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.0.2] - 2017-07-25
+
+### Fixed
+- fixed classes in templates
+
 ## [3.0.1] - 2017-07-25
 
 ### Fixed

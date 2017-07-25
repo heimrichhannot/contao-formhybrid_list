@@ -6,12 +6,12 @@
         <td class="actions">
             <?php if ($this->addDetailsCol && $this->detailsUrl): ?>
                 <?php if ($this->useModal): ?>
-                    <a class="btn btn-xs btn-default details" href="{{modal_url::<?= $this->modal->id ?>::<?= $this->jumpToDetails; ?>::<?= $this->idAlias; ?>}}"
+                    <a class="details" href="{{modal_url::<?= $this->modal->id ?>::<?= $this->jumpToDetails; ?>::<?= $this->idAlias; ?>}}"
                        data-toggle="modal">
                         <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
                     </a>
                 <?php else: ?>
-                    <a class="btn btn-xs btn-default details" href="<?= $this->detailsUrl ?>">
+                    <a class="details" href="<?= $this->detailsUrl ?>">
                         <?php echo $GLOBALS['TL_LANG']['formhybrid_list']['detailsTitle']; ?>
                     </a>
                 <?php endif; ?>
