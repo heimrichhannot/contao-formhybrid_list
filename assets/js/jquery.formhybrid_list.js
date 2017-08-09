@@ -54,6 +54,11 @@
                 fields.push($wrapper.data('fhlProxSearchPostal'));
             }
 
+            if ($wrapper.data('fhlProxSearchState'))
+            {
+                fields.push($wrapper.data('fhlProxSearchState'));
+            }
+
             if ($wrapper.data('fhlProxSearchCountry'))
             {
                 fields.push($wrapper.data('fhlProxSearchCountry'));

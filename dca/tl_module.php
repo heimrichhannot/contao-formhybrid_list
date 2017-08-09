@@ -74,7 +74,7 @@ $arrDca['subpalettes'] = array_merge(
         'setPageTitle'              => 'pageTitleField,pageTitlePattern',
         'addAjaxPagination'         => 'addInfiniteScroll',
         'addMasonry'                => 'masonryStampContentElements',
-        'addProximitySearch'        => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
+        'addProximitySearch'        => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchStateField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND => 'proximitySearchCoordinatesField',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField'
     ]
@@ -278,6 +278,15 @@ $arrFields = [
     ],
     'proximitySearchPostalField'      => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchPostalField'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
+        'eval'             => ['tl_class' => 'w50', 'includeBlankOption' => true, 'chosen' => true],
+        'sql'              => "varchar(64) NOT NULL default ''"
+    ],
+    'proximitySearchStateField'      => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['proximitySearchStateField'],
         'exclude'          => true,
         'filter'           => true,
         'inputType'        => 'select',

@@ -228,6 +228,11 @@ class ModuleList extends \Module
                 $arrData[] = 'data-fhl-prox-search-postal="' . $this->proximitySearchPostalField . '"';
             }
 
+            if ($this->proximitySearchStateField)
+            {
+                $arrData[] = 'data-fhl-prox-search-state="' . $this->proximitySearchStateField . '"';
+            }
+
             if ($this->proximitySearchCountryField)
             {
                 $arrData[] = 'data-fhl-prox-search-country="' . $this->proximitySearchCountryField . '"';

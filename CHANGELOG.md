@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.0.4] - 2017-08-09
+
+### Added
+- state for proximity search
+
 ## [3.0.3] - 2017-07-25
 
 ### Fixed
