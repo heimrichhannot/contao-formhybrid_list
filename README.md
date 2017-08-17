@@ -29,7 +29,13 @@ If additional functionality is needed, one simply has to inherit from ModuleList
 
 ## Technical instructions
 
-###
+### Access to data in list item templates
+
+Usually you'll want to override the formybrid_list_item_default.html5 template. Inside this template you have access to the fields of the linked entity using the following techniques:
+
+- $this->someField
+- $this->fields (formatted fields)
+- $this->raw (unformatted fields as stored in the database)
 
 ### Example CSS for the masonry
 

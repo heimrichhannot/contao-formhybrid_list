@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.1.0] - 2017-08-17
+
+### Added
+- property passing to item template offering access by $this->fieldName
+
 ## [3.0.4] - 2017-08-09
 
 ### Added

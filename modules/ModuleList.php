@@ -501,7 +501,13 @@ class ModuleList extends \Module
     {
         $objTemplate = new \FrontendTemplate($this->itemTemplate);
 
-        $objTemplate->setData($arrItem);
+        $objTemplate->setData($arrItem['fields']);
+
+        foreach ($arrItem as $strKey => $varValue)
+        {
+            $objTemplate->{$strKey} = $varValue;
+        }
+
         $objTemplate->class                   = $strClass;
         $objTemplate->count                   = $intCount;
         $objTemplate->useDummyImage           = $this->useDummyImage;
