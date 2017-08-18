@@ -1022,44 +1022,6 @@ class ModuleList extends \Module
         return [$offset, $limit];
     }
 
-    protected function addImage($objItem, $strField, &$arrItem)
-    {
-        if (is_array($objItem))
-        {
-            $objItem = Arrays::arrayToObject($objItem);
-        }
-
-        if ($objItem->addImage && $objItem->{$strField} != '')
-        {
-            $objModel = \FilesModel::findByUuid($objItem->{$strField});
-
-            if ($objModel === null)
-            {
-                if (!\Validator::isUuid($objItem->{$strField}))
-                {
-                    $arrItem['fields']['text'] = '<p class="error">' . $GLOBALS['TL_LANG']['ERR']['version2format'] . '</p>';
-                }
-            }
-            elseif (is_file(TL_ROOT . '/' . $objModel->path))
-            {
-                // Override the default image size
-                if ($this->imgSize != '')
-                {
-                    $size = deserialize($this->imgSize);
-
-                    if ($size[0] > 0 || $size[1] > 0)
-                    {
-                        $arrItem['fields']['size'] = $this->imgSize;
-                    }
-                }
-
-                $arrItem['fields']['singleSRC'] = $objModel->path;
-                $arrItem['fields']['addImage']  = true;
-                // addToImage is done in runBeforeTemplateParsing()
-            }
-        }
-    }
-
     public function modifyDC(&$arrDca = null)
     {
         foreach ($arrDca['fields'] as $strField => $arrData)

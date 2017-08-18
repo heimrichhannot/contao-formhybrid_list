@@ -87,12 +87,6 @@ class ModuleNewsList extends ModuleList
         $arrItem['fields']['timestamp']        = $objItem->date;
         $arrItem['fields']['author']           = $arrMeta['author'];
         $arrItem['fields']['datetime']         = date('Y-m-d\TH:i:sP', $objItem->date);
-
-        $arrItem['fields']['addImage'] = false;
-
-        // Add an image
-        $this->addImage($objItem, 'singleSRC', $arrItem);
-
         // enclosures are added in runBeforeTemplateParsing
 
         return $arrItem;
@@ -100,24 +94,6 @@ class ModuleNewsList extends ModuleList
 
     protected function runBeforeTemplateParsing($objTemplate, $arrItem)
     {
-        if ($arrItem['fields']['addImage'] && $arrItem['fields']['singleSRC'] != '')
-        {
-            if (is_file(TL_ROOT . '/' . $arrItem['fields']['singleSRC']))
-            {
-                $this->addImageToTemplate($objTemplate, $arrItem['fields']);
-            }
-        }
-        elseif ($this->useDummyImage && $this->dummyImage)
-        {
-            $arrItem['fields']['addImage']  = true;
-            $arrItem['fields']['singleSRC'] = Files::getPathFromUuid($this->dummyImage);
-
-            if (is_file(TL_ROOT . '/' . $arrItem['fields']['singleSRC']))
-            {
-                $this->addImageToTemplate($objTemplate, $arrItem['fields']);
-            }
-        }
-
         if ($arrItem['fields']['addEnclosure'])
         {
             if (!is_array($arrItem['fields']['enclosure']))
