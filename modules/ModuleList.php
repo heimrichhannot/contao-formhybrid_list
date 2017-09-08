@@ -311,14 +311,18 @@ class ModuleList extends \Module
         if ($arrCurrentSorting['order'] == 'random')
         {
             $intRandomSeed             = \Input::get(FormHybridList::PARAM_RANDOM) ?: rand(1, 500);
-            $this->arrOptions['order'] = 'RAND(' . $intRandomSeed . ')';
+            $this->arrOptions['order'] = 'RAND("' . intval($intRandomSeed) . '")';
             list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit, $intRandomSeed);
         }
         else
         {
-            $this->arrOptions['order'] =
-                (($this->sortingMode == OPTION_FORMHYBRID_SORTINGMODE_TEXT ? '' : $this->formHybridDataContainer . '.') . $arrCurrentSorting['order']
-                 . ' ' . strtoupper($arrCurrentSorting['sort']));
+            if (!empty($arrCurrentSorting))
+            {
+                $this->arrOptions['order'] =
+                    (($this->sortingMode == OPTION_FORMHYBRID_SORTINGMODE_TEXT ? '' : $this->formHybridDataContainer . '.') . $arrCurrentSorting['order']
+                        . ' ' . strtoupper($arrCurrentSorting['sort']));
+            }
+
             list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit);
         }
 
@@ -887,12 +891,20 @@ class ModuleList extends \Module
     protected function getCurrentSorting()
     {
         // user specified
-        if (\Input::get('order') && \Input::get('sort'))
+        if (($strOrderField = \Input::get('order')) && ($strSort = \Input::get('sort')))
         {
-            $arrCurrentSorting = [
-                'order' => \Input::get('order'),
-                'sort'  => \Input::get('sort'),
-            ];
+            // anti sql injection: check if field exists
+            if (\Database::getInstance()->fieldExists($strOrderField, $this->formHybridDataContainer) && in_array($strSort, ['asc', 'desc']))
+            {
+                $arrCurrentSorting = [
+                    'order' => \Input::get('order'),
+                    'sort'  => \Input::get('sort'),
+                ];
+            }
+            else
+            {
+                $arrCurrentSorting = [];
+            }
         } // initial
         elseif ($this->itemSorting)
         {
