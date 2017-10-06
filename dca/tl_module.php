@@ -18,7 +18,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
 // list
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
                                               . '{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
-                                              . 'showInitialResults,cacheResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry,addProximitySearch;'
+                                              . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry,addProximitySearch;'
                                               . '{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
                                               . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
                                               . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;'
@@ -57,8 +57,7 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'addAjaxPagination',
         'addMasonry',
         'addProximitySearch',
-        'proximitySearchCoordinatesMode',
-        'cacheResults'
+        'proximitySearchCoordinatesMode'
     ]
 );
 
@@ -77,8 +76,7 @@ $arrDca['subpalettes'] = array_merge(
         'addMasonry'                => 'masonryStampContentElements',
         'addProximitySearch'        => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchStateField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND => 'proximitySearchCoordinatesField',
-        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField',
-        'cacheResults'              => 'resultsCacheTime'
+        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField'
     ]
 );
 
@@ -170,22 +168,6 @@ $arrFields = [
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default '1'"
-    ],
-    'cacheResults' => [
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['cacheResults'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'eval'                    => ['tl_class' => 'w50 clr', 'submitOnChange' => true],
-        'sql'                     => "char(1) NOT NULL default ''"
-    ],
-    'resultsCacheTime' => [
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['resultsCacheTime'],
-        'exclude'                 => true,
-        'inputType'               => 'timePeriod',
-        'options'                 => ['m', 'h', 'd'],
-        'reference'               => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
-        'eval'                    => ['mandatory'=> true, 'tl_class' => 'w50'],
-        'sql'                     => "blob NULL"
     ],
     'addAjaxPagination'               => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addAjaxPagination'],

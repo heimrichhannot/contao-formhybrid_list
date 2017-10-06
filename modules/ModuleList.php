@@ -13,8 +13,6 @@
 namespace HeimrichHannot\FormHybridList;
 
 use HeimrichHannot\Blocks\BlockModuleModel;
-use HeimrichHannot\Haste\Cache\FileCache;
-use HeimrichHannot\Haste\DateUtil;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
@@ -277,55 +275,14 @@ class ModuleList extends \Module
             $limit = $this->numberOfItems;
         }
 
-        if ($this->cacheResults)
+        // total number of items
+        if (count($this->arrColumns) > 0)
         {
-            // cache results
-            $strCacheKey = 'fhl_results_' . $this->id;
-
-            $arrCacheTime = deserialize($this->resultsCacheTime, true);
-            $arrOptions = [];
-
-            if (isset($arrCacheTime['unit']) && isset($arrCacheTime['value']))
-            {
-                $arrOptions = [
-                    'defaultTtl' => DateUtil::getTimePeriodInSeconds($this->resultsCacheTime)
-                ];
-            }
-
-            $objCache     = FileCache::getInstance($arrOptions);
-            $objCacheItem = $objCache->getItem($strCacheKey);
-
-            if ($objCacheItem->get() !== null)
-            {
-                $this->objItems = unserialize($objCacheItem->get());
-            }
-            else
-            {
-                // total number of items
-                if (count($this->arrColumns) > 0)
-                {
-                    $this->objItems = FormHybridListModel::findBy($this->arrColumns, $this->arrValues, $this->arrOptions);
-                }
-                else
-                {
-                    $this->objItems = FormHybridListModel::findAll($this->arrOptions);
-                }
-
-                $objCacheItem->set(serialize($this->objItems));
-                $objCache->save($objCacheItem);
-            }
+            $this->objItems = FormHybridListModel::findBy($this->arrColumns, $this->arrValues, $this->arrOptions);
         }
         else
         {
-            // total number of items
-            if (count($this->arrColumns) > 0)
-            {
-                $this->objItems = FormHybridListModel::findBy($this->arrColumns, $this->arrValues, $this->arrOptions);
-            }
-            else
-            {
-                $this->objItems = FormHybridListModel::findAll($this->arrOptions);
-            }
+            $this->objItems = FormHybridListModel::findAll($this->arrOptions);
         }
 
         // TODO: write a count method that works with GROUP BY
