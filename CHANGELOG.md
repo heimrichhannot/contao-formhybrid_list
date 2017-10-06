@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.0] - 2017-10-06
+
+### Added
+- result caching
+
 ## [3.2.1] - 2017-09-08
 
 ### Fixed

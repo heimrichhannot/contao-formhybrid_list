@@ -77,6 +77,8 @@ $arrLang['proximitySearchLatField']             = ['Latitude-Feld', 'Wählen Sie
 $arrLang['proximitySearchLongField']            = ['Longitude-Feld', 'Wählen Sie hier das DCA-Feld aus, in dem die Longitude gespeichert wird.'];
 $arrLang['proximitySearchRadius']               = ['Umkreis', ''];
 $arrLang['proximitySearchUseLocation']          = ['Aktueller Standort', ''];
+$arrLang['cacheResults']                        = ['Ergebnisse zwischenspeichern', 'Wählen Sie diese Option, um die Ergebnisse für eine bestimmte Zeit im Cache abzulegen.'];
+$arrLang['resultsCacheTime']                    = ['Cache-Zeit', 'Wählen Sie hier aus, wie lange die Ergebnisse zwischengespeichert werden sollen.'];
 
 // events
 $arrLang['filterArchives']						= ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];
