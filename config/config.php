@@ -21,6 +21,7 @@ define('MODULE_FORMHYBRID_LISTS', 'formhybrid_lists');
 define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
 define('MODULE_FORMHYBRID_MEMBER_LIST', 'formhybrid_list_member');
 define('MODULE_FORMHYBRID_NEWS_LIST', 'formhybrid_list_news');
+define('MODULE_FORMHYBRID_LIST_FILTER','formhybrid_list_filter');
 define('OPTION_FORMHYBRID_SORTINGMODE_FIELD', 'field');
 define('OPTION_FORMHYBRID_SORTINGMODE_TEXT', 'text');
 
@@ -35,6 +36,9 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_READER] = 'Heimri
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST]        = 'HeimrichHannot\FormHybridList\ModuleList';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'HeimrichHannot\FormHybridList\ModuleNewsList';
+
+// filter
+$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER]        = 'HeimrichHannot\FormHybridList\ModuleFilter';
 
 /**
  * Assets

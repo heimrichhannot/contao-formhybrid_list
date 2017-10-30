@@ -103,6 +103,7 @@ ModuleMemberList | Encapsulates member specific changes overriding ModuleList
 ModuleNewsList | Encapsulates news specific changes overriding ModuleList
 ModuleReader | A generic reader module able to display all kinds of contao entities
 ModuleMemberReader | Encapsulates news specific changes overriding ModuleList
+ModuleFilter | Detached filter that can be placed independently from ModuleList
 
 ### Hooks
 

@@ -7,6 +7,7 @@ $arrLang[FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] = 'Filter zurücksetzen';
 $arrLang['detailsTitle'] = 'Details';
 $arrLang['shareTitle'] = 'Teilen';
 $arrLang['ajaxPaginationNext'] = 'Weitere Beiträge laden';
+$arrLang['sortingLabel']                         = 'sortieren nach...';
 
 /**
  * Messages

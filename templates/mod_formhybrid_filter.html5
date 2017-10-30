@@ -1,0 +1,10 @@
+<?php $this->extend('block_searchable'); ?>
+
+<?php $this->block('content'); ?>
+	
+	<div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"<?= $this->configData ?>>
+		
+		<?= $this->filterForm; ?>
+	</div>
+
+<?php $this->endblock(); ?>

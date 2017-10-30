@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.0] - 2017-10-30
+
+### Added
+- detached filter
+- dropdown sorting for lists
+
+## [3.2.1] - 2017-09-08
+
+### Fixed
+- order handling
+
 ## [3.2.1] - 2017-09-08
 
 ### Fixed

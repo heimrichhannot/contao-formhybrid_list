@@ -77,6 +77,8 @@ $arrLang['proximitySearchLatField']             = ['Latitude-Feld', 'Wählen Sie
 $arrLang['proximitySearchLongField']            = ['Longitude-Feld', 'Wählen Sie hier das DCA-Feld aus, in dem die Longitude gespeichert wird.'];
 $arrLang['proximitySearchRadius']               = ['Umkreis', ''];
 $arrLang['proximitySearchUseLocation']          = ['Aktueller Standort', ''];
+$arrLang['formHybridLinkedList']                = ['FormHybrid-Liste', 'Wählen Sie hier die FormHybrid-Liste auf die der Filter angewendet weren soll.'];
+$arrLang['useSelectSorting']                    = ['Sortierung als Select-Feld ausgeben', 'Wählen Sie diese Option, wenn die Sortier-Felder in einem Selectfeld ausgegeben werden sollen.'];
 
 // events
 $arrLang['filterArchives']						= ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

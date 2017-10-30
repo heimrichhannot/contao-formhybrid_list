@@ -2,6 +2,7 @@
 
 <?php $this->block('content'); ?>
 
+<?php global $objPage ?>
 <div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"<?= $this->configData ?>>
 
     <?php echo $this->filterForm; ?>
@@ -12,9 +13,20 @@
 
         <?php if (!$this->empty): ?>
             <?php if ($this->showInitialResults): ?>
+				<?php if($this->useSelectSorting): ?>
+                    <div class="form-group sorting">
+                        <select name="order" onchange="location.href=this.value">
+                            <option value="">sortieren nach...</option>
+							<?php foreach($this->header as $field):?>
+                                <option value="<?= $objPage->alias . '?order=' . $field['field'] . '&sort=asc'?>" <?php if(Input::get('order') == $field['field'] && Input::get('sort') == 'asc'):?> selected<?php endif; ?>><?= $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$field['field']]['label'][0] ?> (aufsteigend)</option>
+                                <option value="<?= $objPage->alias . '?order=' . $field['field'] . '&sort=desc'?>" <?php if(Input::get('order') == $field['field'] && Input::get('sort') == 'desc'):?> selected<?php endif; ?>><?= $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$field['field']]['label'][0] ?> (absteigend)</option>
+							<?php endforeach; ?>
+                        </select>
+                    </div>
+				<?php endif; ?>
                 <div class="items table-responsive">
                     <table class="table table-striped table-hover">
-                        <?php if (is_array($this->header)): ?>
+                        <?php if (is_array($this->header) && !$this->useSelectSorting): ?>
                             <thead>
                             <tr>
                                 <?php foreach ($this->header as $i => $arrField): ?>

@@ -19,7 +19,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
                                               . '{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
                                               . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry,addProximitySearch;'
-                                              . '{filter_legend},sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
+                                              . '{filter_legend},formHybridLinkedFilter,sortingMode,itemSorting,hideFilter,filterHeadline,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
                                               . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
                                               . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;'
                                               . '{misc_legend},imgSize,useDummyImage;'
@@ -39,6 +39,15 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(
 );
 
 $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
+
+// filter
+$arrDca['palettes'][MODULE_FORMHYBRID_LIST_FILTER] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
+											  . '{filter_legend},formHybridLinkedList,customFilterFields,formHybridAddPermanentFields,'
+											  . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
+											  . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;'
+												. '{redirect_legend},formHybridAction;'
+											  . '{template_legend:hide},formHybridTemplate;'
+											  . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 /**
  * Subpalettes
@@ -64,7 +73,7 @@ $arrDca['palettes']['__selector__'] = array_merge(
 $arrDca['subpalettes'] = array_merge(
     $arrDca['subpalettes'],
     [
-        'isTableList'               => 'tableFields,hasHeader,sortingHeader',
+        'isTableList'               => 'tableFields,hasHeader,sortingHeader,useSelectSorting',
         'addDetailsCol'             => 'useModalExplanation,useModal,jumpToDetails',
         'addShareCol'               => 'jumpToShare,shareAutoItem',
         'useDummyImage'             => 'dummyImage',
@@ -561,7 +570,22 @@ $arrFields = [
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''"
-    ]
+    ],
+    'formHybridLinkedFilter' => [
+	'label' => &$GLOBALS['TL_LANG']['tl_module']['formHybridLinkedFilter'],
+	'exclude' => true,
+	'inputType' => 'select',
+	'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFilter'],
+	'eval' => ['includeBlankOption' => true, 'tl_class' => 'w50'],
+	'sql' => 'int(5) NOT NULL'
+    ],
+    'useSelectSorting'                   => [
+	'label'     => &$GLOBALS['TL_LANG']['tl_module']['useSelectSorting'],
+	'exclude'   => true,
+	'inputType' => 'checkbox',
+	'eval'      => ['tl_class' => 'w50'],
+	'sql'       => "char(1) NOT NULL default ''"
+    ] 	
 ];
 
 if (in_array('member_content_archives', \ModuleLoader::getActive()))

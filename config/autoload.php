@@ -30,6 +30,7 @@ ClassLoader::addClasses(array
 	'HeimrichHannot\FormHybridList\ModuleNewsList'             => 'system/modules/formhybrid_list/modules/ModuleNewsList.php',
 	'HeimrichHannot\FormHybridList\ModuleReader'               => 'system/modules/formhybrid_list/modules/ModuleReader.php',
 	'HeimrichHannot\FormHybridList\ModuleMemberReader'         => 'system/modules/formhybrid_list/modules/ModuleMemberReader.php',
+	'HeimrichHannot\FormHybridList\ModuleFilter'               => 'system/modules/formhybrid_list/modules/ModuleFilter.php',
 
 	// Classes
 	'HeimrichHannot\FormHybridList\FormHybridList'             => 'system/modules/formhybrid_list/classes/FormHybridList.php',
@@ -40,6 +41,7 @@ ClassLoader::addClasses(array
 
 	// Models
 	'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',
+	'HeimrichHannot\FormHybridList\FormHybridFilterModel'      => 'system/modules/formhybrid_list/models/FormHybridFilterModel.php',
 	'HeimrichHannot\FormHybridList\FormHybridListQueryBuilder' => 'system/modules/formhybrid_list/models/FormHybridListQueryBuilder.php',
 ));
 
@@ -58,4 +60,5 @@ TemplateLoader::addFiles(array
 	'formhybrid_list_item_table_default'        => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_reader'                     => 'system/modules/formhybrid_list/templates',
 	'mod_formhybrid_list'                       => 'system/modules/formhybrid_list/templates',
+	'mod_formhybrid_filter'              	    => 'system/modules/formhybrid_list/templates',
 ));
