@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.1] - 2017-10-30
+
+### Fixed
+- field for linked list in filter
+
 ## [3.3.0] - 2017-10-30
 
 ### Added

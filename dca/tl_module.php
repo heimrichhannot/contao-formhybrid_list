@@ -571,6 +571,14 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
+    'formHybridLinkedList' => [
+	'label' => &$GLOBALS['TL_LANG']['tl_module']['formHybridLinkedList'],
+	'exclude' => true,
+	'inputType' => 'select',
+	'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getLists'],
+	'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
+	'sql' => 'int(5) NOT NULL'
+    ],
     'formHybridLinkedFilter' => [
 	'label' => &$GLOBALS['TL_LANG']['tl_module']['formHybridLinkedFilter'],
 	'exclude' => true,
