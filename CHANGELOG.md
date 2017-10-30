@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.1] - 2017-10-30
+
+### Fixed
+- DcaExtractor instantiation for Contao 4
+
 ## [3.3.0] - 2017-10-30
 
 ### Added

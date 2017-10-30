@@ -8,7 +8,7 @@ class FormHybridListQueryBuilder
 
     public static function find(array $arrOptions)
     {
-        $objBase                = new \DcaExtractor($arrOptions['table']);
+        $objBase = \DcaExtractor::getInstance($arrOptions['table']);
         $strAdditionalSelectSql = $arrOptions['additionalSelectSql'] ? ', ' . $arrOptions['additionalSelectSql'] : '';
         $strAdditionalWhereSql  = $arrOptions['additionalWhereSql'] ? '(' . $arrOptions['additionalWhereSql'] . ')' : '';
         $strAdditionalSql       = $arrOptions['additionalSql'] ? ' ' . $arrOptions['additionalSql'] : '';
@@ -31,7 +31,7 @@ class FormHybridListQueryBuilder
                     if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo')
                     {
                         ++$intCount;
-                        $objRelated = new \DcaExtractor($arrConfig['table']);
+                        $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
 
                         foreach (array_keys($objRelated->getFields()) as $strField)
                         {
