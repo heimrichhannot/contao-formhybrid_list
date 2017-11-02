@@ -69,7 +69,7 @@ class ModuleReader extends \Module
                 foreach ($arrConditions as $arrCondition)
                 {
                     $arrColumns[] = $arrCondition['field'] . '=?';
-                    $arrValues[]  = $this->replaceInsertTags($arrCondition['value']);
+                    $arrValues[]  = $this->replaceInsertTags($arrCondition['value'], false);
                 }
 
                 if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
@@ -267,7 +267,7 @@ class ModuleReader extends \Module
                             }
                         }
 
-                        $strItem = $this->replaceInsertTags($this->parseItem($objItem));
+                        $strItem = $this->replaceInsertTags($this->parseItem($objItem), false);
 
                         if (\Input::post('FORM_SUBMIT') == 'com_' . $this->formHybridDataContainer . '_' . $objItem->id)
                         {
@@ -310,7 +310,7 @@ class ModuleReader extends \Module
             {
                 foreach ($arrConditions as $arrCondition)
                 {
-                    if ($objItem->{$arrCondition['field']} != \Controller::replaceInsertTags($arrCondition['value']))
+                    if ($objItem->{$arrCondition['field']} != \Controller::replaceInsertTags($arrCondition['value'], false))
                     {
                         $blnRedirect = false;
                     }
@@ -436,7 +436,7 @@ class ModuleReader extends \Module
             {
                 foreach ($arrConditions as $arrCondition)
                 {
-                    if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value']))
+                    if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value'], false))
                     {
                         return false;
                     }

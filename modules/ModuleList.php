@@ -568,7 +568,7 @@ class ModuleList extends \Module
 				$blnSkipValue = true;
 			} else {
 				$strColumn = $strField . '=?';
-				$varValue  = $this->replaceInsertTags($varValue);
+				$varValue  = $this->replaceInsertTags($varValue, false);
 			}
 			
 			$this->customizeDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
@@ -650,7 +650,7 @@ class ModuleList extends \Module
 						case 'textarea':
 						case 'password':
 							$strColumn = $strField . " LIKE ?";
-							$varValue  = $this->replaceInsertTags('%' . $varValue . '%');
+							$varValue  = $this->replaceInsertTags('%' . $varValue . '%', false);
 							
 							break;
 						default:
@@ -668,7 +668,7 @@ class ModuleList extends \Module
 									$blnSkipValue = true;
 								} else {
 									$strColumn = $strField . '=?';
-									$varValue  = $this->replaceInsertTags($varValue);
+									$varValue  = $this->replaceInsertTags($varValue, false);
 								}
 							}
 							break;
@@ -927,14 +927,14 @@ class ModuleList extends \Module
 		} else {
 			$arrValueIn = array_map(
 				function ($val) {
-					return '"' . \Controller::replaceInsertTags($val) . '"';
+					return '"' . \Controller::replaceInsertTags($val, false) . '"';
 				},
 				$varValue
 			);
 			
 			$arrValueRegExp = array_map(
 				function ($val) {
-					return '\"' . \Controller::replaceInsertTags($val) . '\"';
+					return '\"' . \Controller::replaceInsertTags($val, false) . '\"';
 				},
 				$varValue
 			);

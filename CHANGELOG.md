@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.3.3] - 2017-11-02
+
+### Fixed
+- replaceInsertTags to non caching
+
 ## [3.3.2] - 2017-10-30
 
 ### Fixed
