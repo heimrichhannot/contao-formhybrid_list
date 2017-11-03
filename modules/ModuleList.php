@@ -161,14 +161,15 @@ class ModuleList extends \Module
             $this->Template->header = $this->getHeader();
         }
 
-        switch ($this->filterMode)
-        {
+        switch ($this->filterMode) {
             case OPTION_FORMHYBRID_FILTERMODE_MODULE:
                 if ($this->formHybridLinkedFilter) {
-                    $filter = \ModuleModel::findByPk($this->formHybridLinkedFilter);
+                    $this->linkedFilterModule = \ModuleModel::findByPk($this->formHybridLinkedFilter);
 
-                    $this->customFilterFields = $filter->customFilterFields;
-                    $this->objFilterForm      = new ListFilterForm($this);
+                    if ($this->linkedFilterModule !== null) {
+                        $this->customFilterFields = $this->linkedFilterModule->customFilterFields;
+                        $this->objFilterForm      = new ListFilterForm($this);
+                    }
                 }
                 break;
             default:
@@ -234,13 +235,24 @@ class ModuleList extends \Module
     {
         // IMPORTANT: set the table for the generic model class
         FormHybridListModel::setTable($this->formHybridDataContainer);
-        // don't cache here
-        FormHybridListModel::setAdditionalWhereSql($this->replaceInsertTags($this->additionalWhereSql, false));
-        FormHybridListModel::setAdditionalSelectSql($this->replaceInsertTags($this->additionalSelectSql, false));
-        FormHybridListModel::setAdditionalHavingSql($this->replaceInsertTags($this->additionalHavingSql, false));
-        FormHybridListModel::setAdditionalSql($this->replaceInsertTags($this->additionalSql, false));
 
-        if ($this->additionalSql) {
+        FormHybridListModel::setAdditionalWhereSql($this->replaceInsertTags(
+            $this->linkedFilterModule ? $this->linkedFilterModule->additionalWhereSql : $this->additionalWhereSql, false)
+        );
+
+        FormHybridListModel::setAdditionalSelectSql($this->replaceInsertTags(
+            $this->linkedFilterModule ? $this->linkedFilterModule->additionalSelectSql : $this->additionalSelectSql, false)
+        );
+
+        FormHybridListModel::setAdditionalHavingSql($this->replaceInsertTags(
+            $this->linkedFilterModule ? $this->linkedFilterModule->additionalHavingSql : $this->additionalHavingSql, false)
+        );
+
+        FormHybridListModel::setAdditionalSql($this->replaceInsertTags(
+            $this->linkedFilterModule ? $this->linkedFilterModule->additionalSql : $this->additionalSql, false)
+        );
+
+        if ($this->linkedFilterModule ? $this->linkedFilterModule->additionalSql : $this->additionalSql) {
             FormHybridListModel::setAdditionalGroupBy("$this->formHybridDataContainer.id");
         }
 
