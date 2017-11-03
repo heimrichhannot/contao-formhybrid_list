@@ -8,8 +8,7 @@ class ModuleMemberReader extends ModuleReader
 {
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate           = new \BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0] ?: $this->type) . ' ###';
             $objTemplate->title    = $this->headline;
@@ -25,35 +24,28 @@ class ModuleMemberReader extends ModuleReader
 
     protected function parseItem($objItem, $strClass = '', $intCount = 0)
     {
-        if (in_array('member_content_archives', \ModuleLoader::getActive()))
-        {
+        if (in_array('member_content_archives', \ModuleLoader::getActive())) {
             $arrFilterTags          = deserialize($this->memberContentArchiveTags, true);
             $objItem->memberContent = '';
 
             if (($objMemberContentArchives =
                     \HeimrichHannot\MemberContentArchives\MemberContentArchiveModel::findPublishedByMid($objItem->memberId ?: $objItem->id)) !== null
-            )
-            {
-                while ($objMemberContentArchives->next())
-                {
-                    if (in_array($objMemberContentArchives->tag, $arrFilterTags))
-                    {
+            ) {
+                while ($objMemberContentArchives->next()) {
+                    if (in_array($objMemberContentArchives->tag, $arrFilterTags)) {
                         $objItem->memberContentId = $objMemberContentArchives->id;
                         $objElement               =
                             \ContentModel::findPublishedByPidAndTable($objMemberContentArchives->id, 'tl_member_content_archive');
 
-                        if ($objElement !== null)
-                        {
-                            while ($objElement->next())
-                            {
+                        if ($objElement !== null) {
+                            while ($objElement->next()) {
                                 $objItem->memberContent .= \Controller::getContentElement($objElement->current());
                             }
                         }
                     }
                 }
 
-                if ($objMemberContentArchives->tag == $this->memberContentArchiveTeaserTag)
-                {
+                if ($objMemberContentArchives->tag == $this->memberContentArchiveTeaserTag) {
                     $objItem->memberContentTitle  = $objMemberContentArchives->title;
                     $objItem->memberContentTeaser = $objMemberContentArchives->teaser;
                 }
@@ -61,15 +53,11 @@ class ModuleMemberReader extends ModuleReader
                 // override member fields
                 $arrOverridableMemberFields = deserialize(\Config::get('overridableMemberFields'));
 
-                if (!empty($arrOverridableMemberFields))
-                {
-                    foreach ($arrOverridableMemberFields as $strField)
-                    {
+                if (!empty($arrOverridableMemberFields)) {
+                    foreach ($arrOverridableMemberFields as $strField) {
                         $strFieldOverride = 'member' . ucfirst($strField);
-                        if ($objMemberContentArchives->{$strFieldOverride})
-                        {
-                            if (\Validator::isUuid($objMemberContentArchives->{$strFieldOverride}))
-                            {
+                        if ($objMemberContentArchives->{$strFieldOverride}) {
+                            if (\Validator::isUuid($objMemberContentArchives->{$strFieldOverride})) {
                                 $objMemberContentArchives->{$strFieldOverride} =
                                     Files::getPathFromUuid($objMemberContentArchives->{$strFieldOverride});
                             }

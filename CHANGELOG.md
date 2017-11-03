@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.0] - 2017-11-03
+
+### Changed
+- added table to all fields while filtering in order to avoid ambiguous field names in SQL query
+- palettes: splitted filtering and sorting for list module
+
 ## [3.3.3] - 2017-11-02
 
 ### Fixed

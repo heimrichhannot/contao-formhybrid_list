@@ -20,8 +20,7 @@ class ModuleMemberList extends ModuleList
     {
         $arrItem = parent::generateFields($objItem);
 
-        if (in_array('member_content_archives', \ModuleLoader::getActive()))
-        {
+        if (in_array('member_content_archives', \ModuleLoader::getActive())) {
             $arrFilterTags                      = deserialize($this->memberContentArchiveTags, true);
             $arrItem['fields']['memberContent'] = '';
 
@@ -29,28 +28,22 @@ class ModuleMemberList extends ModuleList
                     ['mid=?', 'published=?'],
                     [$objItem->memberId ?: $objItem->id, true]
                 )) !== null
-            )
-            {
-                while ($objMemberContentArchives->next())
-                {
-                    if (in_array($objMemberContentArchives->tag, $arrFilterTags))
-                    {
+            ) {
+                while ($objMemberContentArchives->next()) {
+                    if (in_array($objMemberContentArchives->tag, $arrFilterTags)) {
                         $arrItem['fields']['memberContentId'] = $objMemberContentArchives->id;
                         $objElement                           =
                             \ContentModel::findPublishedByPidAndTable($objMemberContentArchives->id, 'tl_member_content_archive');
 
-                        if ($objElement !== null)
-                        {
-                            while ($objElement->next())
-                            {
+                        if ($objElement !== null) {
+                            while ($objElement->next()) {
                                 $arrItem['fields']['memberContent'] .= \Controller::getContentElement($objElement->current());
                             }
                         }
                     }
                 }
 
-                if ($objMemberContentArchives->tag == $this->memberContentArchiveTeaserTag)
-                {
+                if ($objMemberContentArchives->tag == $this->memberContentArchiveTeaserTag) {
                     $arrItem['fields']['memberContentTitle']  = $objMemberContentArchives->title;
                     $arrItem['fields']['memberContentTeaser'] = $objMemberContentArchives->teaser;
                 }
@@ -58,15 +51,11 @@ class ModuleMemberList extends ModuleList
                 // override member fields
                 $arrOverridableMemberFields = deserialize(\Config::get('overridableMemberFields'));
 
-                if (!empty($arrOverridableMemberFields))
-                {
-                    foreach ($arrOverridableMemberFields as $strField)
-                    {
+                if (!empty($arrOverridableMemberFields)) {
+                    foreach ($arrOverridableMemberFields as $strField) {
                         $strFieldOverride = 'member' . ucfirst($strField);
-                        if ($objMemberContentArchives->{$strFieldOverride})
-                        {
-                            if (\Validator::isUuid($objMemberContentArchives->{$strFieldOverride}))
-                            {
+                        if ($objMemberContentArchives->{$strFieldOverride}) {
+                            if (\Validator::isUuid($objMemberContentArchives->{$strFieldOverride})) {
                                 $objMemberContentArchives->{$strFieldOverride} =
                                     Files::getPathFromUuid($objMemberContentArchives->{$strFieldOverride});
                             }

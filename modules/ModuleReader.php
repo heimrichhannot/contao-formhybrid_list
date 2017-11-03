@@ -29,8 +29,7 @@ class ModuleReader extends \Module
 
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate           = new \BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0] ?: $this->type) . ' ###';
             $objTemplate->title    = $this->headline;
@@ -49,35 +48,29 @@ class ModuleReader extends \Module
         $this->dca = $GLOBALS['TL_DCA'][$this->formHybridDataContainer];
 
         // Set the item from the auto_item parameter
-        if (!isset($_GET['items']) && \Config::get('useAutoItem') && isset($_GET['auto_item']))
-        {
+        if (!isset($_GET['items']) && \Config::get('useAutoItem') && isset($_GET['auto_item'])) {
             \Input::setGet('items', \Input::get('auto_item'));
         }
 
         $this->intId = $this->intId ?: (\Input::get('items') ?: \Input::get('id'));
 
-        if ($this->addExistanceConditions)
-        {
+        if ($this->addExistanceConditions) {
             $arrConditions = deserialize($this->existanceConditions, true);
             $strItemClass  = \Model::getClassFromTable($this->formHybridDataContainer);
 
-            if (!empty($arrConditions))
-            {
+            if (!empty($arrConditions)) {
                 $arrColumns = [];
                 $arrValues  = [];
 
-                foreach ($arrConditions as $arrCondition)
-                {
+                foreach ($arrConditions as $arrCondition) {
                     $arrColumns[] = $arrCondition['field'] . '=?';
                     $arrValues[]  = $this->replaceInsertTags($arrCondition['value'], false);
                 }
 
-                if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null)
-                {
+                if (($objItem = $strItemClass::findOneBy($arrColumns, $arrValues)) !== null) {
                     $this->intId = $objItem->id;
 
-                    if ($this->appendIdToUrlOnFound && !\Input::get('id'))
-                    {
+                    if ($this->appendIdToUrlOnFound && !\Input::get('id')) {
                         $strUrl = Url::addQueryString('id=' . $this->intId);
                         \Controller::redirect($strUrl);
                     }
@@ -86,8 +79,7 @@ class ModuleReader extends \Module
         }
 
         // Do not index or cache the page if no item has been specified
-        if (!$this->intId)
-        {
+        if (!$this->intId) {
             /** @var \PageModel $objPage */
             global $objPage;
 
@@ -114,69 +106,51 @@ class ModuleReader extends \Module
 
         $this->Template->inColumn = $this->strColumn;
 
-        if ($this->Template->headline == '')
-        {
+        if ($this->Template->headline == '') {
             $this->Template->headline = $this->headline;
         }
 
-        if ($this->Template->hl == '')
-        {
+        if ($this->Template->hl == '') {
             $this->Template->hl = $this->hl;
         }
 
-        if (!empty($this->objModel->classes) && is_array($this->objModel->classes))
-        {
+        if (!empty($this->objModel->classes) && is_array($this->objModel->classes)) {
             $this->Template->class .= ' ' . implode(' ', $this->objModel->classes);
         }
 
-        if ($this->intId && !is_numeric($this->intId))
-        {
+        if ($this->intId && !is_numeric($this->intId)) {
             $strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
             $strAliasField = $this->aliasField ?: 'id';
 
             if (($objItem = $strItemClass::findOneBy($strAliasField, $this->intId)) !== null
                 && (!$this->addShareCol || !FormHybridList::shareTokenExpiredOrEmpty($objItem, time()))
-            )
-            {
+            ) {
                 $this->intId = $objItem->id;
             }
         }
 
-        if (!$this->intId)
-        {
-            if (!$this->blnSilentMode)
-            {
+        if (!$this->intId) {
+            if (!$this->blnSilentMode) {
                 StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noIdFound'], $this->id, 'noidfound');
             }
             $this->Template->invalid = true;
-        }
-        else
-        {
-            if (!$this->checkEntityExists($this->intId))
-            {
-                if (!$this->blnSilentMode)
-                {
+        } else {
+            if (!$this->checkEntityExists($this->intId)) {
+                if (!$this->blnSilentMode) {
                     StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['notExisting'], $this->id, 'noentity');
                 }
                 $this->Template->invalid = true;
-            }
-            else
-            {
-                if ($this->checkPermission($this->intId))
-                {
+            } else {
+                if ($this->checkPermission($this->intId)) {
                     $strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-                    if (($objItem = $strItemClass::findByPk($this->intId)) !== null)
-                    {
-                        if ($this->blnUseBlob && $objItem->formHybridBlob)
-                        {
+                    if (($objItem = $strItemClass::findByPk($this->intId)) !== null) {
+                        if ($this->blnUseBlob && $objItem->formHybridBlob) {
                             $arrBlob = deserialize($objItem->formHybridBlob, true);
 
-                            foreach ($arrBlob as $strField => $varValue)
-                            {
-                                if ($strField == 'formHybridBlob')
-                                {
+                            foreach ($arrBlob as $strField => $varValue) {
+                                if ($strField == 'formHybridBlob') {
                                     continue;
                                 }
 
@@ -190,17 +164,14 @@ class ModuleReader extends \Module
                         $this->doFieldDependentRedirect($objItem);
 
                         // page title
-                        if ($this->setPageTitle)
-                        {
+                        if ($this->setPageTitle) {
                             global $objPage;
                             $objPage->pageTitle = $objItem->{$this->pageTitleField};
 
-                            if ($this->pageTitlePattern)
-                            {
+                            if ($this->pageTitlePattern) {
                                 $objPage->pageTitle = preg_replace_callback(
                                     '@%([^%]+)%@i',
-                                    function ($arrMatches) use ($objItem)
-                                    {
+                                    function ($arrMatches) use ($objItem) {
                                         return $objItem->{$arrMatches[1]};
                                     },
                                     $this->pageTitlePattern
@@ -211,17 +182,13 @@ class ModuleReader extends \Module
                         // comments
                         if ($this->noComments || !in_array('comments', \ModuleLoader::getActive())
                             || !\Database::getInstance()->fieldExists('pid', $this->formHybridDataContainer)
-                        )
-                        {
+                        ) {
                             $this->Template->allowComments = false;
-                        }
-                        else
-                        {
+                        } else {
                             $objArchive                    = $objItem->getRelated('pid');
                             $this->Template->allowComments = $objArchive->allowComments;
 
-                            if ($objArchive->allowComments)
-                            {
+                            if ($objArchive->allowComments) {
                                 // Adjust the comments headline level
                                 $intHl               = min(intval(str_replace('h', '', $this->hl)), 5);
                                 $this->Template->hlc = 'h' . ($intHl + 1);
@@ -229,19 +196,15 @@ class ModuleReader extends \Module
                                 $objComments = \System::importStatic('HeimrichHannot\\FormHybridList\\Comments');
                                 $arrNotifies = [];
 
-                                if ($objArchive->notify != 'none')
-                                {
+                                if ($objArchive->notify != 'none') {
                                     // Notify the system administrator
-                                    if ($objArchive->notify != 'notify_author')
-                                    {
+                                    if ($objArchive->notify != 'notify_author') {
                                         $arrNotifies[] = $GLOBALS['TL_ADMIN_EMAIL'];
                                     }
 
                                     // Notify the author
-                                    if ($objArchive->notify != 'notify_admin')
-                                    {
-                                        if (($objAuthor = $objItem->getRelated('memberAuthor')) !== null && $objAuthor->email != '')
-                                        {
+                                    if ($objArchive->notify != 'notify_admin') {
+                                        if (($objAuthor = $objItem->getRelated('memberAuthor')) !== null && $objAuthor->email != '') {
                                             $arrNotifies[] = $objAuthor->email;
                                         }
                                     }
@@ -269,28 +232,19 @@ class ModuleReader extends \Module
 
                         $strItem = $this->replaceInsertTags($this->parseItem($objItem), false);
 
-                        if (\Input::post('FORM_SUBMIT') == 'com_' . $this->formHybridDataContainer . '_' . $objItem->id)
-                        {
-                            if (\Input::post('reload'))
-                            {
+                        if (\Input::post('FORM_SUBMIT') == 'com_' . $this->formHybridDataContainer . '_' . $objItem->id) {
+                            if (\Input::post('reload')) {
                                 die();
-                            }
-                            else
-                            {
+                            } else {
                                 $this->Template->item = $strItem;
                                 die($this->Template->parse());
                             }
-                        }
-                        else
-                        {
+                        } else {
                             $this->Template->item = $strItem;
                         }
                     }
-                }
-                else
-                {
-                    if (!$this->blnSilentMode)
-                    {
+                } else {
+                    if (!$this->blnSilentMode) {
                         StatusMessage::addError($GLOBALS['TL_LANG']['formhybrid_list']['noPermission'], $this->id, 'nopermission');
                     }
                     $this->Template->invalid = true;
@@ -301,49 +255,38 @@ class ModuleReader extends \Module
 
     protected function doFieldDependentRedirect($objItem)
     {
-        if ($this->formHybridAddFieldDependentRedirect)
-        {
+        if ($this->formHybridAddFieldDependentRedirect) {
             $arrConditions = deserialize($this->formHybridFieldDependentRedirectConditions, true);
             $blnRedirect   = true;
 
-            if (!empty($arrConditions))
-            {
-                foreach ($arrConditions as $arrCondition)
-                {
-                    if ($objItem->{$arrCondition['field']} != \Controller::replaceInsertTags($arrCondition['value'], false))
-                    {
+            if (!empty($arrConditions)) {
+                foreach ($arrConditions as $arrCondition) {
+                    if ($objItem->{$arrCondition['field']} != \Controller::replaceInsertTags($arrCondition['value'], false)) {
                         $blnRedirect = false;
                     }
                 }
             }
 
-            if ($blnRedirect)
-            {
+            if ($blnRedirect) {
                 global $objPage;
 
                 if (($objPageJumpTo = \PageModel::findByPk($this->formHybridFieldDependentRedirectJumpTo)) !== null
                     || $objPageJumpTo = $objPage
-                )
-                {
+                ) {
                     $strRedirect = \Controller::generateFrontendUrl($objPageJumpTo->row());
 
-                    if ($this->formHybridFieldDependentRedirectKeepParams)
-                    {
+                    if ($this->formHybridFieldDependentRedirectKeepParams) {
                         $arrParamsToKeep = explode(',', $this->formHybridFieldDependentRedirectKeepParams);
-                        if (!empty($arrParamsToKeep))
-                        {
-                            foreach (Url::getUriParameters(Url::getUrl()) as $strParam => $strValue)
-                            {
-                                if (in_array($strParam, $arrParamsToKeep))
-                                {
+                        if (!empty($arrParamsToKeep)) {
+                            foreach (Url::getUriParameters(Url::getUrl()) as $strParam => $strValue) {
+                                if (in_array($strParam, $arrParamsToKeep)) {
                                     $strRedirect = Url::addQueryString($strParam . '=' . $strValue, $strRedirect);
                                 }
                             }
                         }
                     }
 
-                    if (!$this->deactivateTokens)
-                    {
+                    if (!$this->deactivateTokens) {
                         $strRedirect = Url::addQueryString('token=' . \RequestToken::get(), $strRedirect);
                     }
 
@@ -367,10 +310,8 @@ class ModuleReader extends \Module
         $objItemTmp->raw = $objItemTmp->row();
 
         // transform and escape values
-        foreach ($objItemTmp->row() as $strField => $varValue)
-        {
-            if ($strField == 'raw')
-            {
+        foreach ($objItemTmp->row() as $strField => $varValue) {
+            if ($strField == 'raw') {
                 continue;
             }
 
@@ -384,8 +325,7 @@ class ModuleReader extends \Module
             $objItemTmp->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
         }
 
-        if ($this->publishedField)
-        {
+        if ($this->publishedField) {
             $objItemTmp->isPublished = ($this->invertPublishedField ? !$objItemTmp->{$this->publishedField} : $objItemTmp->{$this->publishedField});
         }
 
@@ -402,10 +342,8 @@ class ModuleReader extends \Module
         $this->runBeforeTemplateParsing($objTemplate, $objItemTmp);
 
         // HOOK: add custom logic
-        if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems']))
-        {
-            foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback)
-            {
+        if (isset($GLOBALS['TL_HOOKS']['parseItems']) && is_array($GLOBALS['TL_HOOKS']['parseItems'])) {
+            foreach ($GLOBALS['TL_HOOKS']['parseItems'] as $callback) {
                 $this->import($callback[0]);
                 $this->{$callback[0]}->{$callback[1]}($objTemplate, $objItemTmp, $this);
             }
@@ -414,12 +352,13 @@ class ModuleReader extends \Module
         return $objTemplate->parse();
     }
 
-    protected function runBeforeTemplateParsing($objTemplate, $objItem) { }
+    protected function runBeforeTemplateParsing($objTemplate, $objItem)
+    {
+    }
 
     public function checkEntityExists($intId)
     {
-        if ($strItemClass = \Model::getClassFromTable($this->formHybridDataContainer))
-        {
+        if ($strItemClass = \Model::getClassFromTable($this->formHybridDataContainer)) {
             return $strItemClass::findByPk($intId) !== null;
         }
     }
@@ -428,16 +367,12 @@ class ModuleReader extends \Module
     {
         $strItemClass = \Model::getClassFromTable($this->formHybridDataContainer);
 
-        if ($this->addShowConditions && ($objItem = $strItemClass::findByPk($intId)) !== null)
-        {
+        if ($this->addShowConditions && ($objItem = $strItemClass::findByPk($intId)) !== null) {
             $arrConditions = deserialize($this->showConditions, true);
 
-            if (!empty($arrConditions))
-            {
-                foreach ($arrConditions as $arrCondition)
-                {
-                    if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value'], false))
-                    {
+            if (!empty($arrConditions)) {
+                foreach ($arrConditions as $arrCondition) {
+                    if ($objItem->{$arrCondition['field']} != $this->replaceInsertTags($arrCondition['value'], false)) {
                         return false;
                     }
                 }

@@ -51,8 +51,7 @@ class FormHybridList
         $arrExpirationInterval = deserialize(\Config::get('shareExpirationInterval'), true);
         $intInterval           = 604800; // default: 7 days
 
-        if (isset($arrExpirationInterval['unit']) && isset($arrExpirationInterval['value']) && $arrExpirationInterval['value'] > 0)
-        {
+        if (isset($arrExpirationInterval['unit']) && isset($arrExpirationInterval['value']) && $arrExpirationInterval['value'] > 0) {
             $intInterval = DateUtil::getTimePeriodInSeconds($arrExpirationInterval);
         }
 
@@ -96,12 +95,10 @@ class FormHybridList
     {
         $arrTag = explode('::', $strTag);
 
-        switch ($arrTag[0])
-        {
+        switch ($arrTag[0]) {
             // {{fhl_filter_url::<pageId>::<moduleId>::<filterQuery>}}
             case 'fhl_filter_url':
-                if (($objModule = \ModuleModel::findByPk($arrTag[2])) === null)
-                {
+                if (($objModule = \ModuleModel::findByPk($arrTag[2])) === null) {
                     return '';
                 }
 

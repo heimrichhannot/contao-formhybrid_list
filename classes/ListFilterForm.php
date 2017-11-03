@@ -42,19 +42,18 @@ class ListFilterForm extends Form
     {
         $this->submission = $dc;
 
-        if (is_array($this->arrSubmitCallbacks) && !empty($this->arrSubmitCallbacks))
-        {
-            foreach ($this->arrSubmitCallbacks as $arrCallback)
-            {
-                if (is_array($arrCallback) && !empty($arrCallback))
-                {
+        if (is_array($this->arrSubmitCallbacks) && !empty($this->arrSubmitCallbacks)) {
+            foreach ($this->arrSubmitCallbacks as $arrCallback) {
+                if (is_array($arrCallback) && !empty($arrCallback)) {
                     $arrCallback[0]::$arrCallback[1]($dc);
                 }
             }
         }
     }
 
-    protected function compile() { }
+    protected function compile()
+    {
+    }
 
     protected function generateResetFilterField()
     {
@@ -62,7 +61,7 @@ class ListFilterForm extends Form
             'inputType' => 'explanation',
             'eval'      => [
                 'text' => '<div class="form-group reset-filter"><a class="btn btn-default" href="' . Url::getCurrentUrlWithoutParameters() . '"><span>'
-                          . $GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] . '</span></a></div>',
+                    . $GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] . '</span></a></div>',
             ],
         ];
 
@@ -76,15 +75,12 @@ class ListFilterForm extends Form
         $strLabel = &$GLOBALS['TL_LANG']['MSC']['formhybrid']['submitLabels']['default'];
         $strClass = 'btn btn-primary';
 
-        if ($this->strSubmit != '' && isset($this->arrFields[$this->strSubmit]))
-        {
+        if ($this->strSubmit != '' && isset($this->arrFields[$this->strSubmit])) {
             return false;
         }
 
-        if ($this->customSubmit)
-        {
-            if ($this->submitLabel != '')
-            {
+        if ($this->customSubmit) {
+            if ($this->submitLabel != '') {
                 $strLabel = $GLOBALS['TL_LANG']['MSC']['formhybrid']['submitLabels'][$this->submitLabel];
             }
 
@@ -102,17 +98,14 @@ class ListFilterForm extends Form
 
     public function modifyDC(&$arrDca = null)
     {
-        foreach ($arrDca['fields'] as $strField => $arrData)
-        {
-            switch ($arrData['inputType'])
-            {
+        foreach ($arrDca['fields'] as $strField => $arrData) {
+            switch ($arrData['inputType']) {
                 case 'textarea':
                     $arrDca['fields'][$strField]['inputType'] = 'text';
                     break;
                 case 'checkbox':
                     // Replace boolean checkbox value with "yes" and "no"
-                    if (!$arrData['eval']['multiple'] && !$arrData['eval']['skipTransformToSelect'])
-                    {
+                    if (!$arrData['eval']['multiple'] && !$arrData['eval']['skipTransformToSelect']) {
                         $arrDca['fields'][$strField]['eval']['includeBlankOption'] = true;
                         $arrDca['fields'][$strField]['eval']['isBoolean']          =
                             true; // required to be set within Modulelist::applyFilters() cause checkbox is select there
@@ -125,15 +118,13 @@ class ListFilterForm extends Form
         }
 
         $this->objListModule->modifyDC($arrDca);
-	
-		// HOOK: add custom logic
-		if (isset($GLOBALS['TL_HOOKS']['modifyDCFilter']) && is_array($GLOBALS['TL_HOOKS']['modifyDCFilter']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['modifyDCFilter'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->{$callback[0]}->{$callback[1]}($arrDca);
-			}
-		}
+
+        // HOOK: add custom logic
+        if (isset($GLOBALS['TL_HOOKS']['modifyDCFilter']) && is_array($GLOBALS['TL_HOOKS']['modifyDCFilter'])) {
+            foreach ($GLOBALS['TL_HOOKS']['modifyDCFilter'] as $callback) {
+                $this->import($callback[0]);
+                $this->{$callback[0]}->{$callback[1]}($arrDca);
+            }
+        }
     }
 }

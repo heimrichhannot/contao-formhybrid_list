@@ -21,9 +21,11 @@ define('MODULE_FORMHYBRID_LISTS', 'formhybrid_lists');
 define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
 define('MODULE_FORMHYBRID_MEMBER_LIST', 'formhybrid_list_member');
 define('MODULE_FORMHYBRID_NEWS_LIST', 'formhybrid_list_news');
-define('MODULE_FORMHYBRID_LIST_FILTER','formhybrid_list_filter');
+define('MODULE_FORMHYBRID_LIST_FILTER', 'formhybrid_list_filter');
 define('OPTION_FORMHYBRID_SORTINGMODE_FIELD', 'field');
 define('OPTION_FORMHYBRID_SORTINGMODE_TEXT', 'text');
+define('OPTION_FORMHYBRID_FILTERMODE_STANDARD', 'standard');
+define('OPTION_FORMHYBRID_FILTERMODE_MODULE', 'module');
 
 /**
  * Frontend modules
@@ -38,14 +40,13 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_LIST] = 'Heimrich
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'HeimrichHannot\FormHybridList\ModuleNewsList';
 
 // filter
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER]        = 'HeimrichHannot\FormHybridList\ModuleFilter';
+$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'HeimrichHannot\FormHybridList\ModuleFilter';
 
 /**
  * Assets
  */
-if (TL_MODE == 'FE')
-{
-    $strMasonryPath = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry' : 'assets/masonry';
+if (TL_MODE == 'FE') {
+    $strMasonryPath      = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry' : 'assets/masonry';
     $strImagesLoadedPath = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry-imagesloaded' : 'assets/masonry-imagesloaded';
 
     // css

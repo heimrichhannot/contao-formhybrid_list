@@ -8,38 +8,31 @@ class FormHybridListQueryBuilder
 
     public static function find(array $arrOptions)
     {
-        $objBase = \DcaExtractor::getInstance($arrOptions['table']);
+        $objBase                = \DcaExtractor::getInstance($arrOptions['table']);
         $strAdditionalSelectSql = $arrOptions['additionalSelectSql'] ? ', ' . $arrOptions['additionalSelectSql'] : '';
         $strAdditionalWhereSql  = $arrOptions['additionalWhereSql'] ? '(' . $arrOptions['additionalWhereSql'] . ')' : '';
         $strAdditionalSql       = $arrOptions['additionalSql'] ? ' ' . $arrOptions['additionalSql'] : '';
 
-        if (!$objBase->hasRelations())
-        {
+        if (!$objBase->hasRelations()) {
             $strQuery = "SELECT *" . $strAdditionalSelectSql . " FROM " . $arrOptions['table'] . $strAdditionalSql;
-        }
-        else
-        {
+        } else {
             $arrJoins  = [];
             $arrFields = [$arrOptions['table'] . ".*"];
             $intCount  = 0;
 
-            foreach ($objBase->getRelations() as $strKey => $arrConfig)
-            {
+            foreach ($objBase->getRelations() as $strKey => $arrConfig) {
                 // Automatically join the single-relation records
-                if ($arrConfig['load'] == 'eager' || $arrOptions['eager'])
-                {
-                    if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo')
-                    {
+                if ($arrConfig['load'] == 'eager' || $arrOptions['eager']) {
+                    if ($arrConfig['type'] == 'hasOne' || $arrConfig['type'] == 'belongsTo') {
                         ++$intCount;
                         $objRelated = \DcaExtractor::getInstance($arrConfig['table']);
 
-                        foreach (array_keys($objRelated->getFields()) as $strField)
-                        {
+                        foreach (array_keys($objRelated->getFields()) as $strField) {
                             $arrFields[] = 'j' . $intCount . '.' . $strField . ' AS ' . $strKey . '__' . $strField;
                         }
 
                         $arrJoins[] = " LEFT JOIN " . $arrConfig['table'] . " j$intCount ON " . $arrOptions['table'] . "." . $strKey . "=j$intCount."
-                                      . $arrConfig['field'];
+                            . $arrConfig['field'];
                     }
                 }
             }
@@ -53,31 +46,25 @@ class FormHybridListQueryBuilder
         }
 
         // Where condition
-        if ($arrOptions['column'] !== null)
-        {
+        if ($arrOptions['column'] !== null) {
             $strQuery .= " WHERE " . (is_array($arrOptions['column']) ? implode(" AND ", $arrOptions['column'])
                     : $arrOptions['table'] . '.' . $arrOptions['column'] . "=?") . ($strAdditionalWhereSql ? ' AND ' . $strAdditionalWhereSql : '');
-        }
-        elseif ($strAdditionalWhereSql)
-        {
+        } elseif ($strAdditionalWhereSql) {
             $strQuery .= " WHERE " . $strAdditionalWhereSql;
         }
 
         // Group by
-        if ($arrOptions['group'] !== null)
-        {
+        if ($arrOptions['group'] !== null) {
             $strQuery .= " GROUP BY " . $arrOptions['group'];
         }
 
         // Having (see #6446)
-        if ($arrOptions['having'] !== null)
-        {
+        if ($arrOptions['having'] !== null) {
             $strQuery .= " HAVING " . $arrOptions['having'];
         }
 
         // Order by
-        if ($arrOptions['order'] !== null)
-        {
+        if ($arrOptions['order'] !== null) {
             $strQuery .= " ORDER BY " . $arrOptions['order'];
         }
 
@@ -96,19 +83,16 @@ class FormHybridListQueryBuilder
     {
         $strQuery = "SELECT COUNT(*) AS count FROM " . $arrOptions['table'];
 
-        if ($arrOptions['additionalSql'])
-        {
+        if ($arrOptions['additionalSql']) {
             $strQuery .= ' ' . $arrOptions['additionalSql'];
         }
 
-        if ($arrOptions['column'] !== null)
-        {
+        if ($arrOptions['column'] !== null) {
             $strQuery .= " WHERE " . (is_array($arrOptions['column']) ? implode(" AND ", $arrOptions['column'])
                     : $arrOptions['table'] . '.' . $arrOptions['column'] . "=?");
         }
 
-        if ($arrOptions['additionalGroupBy'])
-        {
+        if ($arrOptions['additionalGroupBy']) {
             $strQuery .= ' GROUP BY ' . $arrOptions['additionalGroupBy'];
         }
 

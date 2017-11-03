@@ -22,8 +22,7 @@ class Comments extends \Comments
         $objTemplate->comments = []; // see #4064
 
         // Pagination
-        if ($objConfig->perPage > 0)
-        {
+        if ($objConfig->perPage > 0) {
             // Get the total number of comments
             $intTotal = \CommentsModel::countPublishedBySourceAndParent($strSource, $intParent);
             $total    = $gtotal = $intTotal;
@@ -32,8 +31,7 @@ class Comments extends \Comments
             $key    = '';
             $chunks = explode('_', substr($strSource, ((strncmp($strSource, 'tl_', 3) === 0) ? 3 : 0)));
 
-            foreach ($chunks as $chunk)
-            {
+            foreach ($chunks as $chunk) {
                 $key .= substr($chunk, 0, 1);
             }
 
@@ -42,8 +40,7 @@ class Comments extends \Comments
             $page = (\Input::get($id) !== null) ? \Input::get($id) : 1;
 
             // Do not index or cache the page if the page number is outside the range
-            if ($page < 1 || $page > max(ceil($total / $objConfig->perPage), 1))
-            {
+            if ($page < 1 || $page > max(ceil($total / $objConfig->perPage), 1)) {
                 /** @var \PageError404 $objHandler */
                 $objHandler = new $GLOBALS['TL_PTY']['error_404']();
                 $objHandler->generate($objPage->id);
@@ -61,39 +58,30 @@ class Comments extends \Comments
         $objTemplate->allowComments = true;
 
         // Get all published comments
-        if ($limit)
-        {
+        if ($limit) {
             $objComments = \CommentsModel::findPublishedBySourceAndParent($strSource, $intParent, ($objConfig->order == 'descending'), $limit, $offset);
-        }
-        else
-        {
+        } else {
             $objComments = \CommentsModel::findPublishedBySourceAndParent($strSource, $intParent, ($objConfig->order == 'descending'));
         }
 
         // Parse the comments
-        if ($objComments !== null && ($total = $objComments->count()) > 0)
-        {
+        if ($objComments !== null && ($total = $objComments->count()) > 0) {
             $count = 0;
 
-            if ($objConfig->template == '')
-            {
+            if ($objConfig->template == '') {
                 $objConfig->template = 'com_default';
             }
 
             /** @var \FrontendTemplate|object $objPartial */
             $objPartial = new \FrontendTemplate($objConfig->template);
 
-            while ($objComments->next())
-            {
+            while ($objComments->next()) {
                 $objPartial->setData($objComments->row());
 
                 // Clean the RTE output
-                if ($objPage->outputFormat == 'xhtml')
-                {
+                if ($objPage->outputFormat == 'xhtml') {
                     $objPartial->comment = \StringUtil::toXhtml($objComments->comment);
-                }
-                else
-                {
+                } else {
                     $objPartial->comment = \StringUtil::toHtml5($objComments->comment);
                 }
 
@@ -110,37 +98,30 @@ class Comments extends \Comments
 
                 // delete -> only if an email address is linked!
                 $objPartial->delete = false;
-                if ($objComments->email && $objComments->email == \FrontendUser::getInstance()->email)
-                {
+                if ($objComments->email && $objComments->email == \FrontendUser::getInstance()->email) {
                     $objPartial->delete = true;
                     $strFormId          = $strFormId = 'com_' . $strSource . '_' . $intParent . '_' . $objComments->id;
                     $objPartial->formId = $strFormId;
                     $objPartial->action = ampersand(\Environment::get('request'));
 
-                    if (\Input::post('FORM_SUBMIT') == $strFormId)
-                    {
+                    if (\Input::post('FORM_SUBMIT') == $strFormId) {
                         $objComments->delete();
                         die();
                     }
                 }
 
                 // Reply
-                if ($objComments->addReply && $objComments->reply != '')
-                {
-                    if (($objAuthor = $objComments->getRelated('author')) !== null)
-                    {
+                if ($objComments->addReply && $objComments->reply != '') {
+                    if (($objAuthor = $objComments->getRelated('author')) !== null) {
                         $objPartial->addReply = true;
                         $objPartial->rby      = $GLOBALS['TL_LANG']['MSC']['com_reply'];
                         $objPartial->reply    = $this->replaceInsertTags($objComments->reply);
                         $objPartial->author   = $objAuthor;
 
                         // Clean the RTE output
-                        if ($objPage->outputFormat == 'xhtml')
-                        {
+                        if ($objPage->outputFormat == 'xhtml') {
                             $objPartial->reply = \StringUtil::toXhtml($objPartial->reply);
-                        }
-                        else
-                        {
+                        } else {
                             $objPartial->reply = \StringUtil::toHtml5($objPartial->reply);
                         }
                     }
@@ -170,8 +151,7 @@ class Comments extends \Comments
         $this->import('FrontendUser', 'User');
 
         // Access control
-        if ($objConfig->requireLogin && !BE_USER_LOGGED_IN && !FE_USER_LOGGED_IN)
-        {
+        if ($objConfig->requireLogin && !BE_USER_LOGGED_IN && !FE_USER_LOGGED_IN) {
             $objTemplate->requireLogin = true;
             $objTemplate->login        = $GLOBALS['TL_LANG']['MSC']['com_login'];
 
@@ -179,8 +159,7 @@ class Comments extends \Comments
         }
 
         // Confirm or remove a subscription
-        if (\Input::get('token'))
-        {
+        if (\Input::get('token')) {
             static::changeSubscriptionStatus($objTemplate);
 
             return;
@@ -211,8 +190,7 @@ class Comments extends \Comments
         ];
 
         // Captcha
-        if (!$objConfig->disableCaptcha)
-        {
+        if (!$objConfig->disableCaptcha) {
             $arrFields['captcha'] = [
                 'name'      => 'captcha',
                 'inputType' => 'captcha',
@@ -241,14 +219,12 @@ class Comments extends \Comments
         $strFormId   = 'com_' . $strSource . '_' . $intParent;
 
         // Initialize the widgets
-        foreach ($arrFields as $arrField)
-        {
+        foreach ($arrFields as $arrField) {
             /** @var \Widget $strClass */
             $strClass = $GLOBALS['TL_FFL'][$arrField['inputType']];
 
             // Continue if the class is not defined
-            if (!class_exists($strClass))
-            {
+            if (!class_exists($strClass)) {
                 continue;
             }
 
@@ -258,12 +234,10 @@ class Comments extends \Comments
             $objWidget = new $strClass($strClass::getAttributesFromDca($arrField, $arrField['name'], $arrField['value']));
 
             // Validate the widget
-            if (\Input::post('FORM_SUBMIT') == $strFormId)
-            {
+            if (\Input::post('FORM_SUBMIT') == $strFormId) {
                 $objWidget->validate();
 
-                if ($objWidget->hasErrors())
-                {
+                if ($objWidget->hasErrors()) {
                     $doNotSubmit = true;
                 }
             }
@@ -279,8 +253,7 @@ class Comments extends \Comments
         $objTemplate->hasError = $doNotSubmit;
 
         // Do not index or cache the page with the confirmation message
-        if ($_SESSION['TL_COMMENT_ADDED'])
-        {
+        if ($_SESSION['TL_COMMENT_ADDED']) {
             /** @var \PageModel $objPage */
             global $objPage;
 
@@ -292,13 +265,11 @@ class Comments extends \Comments
         }
 
         // Store the comment
-        if (!$doNotSubmit && \Input::post('FORM_SUBMIT') == $strFormId)
-        {
+        if (!$doNotSubmit && \Input::post('FORM_SUBMIT') == $strFormId) {
             $strWebsite = $arrWidgets['website']->value;
 
             // Add http:// to the website
-            if (($strWebsite != '') && !preg_match('@^(https?://|ftp://|mailto:|#)@i', $strWebsite))
-            {
+            if (($strWebsite != '') && !preg_match('@^(https?://|ftp://|mailto:|#)@i', $strWebsite)) {
                 $strWebsite = 'http://' . $strWebsite;
             }
 
@@ -310,8 +281,7 @@ class Comments extends \Comments
             $strComment = preg_replace('@\n\n+@', "\n\n", $strComment);
 
             // Parse BBCode
-            if ($objConfig->bbcode)
-            {
+            if ($objConfig->bbcode) {
                 $strComment = $this->parseBbCode($strComment);
             }
 
@@ -343,16 +313,13 @@ class Comments extends \Comments
             $objComment->setRow($arrSet)->save();
 
             // Store the subscription
-            if ($arrWidgets['notify']->value)
-            {
+            if ($arrWidgets['notify']->value) {
                 static::addCommentsSubscription($objComment);
             }
 
             // HOOK: add custom logic
-            if (isset($GLOBALS['TL_HOOKS']['addComment']) && is_array($GLOBALS['TL_HOOKS']['addComment']))
-            {
-                foreach ($GLOBALS['TL_HOOKS']['addComment'] as $callback)
-                {
+            if (isset($GLOBALS['TL_HOOKS']['addComment']) && is_array($GLOBALS['TL_HOOKS']['addComment'])) {
+                foreach ($GLOBALS['TL_HOOKS']['addComment'] as $callback) {
                     $this->import($callback[0]);
                     $this->{$callback[0]}->{$callback[1]}($objComment->id, $arrSet, $this);
                 }
@@ -379,22 +346,16 @@ class Comments extends \Comments
             );
 
             // Do not send notifications twice
-            if (is_array($varNotifies))
-            {
+            if (is_array($varNotifies)) {
                 $objEmail->sendTo(array_unique($varNotifies));
-            }
-            elseif ($varNotifies != '')
-            {
+            } elseif ($varNotifies != '') {
                 $objEmail->sendTo($varNotifies); // see #5443
             }
 
             // Pending for approval
-            if ($objConfig->moderate)
-            {
+            if ($objConfig->moderate) {
                 $_SESSION['TL_COMMENT_ADDED'] = true;
-            }
-            else
-            {
+            } else {
                 static::notifyCommentsSubscribers($objComment);
             }
         }

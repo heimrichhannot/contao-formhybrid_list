@@ -27,22 +27,17 @@ class RandomPagination extends \Contao\Pagination
     {
         $strUrl = ampersand($this->strUrl);
 
-        if ($intPage <= 1 && !$this->blnForceParam)
-        {
+        if ($intPage <= 1 && !$this->blnForceParam) {
 
-            if ($this->intRandomSeed)
-            {
+            if ($this->intRandomSeed) {
                 $strUrl = Url::addQueryString(FormHybridList::PARAM_RANDOM . '=' . $this->intRandomSeed, $strUrl);
             }
 
             return $strUrl;
-        }
-        else
-        {
+        } else {
             $strUrl = Url::addQueryString($this->strParameter . '=' . $intPage, $strUrl);
 
-            if ($this->intRandomSeed)
-            {
+            if ($this->intRandomSeed) {
                 $strUrl = Url::addQueryString(FormHybridList::PARAM_RANDOM . '=' . $this->intRandomSeed, $strUrl);
             }
 

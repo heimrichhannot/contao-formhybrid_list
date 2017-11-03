@@ -13,8 +13,7 @@ class ModuleNewsList extends ModuleList
 {
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate           = new \BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD'][$this->type][0] ?: $this->type) . ' ###';
             $objTemplate->title    = $this->headline;
@@ -43,14 +42,10 @@ class ModuleNewsList extends ModuleList
         $arrItem['fields']['text']           = '';
 
         // Clean the RTE output
-        if ($objItem->teaser != '')
-        {
-            if ($objPage->outputFormat == 'xhtml')
-            {
+        if ($objItem->teaser != '') {
+            if ($objPage->outputFormat == 'xhtml') {
                 $arrItem['fields']['teaser'] = \StringUtil::toXhtml($objItem->teaser);
-            }
-            else
-            {
+            } else {
                 $arrItem['fields']['teaser'] = \StringUtil::toHtml5($objItem->teaser);
             }
 
@@ -58,20 +53,14 @@ class ModuleNewsList extends ModuleList
         }
 
         // Display the "read more" button for external/article links
-        if ($objItem->source != 'default')
-        {
+        if ($objItem->source != 'default') {
             $arrItem['fields']['text'] = true;
-        }
-
-        // Compile the news text
-        else
-        {
+        } // Compile the news text
+        else {
             $objElement = \ContentModel::findPublishedByPidAndTable($objItem->id, 'tl_news');
 
-            if ($objElement !== null)
-            {
-                while ($objElement->next())
-                {
+            if ($objElement !== null) {
+                while ($objElement->next()) {
                     $arrItem['fields']['text'] .= $this->getContentElement($objElement->current());
                 }
             }
@@ -94,10 +83,8 @@ class ModuleNewsList extends ModuleList
 
     protected function runBeforeTemplateParsing($objTemplate, $arrItem)
     {
-        if ($arrItem['fields']['addEnclosure'])
-        {
-            if (!is_array($arrItem['fields']['enclosure']))
-            {
+        if ($arrItem['fields']['addEnclosure']) {
+            if (!is_array($arrItem['fields']['enclosure'])) {
                 $arrItem['fields']['enclosure'] = [$arrItem['fields']['enclosure']];
             }
             $this->addEnclosuresToTemplate($objTemplate, $arrItem['fields']);
