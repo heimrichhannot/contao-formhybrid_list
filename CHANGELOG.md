@@ -1,10 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.4] - 2017-11-06
+
+### Fixed
+- module callbacks
+
 ## [3.4.3] - 2017-11-06
 
 ### Fixed
-- translation
+- translations
 
 ## [3.4.2] - 2017-11-06
 

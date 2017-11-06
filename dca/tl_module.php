@@ -588,17 +588,17 @@ $arrFields = [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['formHybridLinkedList'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getLists'],
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getListModules'],
         'eval'             => ['mandatory' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-        'sql'              => 'int(5) NOT NULL'
+        'sql'              => 'int(10) NOT NULL'
     ],
     'formHybridLinkedFilter'          => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['formHybridLinkedFilter'],
         'exclude'          => true,
         'inputType'        => 'select',
-        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFilter'],
-        'eval'             => ['includeBlankOption' => true, 'tl_class' => 'w50'],
-        'sql'              => 'int(5) NOT NULL'
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getListFilterModules'],
+        'eval'             => ['includeBlankOption' => true, 'tl_class' => 'w50', 'mandatory' => true],
+        'sql'              => 'int(10) NOT NULL'
     ],
     'useSelectSorting'                => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['useSelectSorting'],

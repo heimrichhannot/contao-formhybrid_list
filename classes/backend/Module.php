@@ -168,7 +168,7 @@ class Module extends \Backend
         }
     }
 
-    public static function getLists()
+    public static function getListModules()
     {
         $listModules = [];
 
@@ -177,23 +177,36 @@ class Module extends \Backend
             while ($modules->next())
             {
                 if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf($modules->type,
-                    'HeimrichHannot\FormHybridList\ModuleListFilter'))
+                    'HeimrichHannot\FormHybridList\ModuleList'))
                 {
                     $listModules[$modules->id] = $modules->name;
                 }
             }
         }
 
+        asort($listModules);
+
         return $listModules;
     }
 
-    public static function getFilter()
+    public static function getListFilterModules()
     {
-        if (($filter = \ModuleModel::findByType(MODULE_FORMHYBRID_LIST_FILTER)) === null) {
-            return [];
+        $listFilterModules = [];
+
+        if (($modules = ModuleModel::findAll()) !== null)
+        {
+            while ($modules->next())
+            {
+                if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf($modules->type,
+                    'HeimrichHannot\FormHybridList\ModuleListFilter'))
+                {
+                    $listFilterModules[$modules->id] = $modules->name;
+                }
+            }
         }
 
-        return $filter->fetchEach('name');
+        asort($listFilterModules);
 
+        return $listFilterModules;
     }
 }
