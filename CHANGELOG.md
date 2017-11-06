@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.5] - 2017-11-06
+
+### Fixed
+- text sorting
+
 ## [3.4.4] - 2017-11-06
 
 ### Fixed

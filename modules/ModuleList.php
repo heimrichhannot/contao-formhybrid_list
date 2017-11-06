@@ -823,15 +823,25 @@ class ModuleList extends \Module
             }
         } // initial
         elseif ($this->itemSorting) {
-            if ($this->itemSorting == 'random') {
-                $arrCurrentSorting = [
-                    'order' => 'random',
-                ];
-            } else {
-                $arrCurrentSorting = [
-                    'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
-                    'sort'  => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc'),
-                ];
+            switch ($this->sortingMode)
+            {
+                case OPTION_FORMHYBRID_SORTINGMODE_TEXT:
+                    $arrCurrentSorting = [
+                        'order' => $this->itemSorting
+                    ];
+                    break;
+                default:
+                    if ($this->itemSorting == 'random') {
+                        $arrCurrentSorting = [
+                            'order' => 'random',
+                        ];
+                    } else {
+                        $arrCurrentSorting = [
+                            'order' => preg_replace('@(.*)_(asc|desc)@i', '$1', $this->itemSorting),
+                            'sort'  => (strpos($this->itemSorting, '_desc') !== false ? 'desc' : 'asc'),
+                        ];
+                    }
+                    break;
             }
         } // default -> the first table field
         else {
