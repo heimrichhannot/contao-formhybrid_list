@@ -24,25 +24,25 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Modules
-	'HeimrichHannot\FormHybridList\ModuleMemberList'           => 'system/modules/formhybrid_list/modules/ModuleMemberList.php',
-	'HeimrichHannot\FormHybridList\ModuleNews'                 => 'system/modules/formhybrid_list/modules/ModuleNews.php',
-	'HeimrichHannot\FormHybridList\ModuleList'                 => 'system/modules/formhybrid_list/modules/ModuleList.php',
-	'HeimrichHannot\FormHybridList\ModuleNewsList'             => 'system/modules/formhybrid_list/modules/ModuleNewsList.php',
-	'HeimrichHannot\FormHybridList\ModuleReader'               => 'system/modules/formhybrid_list/modules/ModuleReader.php',
-	'HeimrichHannot\FormHybridList\ModuleMemberReader'         => 'system/modules/formhybrid_list/modules/ModuleMemberReader.php',
-	'HeimrichHannot\FormHybridList\ModuleFilter'               => 'system/modules/formhybrid_list/modules/ModuleFilter.php',
+    'HeimrichHannot\FormHybridList\ModuleMemberList'           => 'system/modules/formhybrid_list/modules/ModuleMemberList.php',
+    'HeimrichHannot\FormHybridList\ModuleNews'         => 'system/modules/formhybrid_list/modules/ModuleNews.php',
+    'HeimrichHannot\FormHybridList\ModuleList'         => 'system/modules/formhybrid_list/modules/ModuleList.php',
+    'HeimrichHannot\FormHybridList\ModuleNewsList'     => 'system/modules/formhybrid_list/modules/ModuleNewsList.php',
+    'HeimrichHannot\FormHybridList\ModuleReader'       => 'system/modules/formhybrid_list/modules/ModuleReader.php',
+    'HeimrichHannot\FormHybridList\ModuleMemberReader' => 'system/modules/formhybrid_list/modules/ModuleMemberReader.php',
+    'HeimrichHannot\FormHybridList\ModuleListFilter'   => 'system/modules/formhybrid_list/modules/ModuleListFilter.php',
 
 	// Classes
-	'HeimrichHannot\FormHybridList\FormHybridList'             => 'system/modules/formhybrid_list/classes/FormHybridList.php',
-	'HeimrichHannot\FormHybridList\Comments'                   => 'system/modules/formhybrid_list/classes/Comments.php',
-	'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
-	'HeimrichHannot\FormHybridList\Backend\Module'             => 'system/modules/formhybrid_list/classes/backend/Module.php',
-	'HeimrichHannot\FormHybridList\RandomPagination'           => 'system/modules/formhybrid_list/classes/RandomPagination.php',
+    'HeimrichHannot\FormHybridList\FormHybridList'     => 'system/modules/formhybrid_list/classes/FormHybridList.php',
+    'HeimrichHannot\FormHybridList\Comments'           => 'system/modules/formhybrid_list/classes/Comments.php',
+    'HeimrichHannot\FormHybridList\ListFilterForm'     => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
+    'HeimrichHannot\FormHybridList\Backend\Module'     => 'system/modules/formhybrid_list/classes/backend/Module.php',
+    'HeimrichHannot\FormHybridList\RandomPagination'           => 'system/modules/formhybrid_list/classes/RandomPagination.php',
 
 	// Models
-	'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',
-	'HeimrichHannot\FormHybridList\FormHybridFilterModel'      => 'system/modules/formhybrid_list/models/FormHybridFilterModel.php',
-	'HeimrichHannot\FormHybridList\FormHybridListQueryBuilder' => 'system/modules/formhybrid_list/models/FormHybridListQueryBuilder.php',
+    'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',
+    'HeimrichHannot\FormHybridList\FormHybridFilterModel'      => 'system/modules/formhybrid_list/models/FormHybridFilterModel.php',
+    'HeimrichHannot\FormHybridList\FormHybridListQueryBuilder' => 'system/modules/formhybrid_list/models/FormHybridListQueryBuilder.php',
 ));
 
 

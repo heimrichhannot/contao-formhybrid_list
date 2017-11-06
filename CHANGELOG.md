@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.2] - 2017-11-03
+
+### Added
+- support for inherited list filters
+
+### Changed
+- name of ModuleFilter to ModuleListFilter for future changes
+
 ## [3.4.1] - 2017-11-03
 
 ### Changed

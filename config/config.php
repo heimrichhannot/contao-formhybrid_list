@@ -40,7 +40,7 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_LIST] = 'Heimrich
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'HeimrichHannot\FormHybridList\ModuleNewsList';
 
 // filter
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'HeimrichHannot\FormHybridList\ModuleFilter';
+$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'HeimrichHannot\FormHybridList\ModuleListFilter';
 
 /**
  * Assets

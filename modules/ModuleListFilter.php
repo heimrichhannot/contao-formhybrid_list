@@ -8,9 +8,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
-use HeimrichHannot\Request\Request;
-
-class ModuleFilter extends \Module
+class ModuleListFilter extends \Module
 {
     protected $strTemplate = 'mod_formhybrid_filter';
 

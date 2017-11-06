@@ -60,7 +60,7 @@ class ListFilterForm extends Form
         $arrData = [
             'inputType' => 'explanation',
             'eval'      => [
-                'text' => '<div class="form-group reset-filter"><a class="btn btn-default" href="' . Url::getCurrentUrlWithoutParameters() . '"><span>'
+                'text' => '<div class="form-group reset-filter"><a class="btn btn-default btn-lg" href="' . Url::getCurrentUrlWithoutParameters() . '"><span>'
                     . $GLOBALS['TL_LANG']['formhybrid_list'][FORMHYBRID_LIST_BUTTON_RESET_FILTER][0] . '</span></a></div>',
             ],
         ];
@@ -73,14 +73,17 @@ class ListFilterForm extends Form
         $this->generateResetFilterField();
 
         $strLabel = &$GLOBALS['TL_LANG']['MSC']['formhybrid']['submitLabels']['default'];
-        $strClass = 'btn btn-primary';
+        $strClass = 'btn btn-primary btn-lg';
 
-        if ($this->strSubmit != '' && isset($this->arrFields[$this->strSubmit])) {
+        if ($this->strSubmit != '' && isset($this->arrFields[$this->strSubmit]))
+        {
             return false;
         }
 
-        if ($this->customSubmit) {
-            if ($this->submitLabel != '') {
+        if ($this->customSubmit)
+        {
+            if ($this->submitLabel != '')
+            {
                 $strLabel = $GLOBALS['TL_LANG']['MSC']['formhybrid']['submitLabels'][$this->submitLabel];
             }
 

@@ -2,6 +2,7 @@
 
 namespace HeimrichHannot\FormHybridList\Backend;
 
+use Contao\ModuleModel;
 use HeimrichHannot\Haste\Dca\General;
 
 class Module extends \Backend
@@ -19,7 +20,7 @@ class Module extends \Backend
                     'HeimrichHannot\FormHybridList\ModuleList'
                 ) || \HeimrichHannot\Haste\Util\Module::isSubModuleOf(
                     $objModule->type,
-                    'HeimrichHannot\FormHybridList\ModuleFilter'
+                    'HeimrichHannot\FormHybridList\ModuleListFilter'
                 )
             ) {
                 // override labels for suiting a list module
@@ -169,11 +170,21 @@ class Module extends \Backend
 
     public static function getLists()
     {
-        if (($lists = \ModuleModel::findByType(MODULE_FORMHYBRID_LIST)) === null) {
-            return [];
+        $listModules = [];
+
+        if (($modules = ModuleModel::findAll()) !== null)
+        {
+            while ($modules->next())
+            {
+                if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf($modules->type,
+                    'HeimrichHannot\FormHybridList\ModuleListFilter'))
+                {
+                    $listModules[$modules->id] = $modules->name;
+                }
+            }
         }
 
-        return $lists->fetchEach('name');
+        return $listModules;
     }
 
     public static function getFilter()
