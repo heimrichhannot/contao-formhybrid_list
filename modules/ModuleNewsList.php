@@ -2,6 +2,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use Contao\FrontendTemplate;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybridList\ModuleList;
 use HeimrichHannot\FormHybridList\ModuleMemberList;
@@ -81,13 +82,17 @@ class ModuleNewsList extends ModuleList
         return $arrItem;
     }
 
+    /**
+     * @param FrontendTemplate $objTemplate
+     * @param array $arrItem
+     */
     protected function runBeforeTemplateParsing($objTemplate, $arrItem)
     {
-        if ($arrItem['fields']['addEnclosure']) {
-            if (!is_array($arrItem['fields']['enclosure'])) {
-                $arrItem['fields']['enclosure'] = [$arrItem['fields']['enclosure']];
+        if ($arrItem['raw']['addEnclosure']) {
+            if (!is_array($arrItem['raw']['enclosure'])) {
+                $arrItem['raw']['enclosure'] = [$arrItem['raw']['enclosure']];
             }
-            $this->addEnclosuresToTemplate($objTemplate, $arrItem['fields']);
+            $this->addEnclosuresToTemplate($objTemplate, $arrItem['raw']);
         }
     }
 }

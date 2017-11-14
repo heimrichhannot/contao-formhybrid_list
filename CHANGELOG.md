@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [3.4.6] - 2017-11-14
+
+### Fixed
+- wrong array key at `runBeforeTemplateParsing` in ModuleNewsList
+
 ## [3.4.5] - 2017-11-06
 
 ### Fixed
