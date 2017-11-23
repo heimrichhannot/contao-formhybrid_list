@@ -17,6 +17,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
 
 // list
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
+    . '{security_legend},disableSessionCheck,disableAuthorCheck;'
     . '{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
     . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry,addProximitySearch;'
     . '{sorting_legend},sortingMode,itemSorting;'
@@ -65,8 +66,7 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'addAjaxPagination',
         'addMasonry',
         'addProximitySearch',
-        'proximitySearchCoordinatesMode',
-        'filterMode'
+        'proximitySearchCoordinatesMode'
     ]
 );
 
@@ -85,13 +85,17 @@ $arrDca['subpalettes'] = array_merge(
         'addMasonry'                                                                                                                   => 'masonryStampContentElements',
         'addProximitySearch'                                                                                                           => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchStateField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND  => 'proximitySearchCoordinatesField',
-        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField',
-        'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
-            . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
-            . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
-        'filterMode_module' => 'formHybridLinkedFilter'
+        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField'
     ]
 );
+
+// workaround since nested subpalettes in type selectors aren't support, yet :-(
+$arrDca['nestedPalettes'] = [
+    'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
+        . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
+        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
+    'filterMode_module' => 'formHybridLinkedFilter'
+];
 
 /**
  * Callbacks
@@ -504,6 +508,20 @@ $arrFields = [
             'mandatory'  => true
         ],
         'sql'       => "binary(16) NULL"
+    ],
+    'disableSessionCheck'     => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'disableAuthorCheck'      => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50'],
+        'sql'       => "char(1) NOT NULL default ''",
     ],
     'conjunctiveMultipleFields'       => [
         'label'            => &$GLOBALS['TL_LANG']['tl_module']['conjunctiveMultipleFields'],

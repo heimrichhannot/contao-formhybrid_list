@@ -166,6 +166,26 @@ class Module extends \Backend
                 $arrDca['fields']['itemTemplate']['options'] = \Controller::getTemplateGroup('formhybrid_reader_');
             }
         }
+
+        if (($objModule = \ModuleModel::findByPk($objDc->id)) !== null) {
+            $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
+
+            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+                $objModule->type,
+                'HeimrichHannot\FormHybridList\ModuleList'
+            )
+            ) {
+                switch ($objModule->filterMode)
+                {
+                    case OPTION_FORMHYBRID_FILTERMODE_STANDARD:
+                        $arrDca['palettes'][$objModule->type] = str_replace('filterMode', 'filterMode,' . $arrDca['nestedPalettes']['filterMode_standard'], $arrDca['palettes'][$objModule->type]);
+                        break;
+                    case OPTION_FORMHYBRID_FILTERMODE_MODULE:
+                        $arrDca['palettes'][$objModule->type] = str_replace('filterMode', 'filterMode,' . $arrDca['nestedPalettes']['filterMode_module'], $arrDca['palettes'][$objModule->type]);
+                        break;
+                }
+            }
+        }
     }
 
     public static function getListModules()

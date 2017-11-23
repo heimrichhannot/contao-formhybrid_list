@@ -4,10 +4,10 @@
 
 <div class="wrapper <?= $this->wrapperClass ?>" id="<?= $this->wrapperId ?>"<?= $this->configData ?>>
 
-    <?php echo $this->filterForm; ?>
+    <?= $this->filterForm; ?>
     <div class="block">
         <?php if ($this->showItemCount): ?>
-            <span class="count"><?php echo sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
+            <span class="count"><?= sprintf($GLOBALS['TL_LANG']['formhybrid_list']['itemsFound'], $this->count); ?></span>
         <?php endif; ?>
 
         <?php if (!$this->empty): ?>
@@ -24,10 +24,10 @@
                         <?= $item ?>
                     <?php endforeach; ?>
                 </div>
-                <?php echo $this->pagination; ?>
+                <?= $this->pagination; ?>
             <?php endif; ?>
         <?php else: ?>
-            <p class="alert alert-warning empty"><?php echo $this->emptyText; ?></p>
+            <p class="alert alert-warning empty"><?= $this->emptyText; ?></p>
         <?php endif; ?>
     </div>
 </div>

@@ -1,12 +1,12 @@
-<div class="<?php echo $this->class; ?><?php if ($this->skipScrollingToSuccessMessage): ?> noscroll<?php endif ?> block"<?php echo $this->cssID; ?>>
-    <script><?php echo \HeimrichHannot\FormHybrid\FormHelper::getLocaleString(); ?></script>
-    <form action="<?php echo $this->action; ?>"
-          id="<?php echo $this->formId; ?>"
-          method="<?php echo $this->method; ?>"
-          enctype="<?php echo $this->enctype; ?>"
-        <?php echo $this->attributes; ?>
-        <?php echo $this->novalidate; ?>
-        <?php if ($this->formClass): ?> class="<?php echo $this->formClass; ?>"<?php endif; ?>>
+<div class="<?= $this->class; ?><?php if ($this->skipScrollingToSuccessMessage): ?> noscroll<?php endif ?> block"<?= $this->cssID; ?>>
+    <script><?= \HeimrichHannot\FormHybrid\FormHelper::getLocaleString(); ?></script>
+    <form action="<?= $this->action; ?>"
+          id="<?= $this->formId; ?>"
+          method="<?= $this->method; ?>"
+          enctype="<?= $this->enctype; ?>"
+        <?= $this->attributes; ?>
+        <?= $this->novalidate; ?>
+        <?php if ($this->formClass): ?> class="<?= $this->formClass; ?>"<?php endif; ?>>
         <!-- formhybrid::stop -->
         <?php if ($this->filterHeadline): ?>
         <<?= $this->filterHl ?>><?= $this->filterHeadline ?></<?= $this->filterHl ?>>
@@ -19,15 +19,15 @@
     <div class="formbody">
         <?php if (!$this->invalid): ?>
             <?php if ($this->method == FORMHYBRID_METHOD_POST): ?>
-                <input type="hidden" name="FORM_SUBMIT" value="<?php echo $this->formId; ?>">
+                <input type="hidden" name="FORM_SUBMIT" value="<?= $this->formId; ?>">
                 <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
                 <?php if ($this->maxFileSize): ?>
-                    <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $this->maxFileSize; ?>">
+                    <input type="hidden" name="MAX_FILE_SIZE" value="<?= $this->maxFileSize; ?>">
                 <?php endif; ?>
             <?php endif; ?>
-            <?php echo $this->hidden; ?>
+            <?= $this->hidden; ?>
             <?php foreach ($this->fields as $name => $objField): ?>
-                <?php echo $objField->parse(); ?>
+                <?= $objField->parse(); ?>
             <?php endforeach; ?>
         <?php endif; ?>
     </div>

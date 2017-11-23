@@ -562,6 +562,59 @@ class ModuleList extends \Module
             $this->arrColumns[$this->publishedField] =
                 $this->formHybridDataContainer . '.' . $this->publishedField . '=' . ($this->invertPublishedField ? '0' : '1');
         }
+
+        $arrConditions = [];
+
+        // check session if not logged in...
+        if (!FE_USER_LOGGED_IN)
+        {
+            if (!$this->disableSessionCheck)
+            {
+                if (!\Database::getInstance()->fieldExists(General::PROPERTY_SESSION_ID, $this->formHybridDataContainer))
+                {
+                    throw new \Exception(
+                        sprintf(
+                            'No session field in %s available, either create field %s or set `disableSessionCheck` to true.',
+                            $this->formHybridDataContainer,
+                            General::PROPERTY_SESSION_ID
+                        )
+                    );
+                }
+
+                $this->arrColumns[General::PROPERTY_SESSION_ID] = $this->formHybridDataContainer . '.' . General::PROPERTY_SESSION_ID . '="' . session_id() . '"';
+            }
+        } // ...and check member id if logged in
+        else
+        {
+            if (!$this->disableAuthorCheck)
+            {
+                if (!\Database::getInstance()->fieldExists(General::PROPERTY_AUTHOR_TYPE, $this->formHybridDataContainer))
+                {
+                    throw new \Exception(
+                        sprintf(
+                            'No session field in %s available, either create field %s or set `disableAuthorCheck` to true.',
+                            $this->formHybridDataContainer,
+                            General::PROPERTY_AUTHOR_TYPE
+                        )
+                    );
+                }
+
+                $this->arrColumns[General::PROPERTY_AUTHOR_TYPE] = $this->formHybridDataContainer . '.' . General::PROPERTY_AUTHOR_TYPE . '="' . General::AUTHOR_TYPE_MEMBER . '"';
+
+                if (!\Database::getInstance()->fieldExists(General::PROPERTY_AUTHOR, $this->formHybridDataContainer))
+                {
+                    throw new \Exception(
+                        sprintf(
+                            'No session field in %s available, either create field %s or set `disableAuthorCheck` to true.',
+                            $this->formHybridDataContainer,
+                            General::PROPERTY_AUTHOR
+                        )
+                    );
+                }
+
+                $this->arrColumns[General::PROPERTY_AUTHOR] = $this->formHybridDataContainer . '.' . General::PROPERTY_AUTHOR . '=' . \FrontendUser::getInstance()->id;
+            }
+        }
     }
 
     protected function applyDefaultFilters()
@@ -823,8 +876,7 @@ class ModuleList extends \Module
             }
         } // initial
         elseif ($this->itemSorting) {
-            switch ($this->sortingMode)
-            {
+            switch ($this->sortingMode) {
                 case OPTION_FORMHYBRID_SORTINGMODE_TEXT:
                     $arrCurrentSorting = [
                         'order' => $this->itemSorting

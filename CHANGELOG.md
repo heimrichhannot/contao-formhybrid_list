@@ -1,6 +1,16 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.0.0] - 2017-11-21
+
+### Added
+- sessionID/author check to list module
+
+### Fixed
+- sortingHeader
+- filter palette issues
+- replace echo by <?=
+
 ## [3.4.6] - 2017-11-14
 
 ### Fixed
