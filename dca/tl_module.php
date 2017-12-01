@@ -19,7 +19,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
     . '{security_legend},disableSessionCheck,disableAuthorCheck;'
     . '{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
-    . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry,addProximitySearch;'
+    . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry;'
     . '{sorting_legend},sortingMode,itemSorting;'
     . '{filter_legend},filterMode;'
     . '{misc_legend},imgSize,useDummyImage;'
@@ -41,10 +41,17 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(
 $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
 
 // filter
+
+// workaround since nested subpalettes in type selectors aren't support, yet :-(
+$arrDca['nestedPalettes'] = [
+    'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
+        . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
+        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,addProximitySearch,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
+    'filterMode_module' => 'formHybridLinkedFilter'
+];
+
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST_FILTER] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
-    . '{filter_legend},formHybridLinkedList,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
-    . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
-    . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql;'
+    . '{filter_legend},' . str_replace('filterHeadline,', '', $arrDca['nestedPalettes']['filterMode_standard']) . ';'
     . '{redirect_legend},formHybridAction;'
     . '{template_legend:hide},formHybridTemplate;'
     . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -88,14 +95,6 @@ $arrDca['subpalettes'] = array_merge(
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField'
     ]
 );
-
-// workaround since nested subpalettes in type selectors aren't support, yet :-(
-$arrDca['nestedPalettes'] = [
-    'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
-        . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
-        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
-    'filterMode_module' => 'formHybridLinkedFilter'
-];
 
 /**
  * Callbacks

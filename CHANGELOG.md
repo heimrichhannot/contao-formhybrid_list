@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.0.1] - 2017-12-01
+
+### Fixed
+- issues for filter module
+
+### Added
+- support for start and stop field (published sub palette)
+
 ## [4.0.0] - 2017-11-21
 
 ### Added

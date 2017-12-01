@@ -12,6 +12,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use Contao\Database;
 use HeimrichHannot\Blocks\BlockModuleModel;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
@@ -70,12 +71,26 @@ class ModuleList extends \Module
     {
         $strAct = \Input::get('act');
 
-        if ($this->addProximitySearch) {
-            $arrFilterFields = deserialize($this->customFilterFields, true);
+        if ($this->formHybridLinkedFilter && ($objFilterModule = \ModuleModel::findByPk($this->formHybridLinkedFilter)) !== null && $this->filterMode == OPTION_FORMHYBRID_FILTERMODE_MODULE) {
+            $this->objFilterContext = $objFilterModule;
+            $this->objFilterForm      = new ListFilterForm($this);
+        }
+        else
+        {
+            $this->objFilterContext = $this;
+
+            if (!$this->hideFilter) {
+                $this->objFilterForm        = new ListFilterForm($this);
+                $this->Template->filterForm = $this->objFilterForm->generate();
+            }
+        }
+
+        if ($this->objFilterContext->addProximitySearch) {
+            $arrFilterFields = deserialize($this->objFilterContext->customFilterFields, true);
 
             if (!in_array(FormHybridList::PROXIMITY_SEARCH_LOCATION, $arrFilterFields)) {
                 $arrFilterFields[]        = FormHybridList::PROXIMITY_SEARCH_LOCATION;
-                $this->customFilterFields = serialize($arrFilterFields);
+                $this->objFilterContext->customFilterFields = serialize($arrFilterFields);
             }
         }
 
@@ -126,16 +141,16 @@ class ModuleList extends \Module
 
         $this->arrSkipInstances             = deserialize($this->skipInstances, true);
         $this->arrTableFields               = deserialize($this->tableFields, true);
-        $this->addDefaultValues             = $this->formHybridAddDefaultValues;
-        $this->arrDefaultValues             = deserialize($this->formHybridDefaultValues, true);
-        $this->arrConjunctiveMultipleFields = deserialize($this->conjunctiveMultipleFields, true);
+        $this->addDefaultValues             = $this->objFilterContext->formHybridAddDefaultValues;
+        $this->arrDefaultValues             = deserialize($this->objFilterContext->formHybridDefaultValues, true);
+        $this->arrConjunctiveMultipleFields = deserialize($this->objFilterContext->conjunctiveMultipleFields, true);
 
         $this->addDataAttributes();
 
-        if ($this->addDisjunctiveFieldGroups) {
+        if ($this->objFilterContext->addDisjunctiveFieldGroups) {
             $arrResult = [];
 
-            foreach (deserialize($this->disjunctiveFieldGroups, true) as $intGroup => $arrGroup) {
+            foreach (deserialize($this->objFilterContext->disjunctiveFieldGroups, true) as $intGroup => $arrGroup) {
                 $arrResult[$intGroup] = $arrGroup['fields'];
             }
 
@@ -161,27 +176,7 @@ class ModuleList extends \Module
             $this->Template->header = $this->getHeader();
         }
 
-        switch ($this->filterMode) {
-            case OPTION_FORMHYBRID_FILTERMODE_MODULE:
-                if ($this->formHybridLinkedFilter) {
-                    $this->linkedFilterModule = \ModuleModel::findByPk($this->formHybridLinkedFilter);
-
-                    if ($this->linkedFilterModule !== null) {
-                        $this->customFilterFields = $this->linkedFilterModule->customFilterFields;
-                        $this->objFilterForm      = new ListFilterForm($this);
-                    }
-                }
-                break;
-            default:
-                if (!$this->hideFilter) {
-                    $this->objFilterForm        = new ListFilterForm($this);
-                    $this->Template->filterForm = $this->objFilterForm->generate();
-                }
-                break;
-        }
-
-        if ((!$this->hideFilter || ($this->filterMode == OPTION_FORMHYBRID_FILTERMODE_MODULE && $this->formHybridLinkedFilter))
-            && $this->objFilterForm->isSubmitted() && !$this->objFilterForm->doNotSubmit()
+        if (!$this->objFilterContext->hideFilter && $this->objFilterForm->isSubmitted() && !$this->objFilterForm->doNotSubmit()
         ) {
             // submission ain't formatted
             list($objItems, $this->Template->count) = $this->getItems($this->objFilterForm->getSubmission(false));
@@ -236,31 +231,21 @@ class ModuleList extends \Module
         // IMPORTANT: set the table for the generic model class
         FormHybridListModel::setTable($this->formHybridDataContainer);
 
-        FormHybridListModel::setAdditionalWhereSql($this->replaceInsertTags(
-            $this->linkedFilterModule ? $this->linkedFilterModule->additionalWhereSql : $this->additionalWhereSql, false)
-        );
+        FormHybridListModel::setAdditionalWhereSql($this->replaceInsertTags($this->objFilterContext->additionalWhereSql, false));
 
-        FormHybridListModel::setAdditionalSelectSql($this->replaceInsertTags(
-            $this->linkedFilterModule ? $this->linkedFilterModule->additionalSelectSql : $this->additionalSelectSql, false)
-        );
+        FormHybridListModel::setAdditionalSelectSql($this->replaceInsertTags($this->objFilterContext->additionalSelectSql, false));
 
-        FormHybridListModel::setAdditionalHavingSql($this->replaceInsertTags(
-            $this->linkedFilterModule ? $this->linkedFilterModule->additionalHavingSql : $this->additionalHavingSql, false)
-        );
+        FormHybridListModel::setAdditionalHavingSql($this->replaceInsertTags($this->objFilterContext->additionalHavingSql, false));
 
-        FormHybridListModel::setAdditionalSql($this->replaceInsertTags(
-            $this->linkedFilterModule ? $this->linkedFilterModule->additionalSql : $this->additionalSql, false)
-        );
+        FormHybridListModel::setAdditionalSql($this->replaceInsertTags($this->objFilterContext->additionalSql, false));
 
-        if ($this->linkedFilterModule ? $this->linkedFilterModule->additionalSql : $this->additionalSql) {
+        if ($this->objFilterContext->additionalSql) {
             FormHybridListModel::setAdditionalGroupBy("$this->formHybridDataContainer.id");
         }
 
         // set filter values
-        if ((!$this->hideFilter || ($this->filterMode == OPTION_FORMHYBRID_FILTERMODE_MODULE && $this->formHybridLinkedFilter)) &&
-            $objFilterSubmission
-        ) {
-            $arrFilterFields = $this->customFilterFields;
+        if (!$this->objFilterContext->hideFilter && $objFilterSubmission) {
+            $arrFilterFields = $this->objFilterContext->customFilterFields;
 
             $this->applyFilters($objFilterSubmission, $arrFilterFields);
         }
@@ -531,11 +516,11 @@ class ModuleList extends \Module
 
     protected function initInitialFilters()
     {
-        // filters
+        $t = $this->formHybridDataContainer;
 
         // groups
-        if ($this->filterGroups) {
-            $arrFilterGroups = deserialize($this->filterGroups, true);
+        if ($this->objFilterContext->filterGroups) {
+            $arrFilterGroups = deserialize($this->objFilterContext->filterGroups, true);
 
             if (!empty($arrFilterGroups)) {
                 $this->arrColumns['groups'] = 'groups REGEXP (' . implode(
@@ -548,22 +533,31 @@ class ModuleList extends \Module
                         )
                     ) . ')';
             }
-        } elseif ($this->filterArchives) // archives
+        } elseif ($this->objFilterContext->filterArchives) // archives
         {
-            $arrFilterArchives = deserialize($this->filterArchives, true);
+            $arrFilterArchives = deserialize($this->objFilterContext->filterArchives, true);
 
             if (!empty($arrFilterArchives)) {
-                $this->arrColumns['pid'] = $this->formHybridDataContainer . '.pid IN (' . implode(',', $arrFilterArchives) . ')';
+                $this->arrColumns['pid'] = $t . '.pid IN (' . implode(',', $arrFilterArchives) . ')';
             }
         }
 
         // hide unpublished
-        if ($this->hideUnpublishedItems) {
-            $this->arrColumns[$this->publishedField] =
-                $this->formHybridDataContainer . '.' . $this->publishedField . '=' . ($this->invertPublishedField ? '0' : '1');
-        }
+        if ($this->objFilterContext->hideUnpublishedItems) {
+            $this->arrColumns[$this->objFilterContext->publishedField] =
+                $t . '.' . $this->objFilterContext->publishedField . '=' . ($this->objFilterContext->invertPublishedField ? '0' : '1');
 
-        $arrConditions = [];
+            if (Database::getInstance()->fieldExists('start', $t) &&
+                Database::getInstance()->fieldExists('stop', $t))
+            {
+                $condition = $this->arrColumns[$this->objFilterContext->publishedField];
+
+                $time = \Date::floorToMinute();
+                $condition .= " AND ($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'" . ($time + 60) . "')";
+
+                $this->arrColumns[$this->objFilterContext->publishedField] = $condition;
+            }
+        }
 
         // check session if not logged in...
         if (!FE_USER_LOGGED_IN)
@@ -675,7 +669,7 @@ class ModuleList extends \Module
 
     protected function applyFilters($objFilterSubmission, $arrFilterFields)
     {
-        if ($this->addDisjunctiveFieldGroups) {
+        if ($this->objFilterContext->addDisjunctiveFieldGroups) {
             // add empty values to processed columns
             foreach ($this->arrDisjunctionFieldGroups as $intPosition => $arrGroup) {
                 foreach ($arrGroup as $strFilterField) {
@@ -749,14 +743,14 @@ class ModuleList extends \Module
                             break;
                     }
 
-                    if ($this->addProximitySearch) {
+                    if ($this->objFilterContext->addProximitySearch) {
                         $strRadius = str_replace('km', '', Request::getGet(FormHybridList::PROXIMITY_SEARCH_RADIUS));
 
                         if ($strRadius) {
                             // ignore city and postal -> taken into account in prepareProximitySearchWhereClause()
                             switch ($strField) {
-                                case $this->proximitySearchPostalField:
-                                case $this->proximitySearchCityField:
+                                case $this->objFilterContext->proximitySearchPostalField:
+                                case $this->objFilterContext->proximitySearchCityField:
                                 case FormHybridList::PROXIMITY_SEARCH_USE_LOCATION:
                                 case FormHybridList::PROXIMITY_SEARCH_LOCATION:
                                     $blnSkipColumn = true;
@@ -781,7 +775,7 @@ class ModuleList extends \Module
 
                     $this->customizeFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 
-                    if ($this->addDisjunctiveFieldGroups && ($intPosition = $this->getDisjunctionGroupIndex($strField)) > -1) {
+                    if ($this->objFilterContext->addDisjunctiveFieldGroups && ($intPosition = $this->getDisjunctionGroupIndex($strField)) > -1) {
                         if (!$blnSkipColumn) {
                             $this->arrDisjunctionFieldGroupsColumns[$intPosition][$strField] = $strColumn;
                         }
@@ -1047,9 +1041,9 @@ class ModuleList extends \Module
 
         $strRadius   = str_replace('km', '', Request::getGet(FormHybridList::PROXIMITY_SEARCH_RADIUS));
         $strLocation = Request::getGet(FormHybridList::PROXIMITY_SEARCH_LOCATION);
-        $strPostal   = $this->proximitySearchPostalField ? Request::getGet($this->proximitySearchPostalField) : null;
-        $strCity     = $this->proximitySearchCityField ? Request::getGet($this->proximitySearchCityField) : null;
-        $strCountry  = $this->proximitySearchCountryField ? Request::getGet($this->proximitySearchCountryField) : null;
+        $strPostal   = $this->objFilterContext->proximitySearchPostalField ? Request::getGet($this->objFilterContext->proximitySearchPostalField) : null;
+        $strCity     = $this->objFilterContext->proximitySearchCityField ? Request::getGet($this->objFilterContext->proximitySearchCityField) : null;
+        $strCountry  = $this->objFilterContext->proximitySearchCountryField ? Request::getGet($this->objFilterContext->proximitySearchCountryField) : null;
 
         $arrValues = [$strRadius];
 
@@ -1074,7 +1068,7 @@ class ModuleList extends \Module
 
             // add country
             $arrCountries = \System::getCountries();
-            $arrQuery[]   = $arrCountries[$strCountry ?: $this->proximitySearchCountryFallback];
+            $arrQuery[]   = $arrCountries[$strCountry ?: $this->objFilterContext->proximitySearchCountryFallback];
 
             $objCoordinates = General::findFuzzyAddressOnGoogleMaps(
                 implode(', ', $arrQuery)
@@ -1087,14 +1081,14 @@ class ModuleList extends \Module
         // compose WHERE clause
         $strLatField = $strLongField = '';
 
-        switch ($this->proximitySearchCoordinatesMode) {
+        switch ($this->objFilterContext->proximitySearchCoordinatesMode) {
             case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED:
-                $strLatField  = $this->proximitySearchLatField;
-                $strLongField = $this->proximitySearchLongField;
+                $strLatField  = $this->objFilterContext->proximitySearchLatField;
+                $strLongField = $this->objFilterContext->proximitySearchLongField;
                 break;
             case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND:
-                $strLatField  = "LEFT($t.$this->proximitySearchCoordinatesField,INSTR($t.$this->proximitySearchCoordinatesField,',')-1)";
-                $strLongField = "SUBSTRING_INDEX($t.$this->proximitySearchCoordinatesField,',',-1)";
+                $strLatField  = "LEFT($t.$this->objFilterContext->proximitySearchCoordinatesField,INSTR($t.$this->objFilterContext->proximitySearchCoordinatesField,',')-1)";
+                $strLongField = "SUBSTRING_INDEX($t.$this->objFilterContext->proximitySearchCoordinatesField,',',-1)";
                 break;
         }
 
@@ -1114,10 +1108,10 @@ class ModuleList extends \Module
                 )) < ?";
 
         if ($strPostal) {
-            $strColumn   = "($strColumn OR $t.$this->proximitySearchPostalField LIKE ?)";
+            $strColumn   = "($strColumn OR $t.$this->objFilterContext->proximitySearchPostalField LIKE ?)";
             $arrValues[] = '%' . $strPostal . '%';
         } elseif ($strCity) {
-            $strColumn   = "($strColumn OR $t.$this->proximitySearchCityField LIKE ?)";
+            $strColumn   = "($strColumn OR $t.$this->objFilterContext->proximitySearchCityField LIKE ?)";
             $arrValues[] = '%' . $strCity . '%';
         }
 
