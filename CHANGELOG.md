@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.0.2] - 2017-12-01
+
+### Fixed
+- pid filter not respected in some situations
+
 ## [4.0.1] - 2017-12-01
 
 ### Fixed

@@ -423,8 +423,8 @@ class ModuleList extends \Module
             $arrItem['raw'][$strField] = $objItem->{$strField};
         }
 
-        if ($this->publishedField) {
-            $arrItem['isPublished'] = ($this->invertPublishedField ? !$objItem->{$this->publishedField} : $objItem->{$this->publishedField});
+        if ($this->objFilterContext->publishedField) {
+            $arrItem['isPublished'] = ($this->objFilterContext->invertPublishedField ? !$objItem->{$this->objFilterContext->publishedField} : $objItem->{$this->objFilterContext->publishedField});
         }
 
         return $arrItem;
