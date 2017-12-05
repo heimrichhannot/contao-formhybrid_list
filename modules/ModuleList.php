@@ -13,6 +13,7 @@
 namespace HeimrichHannot\FormHybridList;
 
 use Contao\Database;
+use Contao\StringUtil;
 use HeimrichHannot\Blocks\BlockModuleModel;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
@@ -166,6 +167,9 @@ class ModuleList extends \Module
 
         // set initial filters
         $this->initInitialFilters();
+
+        // entity filter
+        $this->initEntityFilter();
 
         // set default filter values
         if ($this->addDefaultValues) {
@@ -607,6 +611,19 @@ class ModuleList extends \Module
                 }
 
                 $this->arrColumns[General::PROPERTY_AUTHOR] = $this->formHybridDataContainer . '.' . General::PROPERTY_AUTHOR . '=' . \FrontendUser::getInstance()->id;
+            }
+        }
+    }
+
+    protected function initEntityFilter()
+    {
+        if ($this->objFilterContext->addEntityIdFilter)
+        {
+            $entityFilterIds = StringUtil::deserialize($this->objFilterContext->entityFilterIds, true);
+
+            if (!empty($entityFilterIds))
+            {
+                $this->arrColumns['id'] = $this->formHybridDataContainer . '.id IN (' . implode(',', $entityFilterIds) . ')';
             }
         }
     }

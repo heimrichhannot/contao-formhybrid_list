@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.1.0] - 2017-12-05
+
+### Added
+- entity id filter
+
 ## [4.0.2] - 2017-12-01
 
 ### Fixed

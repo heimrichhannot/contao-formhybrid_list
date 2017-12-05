@@ -26,28 +26,17 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
     . '{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;'
     . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = str_replace(
-    [
-        'filterArchives',
-        'imgSize'
-    ],
-    [
-        'filterGroups',
-        'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag'
-    ],
-    $arrDca['palettes'][MODULE_FORMHYBRID_LIST]
-);
-
 $arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
+$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
 
 // filter
 
 // workaround since nested subpalettes in type selectors aren't support, yet :-(
 $arrDca['nestedPalettes'] = [
     'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
-        . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,conjunctiveMultipleFields,'
+        . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,addEntityIdFilter,conjunctiveMultipleFields,'
         . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,addProximitySearch,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
-    'filterMode_module' => 'formHybridLinkedFilter'
+    'filterMode_module'   => 'formHybridLinkedFilter'
 ];
 
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST_FILTER] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
@@ -71,6 +60,7 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'addExistanceConditions',
         'setPageTitle',
         'addAjaxPagination',
+        'addEntityIdFilter',
         'addMasonry',
         'addProximitySearch',
         'proximitySearchCoordinatesMode'
@@ -89,6 +79,7 @@ $arrDca['subpalettes'] = array_merge(
         'addExistanceConditions'                                                                                                       => 'existanceConditions,appendIdToUrlOnFound',
         'setPageTitle'                                                                                                                 => 'pageTitleField,pageTitlePattern',
         'addAjaxPagination'                                                                                                            => 'addInfiniteScroll',
+        'addEntityIdFilter'                                                                                                            => 'entityFilterIds',
         'addMasonry'                                                                                                                   => 'masonryStampContentElements',
         'addProximitySearch'                                                                                                           => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchStateField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND  => 'proximitySearchCoordinatesField',
@@ -156,7 +147,7 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
         'sql'       => "varchar(16) NOT NULL default 'field'"
     ],
-    'filterMode'                     => [
+    'filterMode'                      => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['filterMode'],
         'exclude'   => true,
         'inputType' => 'select',
@@ -508,14 +499,14 @@ $arrFields = [
         ],
         'sql'       => "binary(16) NULL"
     ],
-    'disableSessionCheck'     => [
+    'disableSessionCheck'             => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableSessionCheck'],
         'exclude'   => true,
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''",
     ],
-    'disableAuthorCheck'      => [
+    'disableAuthorCheck'              => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['disableAuthorCheck'],
         'exclude'   => true,
         'inputType' => 'checkbox',
@@ -623,6 +614,22 @@ $arrFields = [
         'inputType' => 'checkbox',
         'eval'      => ['tl_class' => 'w50'],
         'sql'       => "char(1) NOT NULL default ''"
+    ],
+    'addEntityIdFilter'               => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addEntityIdFilter'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
+        'sql'       => "char(1) NOT NULL default ''"
+    ],
+    'entityFilterIds'                 => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['entityFilterIds'],
+        'exclude'          => true,
+        'filter'           => true,
+        'inputType'        => 'select',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getEntitiesAsOptions'],
+        'eval'             => ['tl_class' => 'w50', 'mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'multiple' => true],
+        'sql'              => "blob NULL"
     ]
 ];
 

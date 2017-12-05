@@ -83,6 +83,8 @@ $arrLang['proximitySearchUseLocation']       = ['Aktueller Standort', ''];
 $arrLang['formHybridLinkedList']             = ['FormHybrid-Liste', 'Wählen Sie hier die FormHybrid-Liste, auf die der Filter angewendet werden soll.'];
 $arrLang['formHybridLinkedFilter']           = ['FormHybrid-Filter', 'Wählen Sie hier den FormHybrid-Filter, der auf die Liste angewendet werden soll.'];
 $arrLang['useSelectSorting']                 = ['Sortierung als Select-Feld ausgeben', 'Wählen Sie diese Option, wenn die Sortier-Felder in einem Selectfeld ausgegeben werden sollen.'];
+$arrLang['addEntityIdFilter']                = ['Auf bestimmte Instanz-IDs beschränken', 'Wählen Sie diese Option, wenn Sie die Liste auf bestimmte Entitäten beschränken möchten.'];
+$arrLang['entityFilterIds']                  = ['Filter-Instanz-IDs', 'Wählen Sie hier die zu filternden Instanzen aus.'];
 
 // events
 $arrLang['filterArchives'] = ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

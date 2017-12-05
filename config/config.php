@@ -67,3 +67,12 @@ if (TL_MODE == 'FE') {
  * Insert tags
  */
 $GLOBALS['TL_HOOKS']['replaceInsertTags']['formHybridList'] = ['HeimrichHannot\FormHybridList\FormHybridList', 'addInsertTags'];
+
+/**
+ * Misc
+ */
+$GLOBALS['FORMHYBRID_LIST']['ENTITY_ID_FILTER_MAPPING'] = [
+    'tl_calendar_events' => '%title% (%startDate%) : ID%id%',
+    'tl_member' => '%firstname% %lastname% (%email%) : ID%id%',
+    'tl_news' => '%headline% (%date%) : ID%id%',
+];

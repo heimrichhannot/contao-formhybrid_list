@@ -2,8 +2,15 @@
 
 namespace HeimrichHannot\FormHybridList\Backend;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
 use Contao\ModuleModel;
+use Contao\StringUtil;
+use HeimrichHannot\FormHybridList\FormHybridListQueryBuilder;
+use HeimrichHannot\Haste\Dca\DC_HastePlus;
 use HeimrichHannot\Haste\Dca\General;
+use HeimrichHannot\Haste\Util\FormSubmission;
 
 class Module extends \Backend
 {
@@ -149,6 +156,133 @@ class Module extends \Backend
         );
     }
 
+    public static function getEntitiesAsOptions(DataContainer $dc)
+    {
+        $options = [];
+
+        if (($module = ModuleModel::findByPk($dc->id)) === null || !$module->formHybridDataContainer) {
+            return [];
+        }
+
+        Controller::loadDataContainer($module->formHybridDataContainer);
+
+        $dca = &$GLOBALS['TL_DCA'][$module->formHybridDataContainer];
+
+        // compute filter context
+        if ($module->formHybridLinkedFilter && ($filterModule = ModuleModel::findByPk($module->formHybridLinkedFilter)) !== null
+            && $module->filterMode == OPTION_FORMHYBRID_FILTERMODE_MODULE
+        ) {
+            $filterContext = $filterModule;
+        } else {
+            $filterContext = $module;
+        }
+
+        // create query
+        $modelOptions = [
+            'table' => $module->formHybridDataContainer
+        ];
+
+        $table = $modelOptions['table'];
+
+        $columns = $values = [];
+
+        $modelOptions['additionalSelectSql'] = $filterContext->additionalSelectSql;
+        $modelOptions['additionalSql']       = $filterContext->additionalSql;
+        $modelOptions['additionalWhereSql']  = $filterContext->additionalWhereSql;
+
+        if ($filterContext->additionalSql) {
+            $arrOptions['group'] = "$table.id";
+        }
+
+        if ($filterContext->additionalHavingSql) {
+            $arrOptions['having'] = $filterContext->additionalHavingSql;
+        }
+
+        // filters
+
+        // filter archives/groups
+        switch ($table) {
+            case 'tl_member':
+                $filterGroups = deserialize($filterContext->filterGroups, true);
+
+                if (!empty($filterGroups)) {
+                    $columns[] = 'groups REGEXP (' . implode(
+                            '|',
+                            array_map(
+                                function ($value) {
+                                    return '\'"' . $value . '"\'';
+                                },
+                                $filterGroups
+                            )
+                        ) . ')';
+                }
+                break;
+            default:
+                $filterArchives = StringUtil::deserialize($module->filterArchives, true);
+
+                if (!empty($filterArchives) && isset($dca['config']['ptable']) && $dca['config']['ptable']) {
+                    $columns[] = 'pid IN (' . implode(',', $filterArchives) . ')';
+                }
+                break;
+        }
+
+        if (!empty($columns))
+        {
+            $modelOptions['column'] = $columns;
+        }
+
+        if (!empty($values))
+        {
+            $modelOptions['value']  = $values;
+        }
+
+        // TODO take into account all other filters
+        $items = Database::getInstance()->execute(FormHybridListQueryBuilder::find($modelOptions));
+        $pattern = 'ID%id%';
+
+        if (isset($GLOBALS['FORMHYBRID_LIST']['ENTITY_ID_FILTER_MAPPING'][$table]))
+        {
+            $pattern = $GLOBALS['FORMHYBRID_LIST']['ENTITY_ID_FILTER_MAPPING'][$table];
+        }
+        else {
+            if (isset($dca['fields']['title']))
+            {
+                $pattern = '%title% :ID%id%';
+            }
+            elseif (isset($dca['fields']['headline']))
+            {
+                $pattern = '%headline% : ID%id%';
+            }
+        }
+
+        if ($items->numRows > 0)
+        {
+            while ($items->next())
+            {
+                $dc               = new DC_HastePlus($table);
+                $dc->id           = $items->id;
+                $dc->activeRecord = $items;
+
+                $options[$items->id] = preg_replace_callback(
+                    '@%([^%]+)%@i',
+                    function ($matches) use ($items, $dca, $dc, $table, $pattern) {
+                        return FormSubmission::prepareSpecialValueForPrint(
+                            $items->{$matches[1]},
+                            $dca['fields'][$matches[1]],
+                            $table,
+                            $dc
+                        );
+                    },
+                    $pattern
+                );
+            }
+        }
+
+        asort($options);
+
+        return $options;
+    }
+
     public static function modifyPalette(\DataContainer $objDc)
     {
         \Controller::loadDataContainer('tl_module');
@@ -175,8 +309,7 @@ class Module extends \Backend
                 'HeimrichHannot\FormHybridList\ModuleList'
             )
             ) {
-                switch ($objModule->filterMode)
-                {
+                switch ($objModule->filterMode) {
                     case OPTION_FORMHYBRID_FILTERMODE_STANDARD:
                         $arrDca['palettes'][$objModule->type] = str_replace('filterMode', 'filterMode,' . $arrDca['nestedPalettes']['filterMode_standard'], $arrDca['palettes'][$objModule->type]);
                         break;
@@ -185,6 +318,24 @@ class Module extends \Backend
                         break;
                 }
             }
+
+            if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf(
+                $objModule->type,
+                'HeimrichHannot\FormHybridList\ModuleMemberList'
+            )
+            ) {
+                $arrDca['palettes'][$objModule->type] = str_replace(
+                    [
+                        'filterArchives',
+                        'imgSize'
+                    ],
+                    [
+                        'filterGroups',
+                        'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag'
+                    ],
+                    $arrDca['palettes'][$objModule->type]
+                );
+            }
         }
     }
 
@@ -192,13 +343,11 @@ class Module extends \Backend
     {
         $listModules = [];
 
-        if (($modules = ModuleModel::findAll()) !== null)
-        {
-            while ($modules->next())
-            {
+        if (($modules = ModuleModel::findAll()) !== null) {
+            while ($modules->next()) {
                 if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf($modules->type,
-                    'HeimrichHannot\FormHybridList\ModuleList'))
-                {
+                    'HeimrichHannot\FormHybridList\ModuleList')
+                ) {
                     $listModules[$modules->id] = $modules->name;
                 }
             }
@@ -213,13 +362,11 @@ class Module extends \Backend
     {
         $listFilterModules = [];
 
-        if (($modules = ModuleModel::findAll()) !== null)
-        {
-            while ($modules->next())
-            {
+        if (($modules = ModuleModel::findAll()) !== null) {
+            while ($modules->next()) {
                 if (\HeimrichHannot\Haste\Util\Module::isSubModuleOf($modules->type,
-                    'HeimrichHannot\FormHybridList\ModuleListFilter'))
-                {
+                    'HeimrichHannot\FormHybridList\ModuleListFilter')
+                ) {
                     $listFilterModules[$modules->id] = $modules->name;
                 }
             }
