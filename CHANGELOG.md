@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.1.1] - 2017-12-08
+
+### Fixed
+- generation of special dca field values (id was missing for data container); switched to DC_HastePlus for this generation
+
 ## [4.1.0] - 2017-12-05
 
 ### Added

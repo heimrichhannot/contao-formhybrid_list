@@ -15,6 +15,7 @@ namespace HeimrichHannot\FormHybridList;
 use Contao\Database;
 use Contao\StringUtil;
 use HeimrichHannot\Blocks\BlockModuleModel;
+use HeimrichHannot\Haste\Dca\DC_HastePlus;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
@@ -382,7 +383,8 @@ class ModuleList extends \Module
         // always add id
         $arrItem['raw']['id'] = $objItem->id;
 
-        $objDc               = new \DC_Table($this->formHybridDataContainer);
+        $objDc               = new DC_HastePlus($this->formHybridDataContainer);
+        $objDc->id           = $objItem->id;
         $objDc->activeRecord = $objItem;
 
         if ($this->isTableList) {
