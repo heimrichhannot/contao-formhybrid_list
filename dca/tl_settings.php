@@ -17,7 +17,7 @@ $arrFields = [
         'inputType' => 'timePeriod',
         'options'   => ['m', 'h', 'd'],
         'reference' => &$GLOBALS['TL_LANG']['MSC']['timePeriod'],
-        'eval'      => ['mandatory' => true, 'tl_class' => 'w50']
+        'eval'      => ['tl_class' => 'w50']
     ]
 ];
 

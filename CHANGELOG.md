@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.1.2] - 2017-12-08
+
+### Fixed
+- shareExpirationInterval is not mandatory anymore
+
 ## [4.1.1] - 2017-12-08
 
 ### Fixed
