@@ -113,7 +113,7 @@ $arrFields = [
         'foreignKey' => 'tl_page.title',
         'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 clr'],
         'sql'        => "int(10) unsigned NOT NULL default '0'",
-        'relation'   => ['type' => 'hasOne', 'load' => 'eager']
+        'relation'   => ['type' => 'hasOne', 'load' => 'lazy']
     ],
     'addShareCol'                     => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['addShareCol'],
@@ -129,7 +129,7 @@ $arrFields = [
         'foreignKey' => 'tl_page.title',
         'eval'       => ['fieldType' => 'radio', 'tl_class' => 'w50 clr'],
         'sql'        => "int(10) unsigned NOT NULL default '0'",
-        'relation'   => ['type' => 'hasOne', 'load' => 'eager']
+        'relation'   => ['type' => 'hasOne', 'load' => 'lazy']
     ],
     'shareAutoItem'                   => [
         'label'     => &$GLOBALS['TL_LANG']['tl_module']['shareAutoItem'],

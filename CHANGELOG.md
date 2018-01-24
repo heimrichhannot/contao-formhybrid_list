@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [4.1.3] - 2018-01-24
+
+### Fixed
+- tl_module changed *JumpTo load to lazy
+
 ## [4.1.2] - 2017-12-08
 
 ### Fixed
