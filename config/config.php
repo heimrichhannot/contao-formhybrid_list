@@ -47,7 +47,7 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'Heimrich
  */
 if (TL_MODE == 'FE') {
     $strMasonryPath      = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry' : 'assets/masonry';
-    $strImagesLoadedPath = version_compare(VERSION, '4.0', '<') ? 'assets/components/masonry-imagesloaded' : 'assets/masonry-imagesloaded';
+    $strImagesLoadedPath = version_compare(VERSION, '4.0', '<') ? 'assets/components/imagesloaded' : 'assets/imagesloaded';
 
     // css
     $GLOBALS['TL_USER_CSS']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/css/style.css|static';
@@ -56,9 +56,9 @@ if (TL_MODE == 'FE') {
     $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_infinite_scroll'] =
         'system/modules/formhybrid_list/assets/vendor/jscroll-2.3.5/jquery.jscroll.min.js|static';
 
-    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry'] = $strMasonryPath . '/masonry.pkgd.min.js|static';
+    $GLOBALS['TL_JAVASCRIPT']['huh_components_masonry'] = $strMasonryPath . '/dist/masonry.pkgd.min.js|static';
 
-    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list_masonry_imagesloaded'] = $strImagesLoadedPath . '/imagesloaded.pkgd.min.js|static';
+    $GLOBALS['TL_JAVASCRIPT']['huh_components_imagesloaded'] = $strImagesLoadedPath . '/dist/imagesloaded.pkgd.min.js|static';
 
     $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
 }
