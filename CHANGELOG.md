@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.1.0] - 2018-02-06
+
+### Changed
+- changed masonry and imagesloaded library dependencies to our new repositories
+
 ## [5.0.0] - 2018-02-06
 
 ### Changed
