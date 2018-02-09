@@ -1,14 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.2.0] - 2018-02-09
+
+#### Changed
+- "outsourced" jscroll
+
 ## [5.1.0] - 2018-02-06
 
-### Changed
+#### Changed
 - changed masonry and imagesloaded library dependencies to our new repositories
 
 ## [5.0.0] - 2018-02-06
 
-### Changed
+#### Changed
 - `heimrichhannot/contao-formhybrid` 3.x dependency
 - licence `LGPL-3.0+`to `LGPL-3.0-or-later`
 
