@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.2.1] - 2018-03-05
+
+#### Changed
+- added minified version of js
+
 ## [5.2.0] - 2018-02-09
 
 #### Changed

@@ -62,7 +62,7 @@ if (TL_MODE == 'FE') {
     $GLOBALS['TL_JAVASCRIPT']['huh_components_imagesloaded'] =
         $assetsPath.'/imagesloaded/dist/imagesloaded.pkgd.min.js|static';
 
-    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.min.js|static';
 }
 
 /**
