@@ -35,7 +35,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = $arrDca['palettes'][MODULE_
 $arrDca['nestedPalettes'] = [
     'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
         . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,addEntityIdFilter,conjunctiveMultipleFields,'
-        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,addProximitySearch,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
+        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,addProximitySearch,addFreetextSearch,saveFilterToSession,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
     'filterMode_module'   => 'formHybridLinkedFilter'
 ];
 
@@ -63,7 +63,8 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'addEntityIdFilter',
         'addMasonry',
         'addProximitySearch',
-        'proximitySearchCoordinatesMode'
+        'proximitySearchCoordinatesMode',
+        'addFreetextSearch'
     ]
 );
 
@@ -83,7 +84,8 @@ $arrDca['subpalettes'] = array_merge(
         'addMasonry'                                                                                                                   => 'masonryStampContentElements',
         'addProximitySearch'                                                                                                           => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchStateField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND  => 'proximitySearchCoordinatesField',
-        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField'
+        'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField',
+        'addFreetextSearch'                                                                                                            => 'freetextSearchFields'
     ]
 );
 
@@ -630,7 +632,32 @@ $arrFields = [
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getEntitiesAsOptions'],
         'eval'             => ['tl_class' => 'w50', 'mandatory' => true, 'includeBlankOption' => true, 'chosen' => true, 'multiple' => true],
         'sql'              => "blob NULL"
-    ]
+    ],
+    'addFreetextSearch'               => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['addFreetextSearch'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50 clr'],
+        'sql'       => "char(1) NOT NULL default ''"
+    ],
+    'freetextSearchFields'               => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['freetextSearchFields'],
+        'exclude'   => true,
+        'inputType' => 'checkboxWizard',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
+        'eval'      => ['multiple'           => true,
+            'includeBlankOption' => true,
+            'tl_class'           => 'w50 autoheight clr'
+        ],
+        'sql'              => "blob NULL"
+    ],
+    'saveFilterToSession' => [
+        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['saveFilterToSession'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => array('tl_class' => 'clr w50'),
+        'sql'                     => "char(1) NOT NULL default ''"
+    ],
 ];
 
 if (in_array('member_content_archives', \ModuleLoader::getActive())) {

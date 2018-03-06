@@ -27,6 +27,7 @@ class FormHybridList
         self::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND,
         self::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED
     ];
+    const FREETEXT_SEARCH_FIELD = 'freetextSearch';
 
     public static function addShareFields($strDca)
     {
@@ -88,6 +89,22 @@ class FormHybridList
             'exclude'   => true,
             'inputType' => 'text',
             'sql'       => "varchar(16) NOT NULL default ''"
+        ];
+    }
+
+    public static function addFreetextSearchField($strDca)
+    {
+        \Controller::loadDataContainer($strDca);
+        \System::loadLanguageFile('tl_module');
+
+        $arrDca = &$GLOBALS['TL_DCA'][$strDca];
+
+        $arrDca['fields'][FormHybridList::FREETEXT_SEARCH_FIELD] = [
+            'label'     => &$GLOBALS['TL_LANG']['tl_module']['freetextSearch'],
+            'exclude'   => true,
+            'inputType' => 'text',
+            'eval'      => [],
+            'sql'       => "varchar(32) NOT NULL default ''"
         ];
     }
 

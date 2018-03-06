@@ -26,6 +26,7 @@ define('OPTION_FORMHYBRID_SORTINGMODE_FIELD', 'field');
 define('OPTION_FORMHYBRID_SORTINGMODE_TEXT', 'text');
 define('OPTION_FORMHYBRID_FILTERMODE_STANDARD', 'standard');
 define('OPTION_FORMHYBRID_FILTERMODE_MODULE', 'module');
+define('FORMHYBRID_LIST_FREE_TEXT_FIELD', 'freetextSearch');
 
 /**
  * Frontend modules
@@ -62,7 +63,7 @@ if (TL_MODE == 'FE') {
     $GLOBALS['TL_JAVASCRIPT']['huh_components_imagesloaded'] =
         $assetsPath.'/imagesloaded/dist/imagesloaded.pkgd.min.js|static';
 
-    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.min.js|static';
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
 }
 
 /**

@@ -85,6 +85,9 @@ $arrLang['formHybridLinkedFilter']           = ['FormHybrid-Filter', 'Wählen Si
 $arrLang['useSelectSorting']                 = ['Sortierung als Select-Feld ausgeben', 'Wählen Sie diese Option, wenn die Sortier-Felder in einem Selectfeld ausgegeben werden sollen.'];
 $arrLang['addEntityIdFilter']                = ['Auf bestimmte Instanz-IDs beschränken', 'Wählen Sie diese Option, wenn Sie die Liste auf bestimmte Entitäten beschränken möchten.'];
 $arrLang['entityFilterIds']                  = ['Filter-Instanz-IDs', 'Wählen Sie hier die zu filternden Instanzen aus.'];
+$arrLang['addFreetextSearch']                = ['Freitextsuche hinzufügen (Hinweis beachten!)','ACHTUNG: Das Feld "freetextSearch" muss über die Funktion "FormHybridList::addFreetextSearchField()" zum entsprechenden DCA hinzugefügt werden. "freetextSearch" MUSS zudem unter "Felder zur Filterung" ausgewählt werden.'];
+$arrLang['freetextSearchFields']             = ['Felder','Wählen Sie hier die Felder aus, die bei der Freitextsuche durchsucht werden.'];
+$arrLang['freetextSearch']                   = ['Freitextsuche',''];
 
 // events
 $arrLang['filterArchives'] = ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

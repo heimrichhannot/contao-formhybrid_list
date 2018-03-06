@@ -12,9 +12,12 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use Contao\Controller;
 use Contao\Database;
 use Contao\StringUtil;
+use Haste\DateTime\DateTime;
 use HeimrichHannot\Blocks\BlockModuleModel;
+use HeimrichHannot\Haste\Database\QueryHelper;
 use HeimrichHannot\Haste\Dca\DC_HastePlus;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
@@ -24,12 +27,14 @@ use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\HastePlus\Environment;
 use HeimrichHannot\Modal\ModalModel;
 use HeimrichHannot\Request\Request;
+use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleList extends \Module
 {
     protected $arrSkipInstances                 = [];
     protected $arrItems                         = [];
     protected $objItems;
+    protected $objItemsComplete;
     protected $arrInitialFilter                 = [];
     protected $arrColumns                       = [];
     protected $arrValues                        = [];
@@ -80,7 +85,7 @@ class ModuleList extends \Module
         else
         {
             $this->objFilterContext = $this;
-
+            
             if (!$this->hideFilter) {
                 $this->objFilterForm        = new ListFilterForm($this);
                 $this->Template->filterForm = $this->objFilterForm->generate();
@@ -173,7 +178,7 @@ class ModuleList extends \Module
         $this->initEntityFilter();
 
         // set default filter values
-        if ($this->addDefaultValues) {
+        if ($this->addDefaultValues || $this->saveFilterToSession) {
             $this->applyDefaultFilters();
         }
 
@@ -271,6 +276,9 @@ class ModuleList extends \Module
             $this->objItems = FormHybridListModel::findAll($this->arrOptions);
         }
 
+        // save non paginated items
+        $this->objItemsComplete = $this->objItems;
+        
         // TODO: write a count method that works with GROUP BY
         $intTotal = 0;
         if ($this->objItems !== null) {
@@ -306,6 +314,7 @@ class ModuleList extends \Module
             list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit);
         }
 
+        
         // split the results
         $this->arrOptions['limit']  = $limit;
         $this->arrOptions['offset'] = $offset;
@@ -335,7 +344,7 @@ class ModuleList extends \Module
             return [[], 0];
         }
 
-        return [$this->arrItems, $intTotal];
+        return [$this->arrItems,$intTotal];
     }
 
     public function addColumns()
@@ -634,17 +643,16 @@ class ModuleList extends \Module
     {
         foreach ($this->arrDefaultValues as $arrDefaultValue) {
             $strField      = $arrDefaultValue['field'];
-            $varValue      = deserialize($arrDefaultValue['value']);
+            $varValue      = deserialize($arrDefaultValue['value'],true);
             $blnSkipColumn = false;
             $blnSkipValue  = false;
-
+            
             // special handling for tags
             if (in_array('tags', \ModuleLoader::getActive())
                 && $GLOBALS['TL_DCA'][$this->formHybridDataContainer]['fields'][$strField]['inputType'] == 'tag'
             ) {
                 $arrTags   = explode(',', $varValue);
                 $strColumn = '';
-
                 foreach ($arrTags as $i => $strTag) {
                     if ($i == 0) {
                         $strColumn .= "tl_tag.tag='$strTag'";
@@ -652,12 +660,53 @@ class ModuleList extends \Module
                         $strColumn .= " OR tl_tag.tag='$strTag'";
                     }
                 }
-
                 $blnSkipValue = true;
-            } else {
+            }
+            elseif(FORMHYBRID_LIST_FREE_TEXT_FIELD == $strField) {
+                list($strColumn, $varValue) = $this->prepareFreetextSearchWhereClause($this->replaceInsertTags($varValue, false));
+            }
+            else {
                 $strColumn = $this->prefixFieldWithTable($strField) . '=?';
                 $varValue  = $this->replaceInsertTags($varValue, false);
             }
+            
+            
+            
+            if($this->objFilterContext->addProximitySearch)
+            {
+                switch ($strField) {
+                    case $this->objFilterContext->proximitySearchPostalField:
+                    case $this->objFilterContext->proximitySearchCityField:
+                    case FormHybridList::PROXIMITY_SEARCH_USE_LOCATION:
+                    case FormHybridList::PROXIMITY_SEARCH_LOCATION:
+                        $blnSkipColumn = true;
+                        $blnSkipValue  = true;
+            
+                        break;
+                    case FormHybridList::PROXIMITY_SEARCH_RADIUS:
+                        $data = $this->getParameterFromDefaultValues();
+                        
+                        if(empty($data))
+                        {
+                            $blnSkipColumn = true;
+                            $blnSkipValue  = true;
+                            break;
+                        }
+                        
+                        list($strColumn, $varValue) = $this->prepareProximitySearchWhereClause($data);
+            
+                        // no location, postal and city
+                        if ($strColumn === false) {
+                            $blnSkipColumn = true;
+                            $blnSkipValue  = true;
+                        } else {
+                            $strColumn = $this->prefixFieldWithTable($strColumn);
+                        }
+            
+                        break;
+                }
+            }
+            
 
             $this->customizeDefaultFilters($strField, $strColumn, $varValue, $blnSkipValue, $blnSkipColumn);
 
@@ -720,6 +769,7 @@ class ModuleList extends \Module
                     $blnSkipColumn = false;
                     $blnSkipValue  = false;
 
+
                     switch ($arrDca['inputType']) {
                         case 'tag':
                             $arrTags   = explode(',', urldecode($varValue));
@@ -737,9 +787,8 @@ class ModuleList extends \Module
                         case 'text':
                         case 'textarea':
                         case 'password':
-                            $strColumn = $this->prefixFieldWithTable($strField) . " LIKE ?";
-                            $varValue  = $this->replaceInsertTags('%' . $varValue . '%', false);
-
+                                $strColumn = $this->prefixFieldWithTable($strField) . " LIKE ?";
+                                $varValue  = $this->replaceInsertTags('%' . $varValue . '%', false);
                             break;
                         default:
                             // In ListFilterForm checkbox gets eval value isBoolean and inputType is transformed to select
@@ -789,6 +838,15 @@ class ModuleList extends \Module
 
                                     break;
                             }
+                        }
+                    }
+
+                    if ($this->objFilterContext->addFreetextSearch) {
+                        $strFreetext = Request::getGet(FORMHYBRID_LIST_FREE_TEXT_FIELD);
+
+                        if ($strFreetext) {
+                            list($strColumn, $varValue) = $this->prepareFreetextSearchWhereClause($strFreetext);
+                            $blnSkipValue  = true;
                         }
                     }
 
@@ -1054,15 +1112,15 @@ class ModuleList extends \Module
         return $strQuery;
     }
 
-    protected function prepareProximitySearchWhereClause()
+    protected function prepareProximitySearchWhereClause($data = [])
     {
         $t = $this->formHybridDataContainer;
 
-        $strRadius   = str_replace('km', '', Request::getGet(FormHybridList::PROXIMITY_SEARCH_RADIUS));
-        $strLocation = Request::getGet(FormHybridList::PROXIMITY_SEARCH_LOCATION);
-        $strPostal   = $this->objFilterContext->proximitySearchPostalField ? Request::getGet($this->objFilterContext->proximitySearchPostalField) : null;
-        $strCity     = $this->objFilterContext->proximitySearchCityField ? Request::getGet($this->objFilterContext->proximitySearchCityField) : null;
-        $strCountry  = $this->objFilterContext->proximitySearchCountryField ? Request::getGet($this->objFilterContext->proximitySearchCountryField) : null;
+        $strRadius   = str_replace('km', '', $this->getProximityParameter(FormHybridList::PROXIMITY_SEARCH_RADIUS,$data));
+        $strLocation = $this->getProximityParameter(FormHybridList::PROXIMITY_SEARCH_LOCATION,$data);
+        $strPostal   = $this->getProximityParameter($this->objFilterContext->proximitySearchPostalField,$data);
+        $strCity     = $this->getProximityParameter($this->objFilterContext->proximitySearchCityField,$data);
+        $strCountry  = $this->getProximityParameter($this->objFilterContext->proximitySearchCountryField,$data);
 
         $arrValues = [$strRadius];
 
@@ -1135,5 +1193,103 @@ class ModuleList extends \Module
         }
 
         return [$strColumn, $arrValues];
+    }
+    
+    
+    
+    
+    /**
+     * build query for freetext search
+     *
+     * @param $search string
+     * @return array
+     */
+    protected function prepareFreetextSearchWhereClause($search)
+    {
+        $t = $this->formHybridDataContainer;
+        $search = strtolower($search);
+        $values = [];
+
+        if(empty($fields = deserialize($this->freetextSearchFields,true)))
+        {
+            // flip because getFields returns the fields as keys
+            $fields = array_flip(General::getFields($this->formHybridDataContainer));
+        }
+
+        $query = '(';
+
+        foreach($fields as $value)
+        {
+            if('(' != $query)
+            {
+                $query .= ' OR ';
+            }
+
+            $query .= 'LOWER('.$this->prefixFieldWithTable($value).') LIKE ?';
+            $values[] = '%'.$search.'%';
+        }
+
+        $query .= ')';
+
+        return [$query, $values];
+    }
+    
+    /**
+     * set up data array for proximity search from default values (set by module or session)
+     *
+     * @return array
+     */
+    protected function getParameterFromDefaultValues()
+    {
+        $defaultValues = deserialize($this->formHybridDefaultValues,true);
+        $data = [];
+        
+        foreach($defaultValues as $value)
+        {
+            if($this->objFilterContext->proximitySearchPostalField == $value['field'])
+            {
+                $data[$this->objFilterContext->proximitySearchPostalField] = $value['value'];
+            }
+            
+            if($this->objFilterContext->proximitySearchCityField == $value['field'])
+            {
+                $data[$this->objFilterContext->proximitySearchCityField] = $value['value'];
+            }
+            
+            if(FormHybridList::PROXIMITY_SEARCH_LOCATION == $value['field'])
+            {
+                $data[FormHybridList::PROXIMITY_SEARCH_LOCATION] = $value['value'];
+            }
+            
+            if(FormHybridList::PROXIMITY_SEARCH_RADIUS == $value['field'])
+            {
+                $data[FormHybridList::PROXIMITY_SEARCH_RADIUS] = $value['value'];
+            }
+        }
+        
+        return $data;
+    }
+
+    /**
+     * get parameter for proximity search
+     *
+     * @param string $parameter
+     * @param array  $data
+     *
+     * @return string|null
+     */
+    protected function getProximityParameter(string $parameter, array $data)
+    {
+        if(empty($data))
+        {
+            return Request::getGet($parameter) ? Request::getGet($parameter) : null;
+        }
+        
+        if(isset($data[$parameter]))
+        {
+            return $data[$parameter];
+        }
+    
+        return null;
     }
 }
