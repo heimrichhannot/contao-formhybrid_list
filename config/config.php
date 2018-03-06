@@ -8,12 +8,10 @@
  * @author  Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
-
 /**
  * Constants
  */
 define('FORMHYBRID_LIST_BUTTON_RESET_FILTER', 'reset_filter');
-
 // module names
 define('MODULE_FORMHYBRID_READER', 'formhybrid_reader');
 define('MODULE_FORMHYBRID_MEMBER_READER', 'formhybrid_member_reader');
@@ -34,43 +32,33 @@ define('FORMHYBRID_LIST_FREE_TEXT_FIELD', 'freetextSearch');
 // reader
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_READER]        = 'HeimrichHannot\FormHybridList\ModuleReader';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_READER] = 'HeimrichHannot\FormHybridList\ModuleMemberReader';
-
 // list
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST]        = 'HeimrichHannot\FormHybridList\ModuleList';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'HeimrichHannot\FormHybridList\ModuleNewsList';
-
 // filter
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'HeimrichHannot\FormHybridList\ModuleListFilter';
-
 /**
  * Assets
  */
 if (TL_MODE == 'FE') {
     $assetsPath = version_compare(VERSION, '4.0', '<') ? 'assets/components' : 'assets';
-
     // css
     $GLOBALS['TL_USER_CSS']['formhybrid_list'] =
         'system/modules/formhybrid_list/assets/css/style.css|static';
-
     // js
     $GLOBALS['TL_JAVASCRIPT']['huh_components_jscroll'] =
         $assetsPath.'/jscroll/dist/jquery.jscroll.min.js|static';
-
     $GLOBALS['TL_JAVASCRIPT']['huh_components_masonry'] =
         $assetsPath.'/masonry/dist/masonry.pkgd.min.js|static';
-
     $GLOBALS['TL_JAVASCRIPT']['huh_components_imagesloaded'] =
         $assetsPath.'/imagesloaded/dist/imagesloaded.pkgd.min.js|static';
-
-    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.js|static';
+    $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.min.js|static';
 }
-
 /**
  * Insert tags
  */
 $GLOBALS['TL_HOOKS']['replaceInsertTags']['formHybridList'] = ['HeimrichHannot\FormHybridList\FormHybridList', 'addInsertTags'];
-
 /**
  * Misc
  */

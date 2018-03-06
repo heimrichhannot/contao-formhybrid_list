@@ -1,12 +1,23 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.1] - 2018-03-06
+
+### Fixed
+- restored minified version of js
+
 ## [5.3.0] - 2018-03-06
 
-#### Added
+### Added
 - optional freetext search field
 - save the filter parameter to session in `ListFilterForm::onSubmitCallback()` and set them as defaultValues when building the form in `ListFilterForm::__construct()`
 - freetext and proximity search in `ModuleList::applyDefaultValues()`
+
+## [5.2.1] - 2018-03-05
+
+### Changed
+
+added minified version of js
 
 ## [5.2.0] - 2018-02-09
 
