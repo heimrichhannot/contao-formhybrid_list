@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.2] - 2018-03-09
+
+### Added
+- optional fuzzy search in `ModuleList`
+
+### Fixed
+- `$blnSkipColumn` and `$blnSkipValue` fields `city` and `postal` in `ModuleList::applyDefaultValues()` only when `FormHybridList::PROXIMITY_SEARCH_RADIUS` is in `formHybriddefaultValues` 
+
 ## [5.3.1] - 2018-03-06
 
 ### Fixed

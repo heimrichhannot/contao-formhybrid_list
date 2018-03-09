@@ -88,6 +88,7 @@ $arrLang['entityFilterIds']                  = ['Filter-Instanz-IDs', 'Wählen S
 $arrLang['addFreetextSearch']                = ['Freitextsuche hinzufügen (Hinweis beachten!)','ACHTUNG: Das Feld "freetextSearch" muss über die Funktion "FormHybridList::addFreetextSearchField()" zum entsprechenden DCA hinzugefügt werden. "freetextSearch" MUSS zudem unter "Felder zur Filterung" ausgewählt werden.'];
 $arrLang['freetextSearchFields']             = ['Felder','Wählen Sie hier die Felder aus, die bei der Freitextsuche durchsucht werden.'];
 $arrLang['freetextSearch']                   = ['Freitextsuche',''];
+$arrLang['enableFuzzySearch']                = ['Ungenaue Suche aktivieren', 'Findet "Contao" bei der Suche nach "con"'];
 
 // events
 $arrLang['filterArchives'] = ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

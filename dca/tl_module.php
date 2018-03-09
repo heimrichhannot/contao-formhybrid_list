@@ -35,7 +35,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = $arrDca['palettes'][MODULE_
 $arrDca['nestedPalettes'] = [
     'filterMode_standard' => 'filterHeadline,hideFilter,customFilterFields,formHybridAddPermanentFields,hideUnpublishedItems,'
         . 'publishedField,invertPublishedField,filterArchives,formHybridAddDefaultValues,addEntityIdFilter,conjunctiveMultipleFields,'
-        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,addProximitySearch,addFreetextSearch,saveFilterToSession,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
+        . 'addDisjunctiveFieldGroups,formHybridTransformGetParamsToHiddenFields,addProximitySearch,addFreetextSearch,saveFilterToSession,enableFuzzySearch,additionalWhereSql,additionalSelectSql,additionalSql,additionalHavingSql',
     'filterMode_module'   => 'formHybridLinkedFilter'
 ];
 
@@ -653,6 +653,13 @@ $arrFields = [
     ],
     'saveFilterToSession' => [
         'label'                   => &$GLOBALS['TL_LANG']['tl_module']['saveFilterToSession'],
+        'exclude'                 => true,
+        'inputType'               => 'checkbox',
+        'eval'                    => array('tl_class' => 'clr w50'),
+        'sql'                     => "char(1) NOT NULL default ''"
+    ],
+    'enableFuzzySearch' => [
+        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['enableFuzzySearch'],
         'exclude'                 => true,
         'inputType'               => 'checkbox',
         'eval'                    => array('tl_class' => 'clr w50'),
