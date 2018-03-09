@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.3] - 2018-03-09
+
+### Fixed
+- missed to check in `ModuleList` on last tag
+
 ## [5.3.2] - 2018-03-09
 
 ### Added
