@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.4] - 2018-07-16
+
+### Fixed
+- missing default value for linkedList and linkedFilter
+
 ## [5.3.3] - 2018-03-09
 
 ### Fixed
