@@ -1161,6 +1161,7 @@ class ModuleList extends \Module
         
         // compose WHERE clause
         $strLatField = $strLongField = '';
+		$searchCoordinatesField = $this->objFilterContext->proximitySearchCoordinatesField;
         
         switch ($this->objFilterContext->proximitySearchCoordinatesMode) {
             case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED:
@@ -1168,8 +1169,8 @@ class ModuleList extends \Module
                 $strLongField = $this->objFilterContext->proximitySearchLongField;
                 break;
             case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND:
-                $strLatField  = "LEFT($t.$this->objFilterContext->proximitySearchCoordinatesField,INSTR($t.$this->objFilterContext->proximitySearchCoordinatesField,',')-1)";
-                $strLongField = "SUBSTRING_INDEX($t.$this->objFilterContext->proximitySearchCoordinatesField,',',-1)";
+                $strLatField  = "LEFT($t.$searchCoordinatesField,INSTR($t.$searchCoordinatesField,',')-1)";
+                $strLongField = "SUBSTRING_INDEX($t.$searchCoordinatesField,',',-1)";
                 break;
         }
         
@@ -1187,12 +1188,12 @@ class ModuleList extends \Module
                         radians($strLatField)
                     )
                 )) < ?";
-        
+
         if ($strPostal) {
-            $strColumn   = "($strColumn OR $t.$this->objFilterContext->proximitySearchPostalField LIKE ?)";
+            $strColumn   = "($strColumn OR $t.$searchCoordinatesField LIKE ?)";
             $arrValues[] = '%' . $strPostal . '%';
         } elseif ($strCity) {
-            $strColumn   = "($strColumn OR $t.$this->objFilterContext->proximitySearchCityField LIKE ?)";
+            $strColumn   = "($strColumn OR $t.$searchCoordinatesField LIKE ?)";
             $arrValues[] = '%' . $strCity . '%';
         }
         

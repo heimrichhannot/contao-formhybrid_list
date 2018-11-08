@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.5] - 2018-11-07
+
+### Fixed
+- coordinates filter error due string changes in php7
+
 ## [5.3.4] - 2018-07-16
 
 ### Fixed
