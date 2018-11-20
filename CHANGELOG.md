@@ -1,6 +1,14 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.6] - 2018-11-20
+
+### Fixed
+- coordinates issue introduced in 5.3.5
+
+### Added
+- fallback if no coordinates are found in proximity search
+
 ## [5.3.5] - 2018-11-07
 
 ### Fixed

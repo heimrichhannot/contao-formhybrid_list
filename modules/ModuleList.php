@@ -1126,8 +1126,6 @@ class ModuleList extends \Module
         $strCity     = $this->getProximityParameter($this->objFilterContext->proximitySearchCityField,$data);
         $strCountry  = $this->getProximityParameter($this->objFilterContext->proximitySearchCountryField,$data);
         
-        $arrValues = [$strRadius];
-        
         if (!$strLocation && !$strPostal && !$strCity) {
             return [false, false];
         }
@@ -1154,14 +1152,14 @@ class ModuleList extends \Module
             $objCoordinates = General::findFuzzyAddressOnGoogleMaps(
                 implode(', ', $arrQuery)
             );
-            
+
             $strQueryLat  = $objCoordinates->getLatitude();
             $strQueryLong = $objCoordinates->getLongitude();
         }
         
         // compose WHERE clause
         $strLatField = $strLongField = '';
-		$searchCoordinatesField = $this->objFilterContext->proximitySearchCoordinatesField;
+        $searchCoordinatesField = $this->objFilterContext->proximitySearchCoordinatesField;
         
         switch ($this->objFilterContext->proximitySearchCoordinatesMode) {
             case FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED:
@@ -1173,8 +1171,15 @@ class ModuleList extends \Module
                 $strLongField = "SUBSTRING_INDEX($t.$searchCoordinatesField,',',-1)";
                 break;
         }
-        
-        $strColumn = "(
+
+        if (!$strQueryLat && !$strQueryLong)
+        {
+            $strColumn = '1=0';
+        }
+        else {
+            $arrValues = [$strRadius];
+
+            $strColumn = "(
                 6371 * acos(
                     cos(
                         radians($strQueryLat)
@@ -1188,15 +1193,20 @@ class ModuleList extends \Module
                         radians($strLatField)
                     )
                 )) < ?";
+        }
 
         if ($strPostal) {
-            $strColumn   = "($strColumn OR $t.$searchCoordinatesField LIKE ?)";
+            $searchPostalField = $this->objFilterContext->proximitySearchPostalField;
+
+            $strColumn   = "($strColumn OR $t.$searchPostalField LIKE ?)";
             $arrValues[] = '%' . $strPostal . '%';
         } elseif ($strCity) {
-            $strColumn   = "($strColumn OR $t.$searchCoordinatesField LIKE ?)";
+            $searchCityField = $this->objFilterContext->proximitySearchCityField;
+
+            $strColumn   = "($strColumn OR $t.$searchCityField LIKE ?)";
             $arrValues[] = '%' . $strCity . '%';
         }
-        
+
         return [$strColumn, $arrValues];
     }
     
