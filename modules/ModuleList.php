@@ -668,11 +668,11 @@ class ModuleList extends \Module
             else {
                 if($this->enableFuzzySearch)
                 {
-                    $strColumn = $this->prefixFieldWithTable($strField) . " LIKE ?";
+                    $strColumn = 'CONVERT(' . $this->prefixFieldWithTable($strField) . " USING utf8mb4) LIKE ?"; // using CONVERT() to handle case insensitive search in blob fields
                     $varValue  = '%' . $this->replaceInsertTags($varValue, false) . '%';
                 }
                 else {
-                    $strColumn = $this->prefixFieldWithTable($strField) . '=?';
+                    $strColumn = 'CONVERT(' . $this->prefixFieldWithTable($strField) . ' USING utf8mb4)=?'; // using CONVERT() to handle case insensitive search in blob fields
                     $varValue  = $this->replaceInsertTags($varValue, false);
                 }
             }

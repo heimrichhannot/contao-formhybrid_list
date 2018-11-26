@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.3.7] - 2018-11-26
+
+### Fixed
+- Search in blob fields must ignore case-sensitivity (#1)
+
 ## [5.3.6] - 2018-11-20
 
 ### Fixed
