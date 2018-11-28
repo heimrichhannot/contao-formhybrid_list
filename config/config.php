@@ -41,8 +41,9 @@ $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'Heimrich
 /**
  * Assets
  */
+$assetsPath = version_compare(VERSION, '4.0', '<') ? 'assets/components' : 'assets';
+
 if (TL_MODE == 'FE') {
-    $assetsPath = version_compare(VERSION, '4.0', '<') ? 'assets/components' : 'assets';
     // css
     $GLOBALS['TL_USER_CSS']['formhybrid_list'] =
         'system/modules/formhybrid_list/assets/css/style.css|static';
@@ -55,6 +56,20 @@ if (TL_MODE == 'FE') {
         $assetsPath.'/imagesloaded/dist/imagesloaded.pkgd.min.js|static';
     $GLOBALS['TL_JAVASCRIPT']['formhybrid_list'] = 'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.min.js|static';
 }
+
+
+$GLOBALS['TL_COMPONENTS']['formhybrid_list'] = [
+    'js'  => [
+        $assetsPath.'/jscroll/dist/jquery.jscroll.min.js|static',
+        $assetsPath.'/masonry/dist/masonry.pkgd.min.js|static',
+        $assetsPath.'/imagesloaded/dist/imagesloaded.pkgd.min.js|static',
+        'system/modules/formhybrid_list/assets/js/jquery.formhybrid_list.min.js|static'
+    ],
+    'css' => [
+        'system/modules/formhybrid_list/assets/css/style.css|static'
+    ]
+];
+
 /**
  * Insert tags
  */
