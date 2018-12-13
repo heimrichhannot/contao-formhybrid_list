@@ -218,7 +218,7 @@ class Module extends \Backend
                 }
                 break;
             default:
-                $filterArchives = StringUtil::deserialize($module->filterArchives, true);
+                $filterArchives = deserialize($module->filterArchives, true);
 
                 if (!empty($filterArchives) && isset($dca['config']['ptable']) && $dca['config']['ptable']) {
                     $columns[] = 'pid IN (' . implode(',', $filterArchives) . ')';

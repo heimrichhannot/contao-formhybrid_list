@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.4.1] - 2018-12-13
+
+#### Fixed
+- error due using non existing method in backend Module class
+
 ## [5.4.0] - 2018-11-28
 
 #### Added
