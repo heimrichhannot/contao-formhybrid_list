@@ -56,6 +56,11 @@ $arrLang['addExistanceConditions']           = ['Instanz über eine bestimmte Be
 $arrLang['existanceConditions']              = ['Bedingungen für das Auffinden bestehender Instanzen', 'Geben Sie hier Bedingungen ein, die für das Auffinden bestehender Instanzen gelten müssen.'];
 $arrLang['aliasField']                       = ['Alias-Feld', 'Wählen Sie hier das Alias-Feld aus, welches als auto_item abgefragt wird. Wenn Sie kein Feld auswählen, wird das Feld "id" verwendet.'];
 $arrLang['deactivateTokens']                 = ['Token-Handling deaktivieren', 'Wählen Sie diese Option, wenn die Module nicht prüfen sollen, ob der GET-Parameter "token" ein korrektes Token enthält.'];
+$arrLang['limitFormattedFields'][0]          = 'Formatierte Felder einschränken (Geschwindigkeit verbessern)';
+$arrLang['limitFormattedFields'][1]          = 'Wählen Sie diese Option, wenn nur bestimmte Felder auf Basis der Data-Containers-Konfiguration formatiert werden sollen möchten.';
+$arrLang['formattedFields'][0]               = 'Formatierte Felder';
+$arrLang['formattedFields'][1]               = 'Wählen Sie hier die zu formatierenden Felder aus.';
+
 
 // events
 $arrLang['filterArchives'] = ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];

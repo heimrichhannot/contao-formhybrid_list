@@ -309,8 +309,15 @@ class ModuleReader extends \Module
         // untransformed values in the raw array
         $objItemTmp->raw = $objItemTmp->row();
 
+        $fields = $this->limitFormattedFields ? deserialize($this->formattedFields, true) : (\is_array($objItemTmp->raw) ? array_keys($objItemTmp->raw) : []);
+
         // transform and escape values
-        foreach ($objItemTmp->row() as $strField => $varValue) {
+        foreach ($objItemTmp->raw as $strField => $varValue) {
+            if (!in_array($strField, $fields)) {
+                $objItemTmp->{$strField} = FormHelper::escapeAllEntities($this->formHybridDataContainer, $strField, $varValue);
+                continue;
+            }
+
             if ($strField == 'raw') {
                 continue;
             }

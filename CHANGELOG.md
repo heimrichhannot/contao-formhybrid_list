@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.5.0] - 2019-04-01
+
+#### Added
+- `tl_module.limitFormattedFields` added to improve list and reader performance by minimizing `FormSubmission::prepareSpecialValueForPrint` calls
+
 ## [5.4.1] - 2018-12-13
 
 #### Fixed

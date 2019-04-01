@@ -85,10 +85,14 @@ $arrLang['formHybridLinkedFilter']           = ['FormHybrid-Filter', 'Wählen Si
 $arrLang['useSelectSorting']                 = ['Sortierung als Select-Feld ausgeben', 'Wählen Sie diese Option, wenn die Sortier-Felder in einem Selectfeld ausgegeben werden sollen.'];
 $arrLang['addEntityIdFilter']                = ['Auf bestimmte Instanz-IDs beschränken', 'Wählen Sie diese Option, wenn Sie die Liste auf bestimmte Entitäten beschränken möchten.'];
 $arrLang['entityFilterIds']                  = ['Filter-Instanz-IDs', 'Wählen Sie hier die zu filternden Instanzen aus.'];
-$arrLang['addFreetextSearch']                = ['Freitextsuche hinzufügen (Hinweis beachten!)','ACHTUNG: Das Feld "freetextSearch" muss über die Funktion "FormHybridList::addFreetextSearchField()" zum entsprechenden DCA hinzugefügt werden. "freetextSearch" MUSS zudem unter "Felder zur Filterung" ausgewählt werden.'];
-$arrLang['freetextSearchFields']             = ['Felder','Wählen Sie hier die Felder aus, die bei der Freitextsuche durchsucht werden.'];
-$arrLang['freetextSearch']                   = ['Freitextsuche',''];
+$arrLang['addFreetextSearch']                = ['Freitextsuche hinzufügen (Hinweis beachten!)', 'ACHTUNG: Das Feld "freetextSearch" muss über die Funktion "FormHybridList::addFreetextSearchField()" zum entsprechenden DCA hinzugefügt werden. "freetextSearch" MUSS zudem unter "Felder zur Filterung" ausgewählt werden.'];
+$arrLang['freetextSearchFields']             = ['Felder', 'Wählen Sie hier die Felder aus, die bei der Freitextsuche durchsucht werden.'];
+$arrLang['freetextSearch']                   = ['Freitextsuche', ''];
 $arrLang['enableFuzzySearch']                = ['Ungenaue Suche aktivieren', 'Findet "Contao" bei der Suche nach "con"'];
+$arrLang['limitFormattedFields'][0]          = 'Formatierte Felder einschränken (Geschwindigkeit verbessern)';
+$arrLang['limitFormattedFields'][1]          = 'Wählen Sie diese Option, wenn nur bestimmte Felder auf Basis der Data-Containers-Konfiguration formatiert werden sollen möchten.';
+$arrLang['formattedFields'][0]               = 'Formatierte Felder';
+$arrLang['formattedFields'][1]               = 'Wählen Sie hier die zu formatierenden Felder aus.';
 
 // events
 $arrLang['filterArchives'] = ['Archive', 'Wählen Sie hier die Archive aus, deren Elemente in der Liste sichtbar sein sollen.'];
@@ -99,8 +103,8 @@ $arrLang['filterGroups'] = ['Mitgliedergruppen', 'Wählen Sie hier die Mitgliede
 /**
  * Legends
  */
-$arrLang['entity_legend'] = 'Entität';
-$arrLang['list_legend']   = 'Liste';
+$arrLang['entity_legend']  = 'Entität';
+$arrLang['list_legend']    = 'Liste';
 $arrLang['sorting_legend'] = 'Sortierung';
-$arrLang['filter_legend'] = 'Filter';
-$arrLang['misc_legend']   = 'Verschiedenes';
+$arrLang['filter_legend']  = 'Filter';
+$arrLang['misc_legend']    = 'Verschiedenes';

@@ -7,7 +7,7 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  */
 // reader
 $arrDca['palettes'][MODULE_FORMHYBRID_READER] =
-    '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,addExistanceConditions,aliasField;'
+    '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,addExistanceConditions,aliasField,limitFormattedFields;'
     . '{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;'
     . '{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,customTpl;'
     . '{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
@@ -18,7 +18,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
 // list
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
     . '{security_legend},disableSessionCheck,disableAuthorCheck;'
-    . '{list_legend},numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
+    . '{list_legend},limitFormattedFields,numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
     . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry;'
     . '{sorting_legend},sortingMode,itemSorting;'
     . '{filter_legend},filterMode;'
@@ -26,7 +26,7 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
     . '{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;'
     . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
+$arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST]   = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
 
 // filter
@@ -64,7 +64,8 @@ $arrDca['palettes']['__selector__'] = array_merge(
         'addMasonry',
         'addProximitySearch',
         'proximitySearchCoordinatesMode',
-        'addFreetextSearch'
+        'addFreetextSearch',
+        'limitFormattedFields'
     ]
 );
 
@@ -85,7 +86,8 @@ $arrDca['subpalettes'] = array_merge(
         'addProximitySearch'                                                                                                           => 'proximitySearchSteps,proximitySearchAllowGeoLocation,proximitySearchCityField,proximitySearchPostalField,proximitySearchStateField,proximitySearchCountryFallback,proximitySearchCountryField,proximitySearchCoordinatesMode',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_COMPOUND  => 'proximitySearchCoordinatesField',
         'proximitySearchCoordinatesMode_' . \HeimrichHannot\FormHybridList\FormHybridList::PROXIMITY_SEARCH_COORDINATES_MODE_SEPARATED => 'proximitySearchLatField,proximitySearchLongField',
-        'addFreetextSearch'                                                                                                            => 'freetextSearchFields'
+        'addFreetextSearch'                                                                                                            => 'freetextSearchFields',
+        'limitFormattedFields'                                                                                                         => 'formattedFields',
     ]
 );
 
@@ -640,30 +642,46 @@ $arrFields = [
         'eval'      => ['tl_class' => 'w50 clr'],
         'sql'       => "char(1) NOT NULL default ''"
     ],
-    'freetextSearchFields'               => [
-        'label'     => &$GLOBALS['TL_LANG']['tl_module']['freetextSearchFields'],
-        'exclude'   => true,
-        'inputType' => 'checkboxWizard',
+    'freetextSearchFields'            => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['freetextSearchFields'],
+        'exclude'          => true,
+        'inputType'        => 'checkboxWizard',
         'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
-        'eval'      => ['multiple'           => true,
+        'eval'             => [
+            'multiple'           => true,
             'includeBlankOption' => true,
             'tl_class'           => 'w50 autoheight clr'
         ],
         'sql'              => "blob NULL"
     ],
-    'saveFilterToSession' => [
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['saveFilterToSession'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'eval'                    => array('tl_class' => 'clr w50'),
-        'sql'                     => "char(1) NOT NULL default ''"
+    'saveFilterToSession'             => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['saveFilterToSession'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'clr w50'],
+        'sql'       => "char(1) NOT NULL default ''"
     ],
-    'enableFuzzySearch' => [
-        'label'                   => &$GLOBALS['TL_LANG']['tl_module']['enableFuzzySearch'],
-        'exclude'                 => true,
-        'inputType'               => 'checkbox',
-        'eval'                    => array('tl_class' => 'clr w50'),
-        'sql'                     => "char(1) NOT NULL default ''"
+    'enableFuzzySearch'               => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['enableFuzzySearch'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'clr w50'],
+        'sql'       => "char(1) NOT NULL default ''"
+    ],
+    'limitFormattedFields'            => [
+        'label'     => &$GLOBALS['TL_LANG']['tl_module']['limitFormattedFields'],
+        'exclude'   => true,
+        'inputType' => 'checkbox',
+        'eval'      => ['tl_class' => 'w50', 'submitOnChange' => true],
+        'sql'       => "char(1) NOT NULL default ''",
+    ],
+    'formattedFields'                 => [
+        'label'            => &$GLOBALS['TL_LANG']['tl_module']['formattedFields'],
+        'inputType'        => 'checkboxWizard',
+        'options_callback' => ['HeimrichHannot\FormHybridList\Backend\Module', 'getFields'],
+        'exclude'          => true,
+        'eval'             => ['multiple' => true, 'includeBlankOption' => true, 'tl_class' => 'w50 clr autoheight'],
+        'sql'              => "blob NULL",
     ],
 ];
 

@@ -2,6 +2,7 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use Contao\FilesModel;
 use Contao\FrontendTemplate;
 use HeimrichHannot\FormHybrid\DC_Hybrid;
 use HeimrichHannot\FormHybridList\ModuleList;
@@ -88,6 +89,25 @@ class ModuleNewsList extends ModuleList
      */
     protected function runBeforeTemplateParsing($objTemplate, $arrItem)
     {
+        // Add an image
+        if ($arrItem['raw']['addImage'] && $arrItem['raw']['singleSRC'] != '') {
+            $objModel = FilesModel::findByUuid($arrItem['raw']['singleSRC']);
+
+            if (null !== $objModel && is_file(TL_ROOT . '/' . $objModel->path)) {
+                // Override the default image size
+                if ($this->imgSize != '') {
+                    $size = deserialize($this->imgSize);
+
+                    if ($size[0] > 0 || $size[1] > 0 || is_numeric($size[2])) {
+                        $arrItem['raw']['size'] = $this->imgSize;
+                    }
+                }
+
+                $arrItem['raw']['singleSRC'] = $objModel->path;
+                $this->addImageToTemplate($objTemplate, $arrItem['raw']);
+            }
+        }
+
         if ($arrItem['raw']['addEnclosure']) {
             if (!is_array($arrItem['raw']['enclosure'])) {
                 $arrItem['raw']['enclosure'] = [$arrItem['raw']['enclosure']];
