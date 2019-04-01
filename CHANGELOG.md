@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.5.1] - 2019-04-01
+
+#### Fixed
+- restored `tl_module.formHybridLinkedList` in filter module
+
+
 ## [5.5.0] - 2019-04-01
 
 #### Added

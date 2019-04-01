@@ -40,7 +40,7 @@ $arrDca['nestedPalettes'] = [
 ];
 
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST_FILTER] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
-    . '{filter_legend},' . str_replace('filterHeadline,', '', $arrDca['nestedPalettes']['filterMode_standard']) . ';'
+    . '{filter_legend},formHybridLinkedList,' . str_replace('filterHeadline,', '', $arrDca['nestedPalettes']['filterMode_standard']) . ';'
     . '{redirect_legend},formHybridAction;'
     . '{template_legend:hide},formHybridTemplate;'
     . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
