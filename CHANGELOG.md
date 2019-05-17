@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.5.2] - 2019-05-17
+
+#### Fixed
+- masonry error on some lists in combination with ajax pagination
+
 ## [5.5.1] - 2019-04-01
 
 #### Fixed

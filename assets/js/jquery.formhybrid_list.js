@@ -122,7 +122,8 @@
                                 $items.masonry('appended', $newItems);
 
                                 // whyever not items, but works...
-                                $list.masonry();
+                                FORMHYBRID_LIST.initSingleMasonryList($list);
+                                // $list.masonry();
                             }
 
                             // remove item counters...
@@ -176,21 +177,24 @@
         {
             $('.formhybrid-list[data-fhl-masonry="1"], .frontendedit-list[data-fhl-masonry="1"]').each(function()
             {
-                var $this = $(this).find('.items'),
-                    options = $(this).data('masonry-options');
+                FORMHYBRID_LIST.initSingleMasonryList(this);
+            });
+        },
+        initSingleMasonryList: function($list) {
+            var $this = $($list).find('.items'),
+                options = $($list).data('masonry-options');
 
-                var $grid = $this.imagesLoaded(function()
-                {
-                    $grid.masonry({
-                        // fitWidth: true,
-                        itemSelector: '.item'
-                    });
-
-                    $grid.masonry('stamp', $grid.find('.stamp-item'));
-
-                    // update due to stamps
-                    $grid.masonry();
+            var $grid = $this.imagesLoaded(function()
+            {
+                $grid.masonry({
+                    // fitWidth: true,
+                    itemSelector: '.item'
                 });
+
+                $grid.masonry('stamp', $grid.find('.stamp-item'));
+
+                // update due to stamps
+                $grid.masonry();
             });
         },
         initComments: function()
