@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.6.0] - 2020-11-03
+- removed robloach/component-installer from dependencies
+
 ## [5.5.2] - 2019-05-17
 
 #### Fixed
