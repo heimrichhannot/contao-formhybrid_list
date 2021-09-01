@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.7.0] - 2021-09-01
+
+- Added: php8 support
+
 ## [5.6.0] - 2020-11-03
 - removed robloach/component-installer from dependencies
 
