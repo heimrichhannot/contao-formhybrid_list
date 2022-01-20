@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.8.0] - 2022-01-20
+- Added: SessionField class to replace HastePlus session methods
+- Changed: minimum php version is now 5.6
+
 ## [5.7.0] - 2021-09-01
 
 - Added: php8 support

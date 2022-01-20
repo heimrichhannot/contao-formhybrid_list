@@ -17,6 +17,7 @@ use Contao\Database;
 use Contao\StringUtil;
 use Haste\DateTime\DateTime;
 use HeimrichHannot\Blocks\BlockModuleModel;
+use HeimrichHannot\FormHybridList\Dca\SessionField;
 use HeimrichHannot\Haste\Database\QueryHelper;
 use HeimrichHannot\Haste\Dca\DC_HastePlus;
 use HeimrichHannot\Haste\Util\Url;
@@ -582,17 +583,17 @@ class ModuleList extends \Module
         // check session if not logged in...
         if (!FE_USER_LOGGED_IN) {
             if (!$this->disableSessionCheck) {
-                if (!\Database::getInstance()->fieldExists(General::PROPERTY_SESSION_ID, $this->formHybridDataContainer)) {
+                if (!\Database::getInstance()->fieldExists(SessionField::FIELD_NAME, $this->formHybridDataContainer)) {
                     throw new \Exception(
                         sprintf(
                             'No session field in %s available, either create field %s or set `disableSessionCheck` to true.',
                             $this->formHybridDataContainer,
-                            General::PROPERTY_SESSION_ID
+                            SessionField::FIELD_NAME
                         )
                     );
                 }
 
-                $this->arrColumns[General::PROPERTY_SESSION_ID] = $this->formHybridDataContainer . '.' . General::PROPERTY_SESSION_ID . '="' . session_id() . '"';
+                $this->arrColumns[SessionField::FIELD_NAME] = $this->formHybridDataContainer . '.' . SessionField::FIELD_NAME . '="' . session_id() . '"';
             }
         } // ...and check member id if logged in
         else {
