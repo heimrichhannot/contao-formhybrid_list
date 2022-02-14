@@ -46,7 +46,7 @@ class FormHybridListQueryBuilder
         }
 
         // Where condition
-        if ($arrOptions['column'] !== null) {
+        if ($arrOptions['column'] ?? false) {
             $strQuery .= " WHERE " . (is_array($arrOptions['column']) ? implode(" AND ", $arrOptions['column'])
                     : $arrOptions['table'] . '.' . $arrOptions['column'] . "=?") . ($strAdditionalWhereSql ? ' AND ' . $strAdditionalWhereSql : '');
         } elseif ($strAdditionalWhereSql) {
@@ -54,17 +54,17 @@ class FormHybridListQueryBuilder
         }
 
         // Group by
-        if ($arrOptions['group'] !== null) {
+        if ($arrOptions['group'] ?? false) {
             $strQuery .= " GROUP BY " . $arrOptions['group'];
         }
 
         // Having (see #6446)
-        if ($arrOptions['having'] !== null) {
+        if ($arrOptions['having'] ?? false) {
             $strQuery .= " HAVING " . $arrOptions['having'];
         }
 
         // Order by
-        if ($arrOptions['order'] !== null) {
+        if ($arrOptions['order'] ?? false) {
             $strQuery .= " ORDER BY " . $arrOptions['order'];
         }
 

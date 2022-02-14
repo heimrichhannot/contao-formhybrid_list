@@ -114,7 +114,7 @@ class Module extends \Backend
 
     public static function getFields($objDc)
     {
-        if (!$objDc->activeRecord->formHybridDataContainer) {
+        if (!$objDc->activeRecord || !$objDc->activeRecord->formHybridDataContainer) {
             return [];
         }
 
@@ -123,7 +123,7 @@ class Module extends \Backend
 
     public static function getTextFields(\DataContainer $objDc)
     {
-        if (!$objDc->activeRecord->formHybridDataContainer) {
+        if (!$objDc->activeRecord || !$objDc->activeRecord->formHybridDataContainer) {
             return [];
         }
 
