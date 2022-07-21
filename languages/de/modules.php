@@ -3,7 +3,7 @@
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_READER]        = ['FormHybrid-Leser', ''];
+$GLOBALS['TL_LANG']['FMD'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE]        = ['FormHybrid-Leser', ''];
 $GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_MEMBER_READER] = ['FormHybrid-Mitgliederleser', ''];
 $GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_LISTS]         = ['FormHybrid-Listen', ''];
 $GLOBALS['TL_LANG']['FMD'][MODULE_FORMHYBRID_LIST]          = ['FormHybrid-Liste', ''];

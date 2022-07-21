@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.9.0] - 2022-07-21
+- Changed: introduced `ModuleReader::TYPE` to replace MODULE_FORMHYBRID_READER
+- Deprecated: MODULE_FORMHYBRID_READER constant
+
 ## [5.8.1] - 2022-02-14
 
 - Fixed: array index issues in php 8+

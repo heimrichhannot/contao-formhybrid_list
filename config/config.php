@@ -13,7 +13,8 @@
  */
 define('FORMHYBRID_LIST_BUTTON_RESET_FILTER', 'reset_filter');
 // module names
-define('MODULE_FORMHYBRID_READER', 'formhybrid_reader');
+/** @deprecated Use ModuleReader::TYPE instead */
+define('MODULE_FORMHYBRID_READER', \HeimrichHannot\FormHybridList\ModuleReader::TYPE);
 define('MODULE_FORMHYBRID_MEMBER_READER', 'formhybrid_member_reader');
 define('MODULE_FORMHYBRID_LISTS', 'formhybrid_lists');
 define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
@@ -30,7 +31,7 @@ define('FORMHYBRID_LIST_FREE_TEXT_FIELD', 'freetextSearch');
  * Frontend modules
  */
 // reader
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_READER]        = 'HeimrichHannot\FormHybridList\ModuleReader';
+$GLOBALS['FE_MOD']['formhybrid_list'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE]        = 'HeimrichHannot\FormHybridList\ModuleReader';
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_READER] = 'HeimrichHannot\FormHybridList\ModuleMemberReader';
 // list
 $GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST]        = 'HeimrichHannot\FormHybridList\ModuleList';

@@ -19,6 +19,8 @@ use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleReader extends \Module
 {
+    const TYPE = 'formhybrid_reader';
+
     protected $strTemplate = 'mod_formhybrid_reader';
 
     // avoid any messages -> handled sub class

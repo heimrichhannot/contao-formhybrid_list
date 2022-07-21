@@ -6,14 +6,14 @@ $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
  * Palettes
  */
 // reader
-$arrDca['palettes'][MODULE_FORMHYBRID_READER] =
+$arrDca['palettes'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE] =
     '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,addExistanceConditions,aliasField,limitFormattedFields;'
     . '{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;'
     . '{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,customTpl;'
     . '{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
 $arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
-    str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][MODULE_FORMHYBRID_READER]);
+    str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE]);
 
 // list
 $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
