@@ -36,6 +36,7 @@ ClassLoader::addClasses([
     'HeimrichHannot\FormHybridList\ListFilterForm'             => 'system/modules/formhybrid_list/classes/ListFilterForm.php',
     'HeimrichHannot\FormHybridList\Backend\Module'             => 'system/modules/formhybrid_list/classes/backend/Module.php',
     'HeimrichHannot\FormHybridList\RandomPagination'           => 'system/modules/formhybrid_list/classes/RandomPagination.php',
+    'HeimrichHannot\FormHybridList\EventListener\Contao\LoadDataContainerListener' => 'system/modules/formhybrid_list/classes/EventListener/Contao/LoadDataContainerListener.php',
     
     // Models
     'HeimrichHannot\FormHybridList\FormHybridListModel'        => 'system/modules/formhybrid_list/models/FormHybridListModel.php',

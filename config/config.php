@@ -75,6 +75,10 @@ $GLOBALS['TL_COMPONENTS']['formhybrid_list'] = [
  * Insert tags
  */
 $GLOBALS['TL_HOOKS']['replaceInsertTags']['formHybridList'] = ['HeimrichHannot\FormHybridList\FormHybridList', 'addInsertTags'];
+$GLOBALS['TL_HOOKS']['loadDataContainer']['formHybridList'] = [
+    \HeimrichHannot\FormHybridList\EventListener\Contao\LoadDataContainerListener::class,
+    '__invoke'
+];
 /**
  * Misc
  */

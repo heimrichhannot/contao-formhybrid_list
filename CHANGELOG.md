@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased] - 2022-08-19
+- Changed: make modal dependency optional
+- Changed: minimum supported php version is now 7.1
+
 ## [5.9.0] - 2022-07-21
 - Changed: introduced `ModuleReader::TYPE` to replace MODULE_FORMHYBRID_READER
 - Deprecated: MODULE_FORMHYBRID_READER constant
