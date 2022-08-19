@@ -12,23 +12,19 @@
 
 namespace HeimrichHannot\FormHybridList;
 
-use Contao\Controller;
 use Contao\Database;
 use Contao\StringUtil;
-use Haste\DateTime\DateTime;
 use HeimrichHannot\Blocks\BlockModuleModel;
 use HeimrichHannot\FormHybridList\Dca\SessionField;
-use HeimrichHannot\Haste\Database\QueryHelper;
 use HeimrichHannot\Haste\Dca\DC_HastePlus;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Dca\General;
-use HeimrichHannot\Haste\Util\Arrays;
 use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\HastePlus\Environment;
+use HeimrichHannot\Modal\Modal;
 use HeimrichHannot\Modal\ModalModel;
 use HeimrichHannot\Request\Request;
-use HeimrichHannot\StatusMessages\StatusMessage;
 
 class ModuleList extends \Module
 {
@@ -188,10 +184,10 @@ class ModuleList extends \Module
         if (!$this->objFilterContext->hideFilter && $this->objFilterForm->isSubmitted() && !$this->objFilterForm->doNotSubmit()
         ) {
             // submission ain't formatted
-            list($objItems, $this->Template->count) = $this->getItems($this->objFilterForm->getSubmission(false));
+            [$objItems, $this->Template->count] = $this->getItems($this->objFilterForm->getSubmission(false));
             $this->Template->isSubmitted = $this->objFilterForm->isSubmitted();
         } elseif ($this->showInitialResults) {
-            list($objItems, $this->Template->count) = $this->getItems();
+            [$objItems, $this->Template->count] = $this->getItems();
         }
 
         // Add the items
@@ -301,7 +297,7 @@ class ModuleList extends \Module
         if ($arrCurrentSorting['order'] == 'random') {
             $intRandomSeed             = \Input::get(FormHybridList::PARAM_RANDOM) ?: rand(1, 500);
             $this->arrOptions['order'] = 'RAND("' . intval($intRandomSeed) . '")';
-            list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit, $intRandomSeed);
+            [$offset, $limit] = $this->splitResults($offset, $intTotal, $limit, $intRandomSeed);
         } else {
             if (!empty($arrCurrentSorting)) {
                 $this->arrOptions['order'] =
@@ -310,7 +306,7 @@ class ModuleList extends \Module
                         . ' ' . strtoupper($arrCurrentSorting['sort']));
             }
 
-            list($offset, $limit) = $this->splitResults($offset, $intTotal, $limit);
+            [$offset, $limit] = $this->splitResults($offset, $intTotal, $limit);
         }
 
 
@@ -496,13 +492,17 @@ class ModuleList extends \Module
         $objTemplate->dummyImage              = $this->dummyImage;
         $objTemplate->formHybridDataContainer = $this->formHybridDataContainer;
         $objTemplate->addDetailsCol           = $this->addDetailsCol;
-        $objTemplate->useModal                = $this->useModal;
         $objTemplate->jumpToDetails           = $this->jumpToDetails;
+        $objTemplate->useModal                = false;
+
+        if (class_exists(Modal::class)) {
+            $objTemplate->useModal                = $this->useModal;
+        }
 
         global $objPage;
 
         if (($objPageJumpTo = \PageModel::findByPk($this->jumpToDetails)) !== null || $objPageJumpTo = $objPage) {
-            if (($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
+            if (class_exists(Modal::class) &&($objModal = ModalModel::findPublishedByTargetPage($objPageJumpTo)) !== null) {
                 $objTemplate->modal = $objModal;
             }
         }
@@ -659,7 +659,7 @@ class ModuleList extends \Module
                 }
                 $blnSkipValue = true;
             } elseif (FORMHYBRID_LIST_FREE_TEXT_FIELD == $strField) {
-                list($strColumn, $varValue) = $this->prepareFreetextSearchWhereClause($this->replaceInsertTags($varValue, false));
+                [$strColumn, $varValue] = $this->prepareFreetextSearchWhereClause($this->replaceInsertTags($varValue, false));
             } else {
                 if ($this->enableFuzzySearch) {
                     $strColumn = 'CONVERT(' . $this->prefixFieldWithTable($strField) . " USING utf8mb4) LIKE ?"; // using CONVERT() to handle case insensitive search in blob fields
@@ -689,7 +689,7 @@ class ModuleList extends \Module
                             break;
                         }
 
-                        list($strColumn, $varValue) = $this->prepareProximitySearchWhereClause($data);
+                        [$strColumn, $varValue] = $this->prepareProximitySearchWhereClause($data);
 
                         // no location, postal and city
                         if ($strColumn === false) {
@@ -821,7 +821,7 @@ class ModuleList extends \Module
 
                                     break;
                                 case FormHybridList::PROXIMITY_SEARCH_RADIUS:
-                                    list($strColumn, $varValue) = $this->prepareProximitySearchWhereClause();
+                                    [$strColumn, $varValue] = $this->prepareProximitySearchWhereClause();
 
                                     // no location, postal and city
                                     if ($strColumn === false) {
@@ -840,7 +840,7 @@ class ModuleList extends \Module
                         $strFreetext = Request::getGet(FORMHYBRID_LIST_FREE_TEXT_FIELD);
 
                         if ($strFreetext) {
-                            list($strColumn, $varValue) = $this->prepareFreetextSearchWhereClause($strFreetext);
+                            [$strColumn, $varValue] = $this->prepareFreetextSearchWhereClause($strFreetext);
                             $blnSkipValue = true;
                         }
                     }
@@ -1126,7 +1126,7 @@ class ModuleList extends \Module
         $strQueryLong = '';
 
         if ($strLocation) {
-            list($strQueryLat, $strQueryLong) = explode(',', $strLocation);
+            [$strQueryLat, $strQueryLong] = explode(',', $strLocation);
         } elseif ($strPostal || $strCity) {
             $arrQuery = [];
 
