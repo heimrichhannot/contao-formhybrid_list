@@ -6,7 +6,6 @@ use Contao\Controller;
 use Contao\Database;
 use Contao\DataContainer;
 use Contao\ModuleModel;
-use Contao\StringUtil;
 use HeimrichHannot\FormHybridList\FormHybridListQueryBuilder;
 use HeimrichHannot\Haste\Dca\DC_HastePlus;
 use HeimrichHannot\Haste\Dca\General;
