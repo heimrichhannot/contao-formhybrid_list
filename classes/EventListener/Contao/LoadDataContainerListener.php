@@ -10,7 +10,7 @@ class LoadDataContainerListener
     {
         if ('tl_module' === $table && class_exists(Modal::class)) {
             $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
-            $arrDca['subpalettes']['addDetailsCol'] = 'useModalExplanation,useModal,'($arrDca['subpalettes']['addDetailsCol'] ?? '');
+            $arrDca['subpalettes']['addDetailsCol'] = 'useModalExplanation,useModal,'.($arrDca['subpalettes']['addDetailsCol'] ?? '');
         }
     }
 }

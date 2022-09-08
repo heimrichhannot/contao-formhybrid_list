@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [5.10.1] - 2022-09-08
+- Fixed: load dca syntax
+
 ## [5.10.0] - 2022-08-23
 - Changed: make modal dependency optional
 - Changed: minimum supported php version is now 7.1
