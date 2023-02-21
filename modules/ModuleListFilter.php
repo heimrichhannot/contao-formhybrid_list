@@ -10,6 +10,8 @@ namespace HeimrichHannot\FormHybridList;
 
 class ModuleListFilter extends \Module
 {
+    public const TYPE = 'formhybrid_list_filter';
+
     protected $strTemplate = 'mod_formhybrid_filter';
 
     public function generate()

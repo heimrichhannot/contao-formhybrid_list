@@ -12,12 +12,13 @@
 
 namespace HeimrichHannot\FormHybridList;
 
+use Contao\Module;
 use HeimrichHannot\Haste\Util\Url;
 use HeimrichHannot\FormHybrid\FormHelper;
 use HeimrichHannot\Haste\Util\FormSubmission;
 use HeimrichHannot\StatusMessages\StatusMessage;
 
-class ModuleReader extends \Module
+class ModuleReader extends Module
 {
     const TYPE = 'formhybrid_reader';
 

@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased] - 2023-02-21
+- Changed: replaced all frontend module global constants with class constants
+- Changed: requires contao >= 4.4
+- Deprecated: global module constants
+- Fixed: some namespaces
+
 ## [5.10.1] - 2022-09-08
 - Fixed: load dca syntax
 

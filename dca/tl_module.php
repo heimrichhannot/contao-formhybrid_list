@@ -1,22 +1,29 @@
 <?php
 
+use HeimrichHannot\FormHybridList\ModuleList;
+use HeimrichHannot\FormHybridList\ModuleListFilter;
+use HeimrichHannot\FormHybridList\ModuleMemberList;
+use HeimrichHannot\FormHybridList\ModuleMemberReader;
+use HeimrichHannot\FormHybridList\ModuleNewsList;
+use HeimrichHannot\FormHybridList\ModuleReader;
+
 $arrDca = &$GLOBALS['TL_DCA']['tl_module'];
 
 /**
  * Palettes
  */
 // reader
-$arrDca['palettes'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE] =
+$arrDca['palettes'][ModuleReader::TYPE] =
     '{title_legend},name,headline,type;' . '{entity_legend},formHybridDataContainer,addExistanceConditions,aliasField,limitFormattedFields;'
     . '{security_legend},addShowConditions;{redirect_legend},formHybridAddFieldDependentRedirect;'
     . '{misc_legend},imgSize,useDummyImage,setPageTitle;{template_legend},itemTemplate,customTpl;'
     . '{comment_legend:hide},com_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_READER] =
-    str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE]);
+$arrDca['palettes'][ModuleMemberReader::TYPE] =
+    str_replace('imgSize', 'imgSize,memberContentArchiveTags,memberContentArchiveTeaserTag', $arrDca['palettes'][ModuleReader::TYPE]);
 
 // list
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
+$arrDca['palettes'][ModuleList::TYPE] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
     . '{security_legend},disableSessionCheck,disableAuthorCheck;'
     . '{list_legend},limitFormattedFields,numberOfItems,perPage,addAjaxPagination,skipFirst,skipInstances,showItemCount,emptyText,'
     . 'showInitialResults,formHybridAddHashToAction,removeAutoItemFromAction,isTableList,addDetailsCol,addShareCol,deactivateTokens,addMasonry;'
@@ -26,8 +33,8 @@ $arrDca['palettes'][MODULE_FORMHYBRID_LIST] = '{title_legend},name,headline,type
     . '{template_legend:hide},formHybridTemplate,formHybridCustomSubTemplates,itemTemplate,customTpl;'
     . '{protected_legend:hide},protected;{expert_legend:hide},guests,cssID,space';
 
-$arrDca['palettes'][MODULE_FORMHYBRID_NEWS_LIST]   = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
-$arrDca['palettes'][MODULE_FORMHYBRID_MEMBER_LIST] = $arrDca['palettes'][MODULE_FORMHYBRID_LIST];
+$arrDca['palettes'][ModuleNewsList::TYPE]   = $arrDca['palettes'][ModuleList::TYPE];
+$arrDca['palettes'][ModuleMemberList::TYPE] = $arrDca['palettes'][ModuleList::TYPE];
 
 // filter
 
@@ -39,7 +46,7 @@ $arrDca['nestedPalettes'] = [
     'filterMode_module'   => 'formHybridLinkedFilter'
 ];
 
-$arrDca['palettes'][MODULE_FORMHYBRID_LIST_FILTER] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
+$arrDca['palettes'][ModuleListFilter::TYPE] = '{title_legend},name,headline,type;{entity_legend},formHybridIdGetParameter,formHybridDataContainer;'
     . '{filter_legend},formHybridLinkedList,' . str_replace('filterHeadline,', '', $arrDca['nestedPalettes']['filterMode_standard']) . ';'
     . '{redirect_legend},formHybridAction;'
     . '{template_legend:hide},formHybridTemplate;'

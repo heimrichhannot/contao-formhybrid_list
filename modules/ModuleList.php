@@ -13,6 +13,7 @@
 namespace HeimrichHannot\FormHybridList;
 
 use Contao\Database;
+use Contao\Module;
 use Contao\StringUtil;
 use HeimrichHannot\Blocks\BlockModuleModel;
 use HeimrichHannot\FormHybridList\Dca\SessionField;
@@ -26,8 +27,10 @@ use HeimrichHannot\Modal\Modal;
 use HeimrichHannot\Modal\ModalModel;
 use HeimrichHannot\Request\Request;
 
-class ModuleList extends \Module
+class ModuleList extends Module
 {
+    public const TYPE = 'formhybrid_list';
+
     protected $arrSkipInstances = [];
     protected $arrItems = [];
     protected $objItems;

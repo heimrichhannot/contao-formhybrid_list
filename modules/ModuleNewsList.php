@@ -13,6 +13,8 @@ use HeimrichHannot\MemberContentArchives\MemberContentArchiveModel;
 
 class ModuleNewsList extends ModuleList
 {
+    public const TYPE = 'formhybrid_list_news';
+
     public function generate()
     {
         if (TL_MODE == 'BE') {

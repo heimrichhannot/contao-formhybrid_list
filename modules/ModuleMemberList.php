@@ -16,6 +16,8 @@ use HeimrichHannot\Haste\Util\Files;
 
 class ModuleMemberList extends ModuleList
 {
+    public const TYPE = 'formhybrid_list_member';
+
     protected function generateFields($objItem)
     {
         $arrItem = parent::generateFields($objItem);

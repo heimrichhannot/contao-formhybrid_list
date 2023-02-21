@@ -8,19 +8,45 @@
  * @author  Dennis Patzer
  * @license http://www.gnu.org/licences/lgpl-3.0.html LGPL
  */
+
+use HeimrichHannot\FormHybridList\ModuleList;
+use HeimrichHannot\FormHybridList\ModuleListFilter;
+use HeimrichHannot\FormHybridList\ModuleMemberList;
+use HeimrichHannot\FormHybridList\ModuleMemberReader;
+use HeimrichHannot\FormHybridList\ModuleNewsList;
+use HeimrichHannot\FormHybridList\ModuleReader;
+
 /**
  * Constants
  */
 define('FORMHYBRID_LIST_BUTTON_RESET_FILTER', 'reset_filter');
 // module names
-/** @deprecated Use ModuleReader::TYPE instead */
-define('MODULE_FORMHYBRID_READER', \HeimrichHannot\FormHybridList\ModuleReader::TYPE);
-define('MODULE_FORMHYBRID_MEMBER_READER', 'formhybrid_member_reader');
+if (!defined('MODULE_FORMHYBRID_READER')) {
+    /** @deprecated Use ModuleReader::TYPE instead */
+    define('MODULE_FORMHYBRID_READER', ModuleReader::TYPE);
+}
+if (!defined('MODULE_FORMHYBRID_MEMBER_READER')) {
+    /** @deprecated Use ModuleMemberReader::TYPE instead */
+    define('MODULE_FORMHYBRID_MEMBER_READER', ModuleMemberReader::TYPE);
+}
 define('MODULE_FORMHYBRID_LISTS', 'formhybrid_lists');
-define('MODULE_FORMHYBRID_LIST', 'formhybrid_list');
-define('MODULE_FORMHYBRID_MEMBER_LIST', 'formhybrid_list_member');
-define('MODULE_FORMHYBRID_NEWS_LIST', 'formhybrid_list_news');
-define('MODULE_FORMHYBRID_LIST_FILTER', 'formhybrid_list_filter');
+
+if (!defined('MODULE_FORMHYBRID_LIST')) {
+    /** @deprecated Use ModuleList::TYPE instead */
+    define('MODULE_FORMHYBRID_LIST', ModuleList::TYPE);
+}
+if (!defined('MODULE_FORMHYBRID_MEMBER_LIST')) {
+    /** @deprecated Use ModuleMemberList::TYPE instead */
+    define('MODULE_FORMHYBRID_MEMBER_LIST', ModuleMemberList::TYPE);
+}
+if (!defined('MODULE_FORMHYBRID_NEWS_LIST')) {
+    /** @deprecated Use ModuleNewsList::TYPE instead */
+    define('MODULE_FORMHYBRID_NEWS_LIST', ModuleNewsList::TYPE);
+}
+if (!defined('MODULE_FORMHYBRID_LIST_FILTER')) {
+    /** @deprecated Use ModuleListFilter::TYPE instead */
+    define('MODULE_FORMHYBRID_LIST_FILTER', ModuleListFilter::TYPE);
+}
 define('OPTION_FORMHYBRID_SORTINGMODE_FIELD', 'field');
 define('OPTION_FORMHYBRID_SORTINGMODE_TEXT', 'text');
 define('OPTION_FORMHYBRID_FILTERMODE_STANDARD', 'standard');
@@ -31,14 +57,14 @@ define('FORMHYBRID_LIST_FREE_TEXT_FIELD', 'freetextSearch');
  * Frontend modules
  */
 // reader
-$GLOBALS['FE_MOD']['formhybrid_list'][\HeimrichHannot\FormHybridList\ModuleReader::TYPE]        = 'HeimrichHannot\FormHybridList\ModuleReader';
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_READER] = 'HeimrichHannot\FormHybridList\ModuleMemberReader';
+$GLOBALS['FE_MOD']['formhybrid_list'][ModuleReader::TYPE]       = ModuleReader::class;
+$GLOBALS['FE_MOD']['formhybrid_list'][ModuleMemberReader::TYPE] = ModuleMemberReader::class;
 // list
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST]        = 'HeimrichHannot\FormHybridList\ModuleList';
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_MEMBER_LIST] = 'HeimrichHannot\FormHybridList\ModuleMemberList';
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_NEWS_LIST]   = 'HeimrichHannot\FormHybridList\ModuleNewsList';
+$GLOBALS['FE_MOD']['formhybrid_list'][ModuleList::TYPE]       = ModuleList::class;
+$GLOBALS['FE_MOD']['formhybrid_list'][ModuleMemberList::TYPE] = ModuleMemberList::class;
+$GLOBALS['FE_MOD']['formhybrid_list'][ModuleNewsList::TYPE]  = ModuleNewsList::class;
 // filter
-$GLOBALS['FE_MOD']['formhybrid_list'][MODULE_FORMHYBRID_LIST_FILTER] = 'HeimrichHannot\FormHybridList\ModuleListFilter';
+$GLOBALS['FE_MOD']['formhybrid_list'][ModuleListFilter::TYPE] = ModuleListFilter::class;
 /**
  * Assets
  */

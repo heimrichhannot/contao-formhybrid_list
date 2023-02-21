@@ -6,6 +6,8 @@ use HeimrichHannot\Haste\Util\Files;
 
 class ModuleMemberReader extends ModuleReader
 {
+    public const TYPE = 'formhybrid_member_reader';
+
     public function generate()
     {
         if (TL_MODE == 'BE') {
